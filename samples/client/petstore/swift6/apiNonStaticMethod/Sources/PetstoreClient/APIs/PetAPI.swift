@@ -8,9 +8,7 @@
 import Foundation
 @preconcurrency import PromiseKit
 @preconcurrency import RxSwift
-#if canImport(Combine)
 import Combine
-#endif
 
 open class PetAPI {
     public let apiConfiguration: PetstoreClientAPIConfiguration
@@ -86,8 +84,6 @@ open class PetAPI {
      - parameter body: (body) Pet object that needs to be added to the store 
      - returns: AnyPublisher<Void, Error>
      */
-    #if canImport(Combine)
-    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     open func addPet(body: Pet) -> AnyPublisher<Void, Error> {
         let requestBuilder = addPetWithRequestBuilder(body: body)
         let requestTask = requestBuilder.requestTask
@@ -109,7 +105,6 @@ open class PetAPI {
         }
         .eraseToAnyPublisher()
     }
-    #endif
 
     /**
      Add a new pet to the store
@@ -117,7 +112,6 @@ open class PetAPI {
      - parameter body: (body) Pet object that needs to be added to the store 
      - returns: Void
      */
-    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     open func addPet(body: Pet) async throws(ErrorResponse) {
         return try await addPetWithRequestBuilder(body: body).execute().body
     }
@@ -242,8 +236,6 @@ open class PetAPI {
      - parameter apiKey: (header)  (optional)
      - returns: AnyPublisher<Void, Error>
      */
-    #if canImport(Combine)
-    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     open func deletePet(petId: Int64, apiKey: String? = nil) -> AnyPublisher<Void, Error> {
         let requestBuilder = deletePetWithRequestBuilder(petId: petId, apiKey: apiKey)
         let requestTask = requestBuilder.requestTask
@@ -265,7 +257,6 @@ open class PetAPI {
         }
         .eraseToAnyPublisher()
     }
-    #endif
 
     /**
      Deletes a pet
@@ -274,7 +265,6 @@ open class PetAPI {
      - parameter apiKey: (header)  (optional)
      - returns: Void
      */
-    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     open func deletePet(petId: Int64, apiKey: String? = nil) async throws(ErrorResponse) {
         return try await deletePetWithRequestBuilder(petId: petId, apiKey: apiKey).execute().body
     }
@@ -406,8 +396,6 @@ open class PetAPI {
      - parameter status: (query) Status values that need to be considered for filter 
      - returns: AnyPublisher<[Pet], Error>
      */
-    #if canImport(Combine)
-    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     open func findPetsByStatus(status: [Status_findPetsByStatus]) -> AnyPublisher<[Pet], Error> {
         let requestBuilder = findPetsByStatusWithRequestBuilder(status: status)
         let requestTask = requestBuilder.requestTask
@@ -429,7 +417,6 @@ open class PetAPI {
         }
         .eraseToAnyPublisher()
     }
-    #endif
 
     /**
      Finds Pets by status
@@ -437,7 +424,6 @@ open class PetAPI {
      - parameter status: (query) Status values that need to be considered for filter 
      - returns: [Pet]
      */
-    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     open func findPetsByStatus(status: [Status_findPetsByStatus]) async throws(ErrorResponse) -> [Pet] {
         return try await findPetsByStatusWithRequestBuilder(status: status).execute().body
     }
@@ -561,9 +547,7 @@ open class PetAPI {
      - parameter tags: (query) Tags to filter by 
      - returns: AnyPublisher<[Pet], Error>
      */
-    #if canImport(Combine)
     @available(*, deprecated, message: "This operation is deprecated.")
-    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     open func findPetsByTags(tags: [String]) -> AnyPublisher<[Pet], Error> {
         let requestBuilder = findPetsByTagsWithRequestBuilder(tags: tags)
         let requestTask = requestBuilder.requestTask
@@ -585,7 +569,6 @@ open class PetAPI {
         }
         .eraseToAnyPublisher()
     }
-    #endif
 
     /**
      Finds Pets by tags
@@ -594,7 +577,6 @@ open class PetAPI {
      - returns: [Pet]
      */
     @available(*, deprecated, message: "This operation is deprecated.")
-    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     open func findPetsByTags(tags: [String]) async throws(ErrorResponse) -> [Pet] {
         return try await findPetsByTagsWithRequestBuilder(tags: tags).execute().body
     }
@@ -718,8 +700,6 @@ open class PetAPI {
      - parameter petId: (path) ID of pet to return 
      - returns: AnyPublisher<Pet, Error>
      */
-    #if canImport(Combine)
-    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     open func getPetById(petId: Int64) -> AnyPublisher<Pet, Error> {
         let requestBuilder = getPetByIdWithRequestBuilder(petId: petId)
         let requestTask = requestBuilder.requestTask
@@ -741,7 +721,6 @@ open class PetAPI {
         }
         .eraseToAnyPublisher()
     }
-    #endif
 
     /**
      Find pet by ID
@@ -749,7 +728,6 @@ open class PetAPI {
      - parameter petId: (path) ID of pet to return 
      - returns: Pet
      */
-    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     open func getPetById(petId: Int64) async throws(ErrorResponse) -> Pet {
         return try await getPetByIdWithRequestBuilder(petId: petId).execute().body
     }
@@ -871,8 +849,6 @@ open class PetAPI {
      - parameter body: (body) Pet object that needs to be added to the store 
      - returns: AnyPublisher<Void, Error>
      */
-    #if canImport(Combine)
-    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     open func updatePet(body: Pet) -> AnyPublisher<Void, Error> {
         let requestBuilder = updatePetWithRequestBuilder(body: body)
         let requestTask = requestBuilder.requestTask
@@ -894,7 +870,6 @@ open class PetAPI {
         }
         .eraseToAnyPublisher()
     }
-    #endif
 
     /**
      Update an existing pet
@@ -902,7 +877,6 @@ open class PetAPI {
      - parameter body: (body) Pet object that needs to be added to the store 
      - returns: Void
      */
-    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     open func updatePet(body: Pet) async throws(ErrorResponse) {
         return try await updatePetWithRequestBuilder(body: body).execute().body
     }
@@ -1028,8 +1002,6 @@ open class PetAPI {
      - parameter status: (form) Updated status of the pet (optional)
      - returns: AnyPublisher<Void, Error>
      */
-    #if canImport(Combine)
-    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     open func updatePetWithForm(petId: Int64, name: String? = nil, status: String? = nil) -> AnyPublisher<Void, Error> {
         let requestBuilder = updatePetWithFormWithRequestBuilder(petId: petId, name: name, status: status)
         let requestTask = requestBuilder.requestTask
@@ -1051,7 +1023,6 @@ open class PetAPI {
         }
         .eraseToAnyPublisher()
     }
-    #endif
 
     /**
      Updates a pet in the store with form data
@@ -1061,7 +1032,6 @@ open class PetAPI {
      - parameter status: (form) Updated status of the pet (optional)
      - returns: Void
      */
-    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     open func updatePetWithForm(petId: Int64, name: String? = nil, status: String? = nil) async throws(ErrorResponse) {
         return try await updatePetWithFormWithRequestBuilder(petId: petId, name: name, status: status).execute().body
     }
@@ -1200,8 +1170,6 @@ open class PetAPI {
      - parameter file: (form) file to upload (optional)
      - returns: AnyPublisher<ApiResponse, Error>
      */
-    #if canImport(Combine)
-    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     open func uploadFile(petId: Int64, additionalMetadata: String? = nil, file: Data? = nil) -> AnyPublisher<ApiResponse, Error> {
         let requestBuilder = uploadFileWithRequestBuilder(petId: petId, additionalMetadata: additionalMetadata, file: file)
         let requestTask = requestBuilder.requestTask
@@ -1223,7 +1191,6 @@ open class PetAPI {
         }
         .eraseToAnyPublisher()
     }
-    #endif
 
     /**
      uploads an image
@@ -1233,7 +1200,6 @@ open class PetAPI {
      - parameter file: (form) file to upload (optional)
      - returns: ApiResponse
      */
-    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     open func uploadFile(petId: Int64, additionalMetadata: String? = nil, file: Data? = nil) async throws(ErrorResponse) -> ApiResponse {
         return try await uploadFileWithRequestBuilder(petId: petId, additionalMetadata: additionalMetadata, file: file).execute().body
     }
@@ -1372,8 +1338,6 @@ open class PetAPI {
      - parameter additionalMetadata: (form) Additional data to pass to server (optional)
      - returns: AnyPublisher<ApiResponse, Error>
      */
-    #if canImport(Combine)
-    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     open func uploadFileWithRequiredFile(petId: Int64, requiredFile: Data, additionalMetadata: String? = nil) -> AnyPublisher<ApiResponse, Error> {
         let requestBuilder = uploadFileWithRequiredFileWithRequestBuilder(petId: petId, requiredFile: requiredFile, additionalMetadata: additionalMetadata)
         let requestTask = requestBuilder.requestTask
@@ -1395,7 +1359,6 @@ open class PetAPI {
         }
         .eraseToAnyPublisher()
     }
-    #endif
 
     /**
      uploads an image (required)
@@ -1405,7 +1368,6 @@ open class PetAPI {
      - parameter additionalMetadata: (form) Additional data to pass to server (optional)
      - returns: ApiResponse
      */
-    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     open func uploadFileWithRequiredFile(petId: Int64, requiredFile: Data, additionalMetadata: String? = nil) async throws(ErrorResponse) -> ApiResponse {
         return try await uploadFileWithRequiredFileWithRequestBuilder(petId: petId, requiredFile: requiredFile, additionalMetadata: additionalMetadata).execute().body
     }
