@@ -1,0 +1,73 @@
+#ifndef INCLUDE_API_CLIENT_H
+#define INCLUDE_API_CLIENT_H
+
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <stdbool.h>
+#include <stdint.h>
+
+#include "../include/binary.h"
+
+typedef struct
+{
+   char *clientCertFile;         /* client certificate */
+   char *clientKeyFile;          /* client private key */
+   char *CACertFile;             /* CA certificate */
+   int  insecureSkipTlsVerify ;  /* 0 -- verify server certificate */
+                                 /* 1 -- skip ssl verify for server certificate */
+} SSL_CLIENT_CONFIG_ENT;
+
+typedef struct
+{
+    char *basePath;
+    SSL_CLIENT_CONFIG_ENT *ssl_config;
+    void *dataReceived;
+    long dataReceivedLen;
+#if 0
+    void (*data_callback_func)( void **, long * );
+    int (*progress_func)( void *, curl_off_t, curl_off_t, curl_off_t, curl_off_t );
+#endif
+    void *progress_data;
+    long response_code;
+    {{#hasAuthMethods}}
+    {{#authMethods}}
+    {{#isBasicBasic}}
+    char *username;
+    char *password;
+    {{/isBasicBasic}}
+    {{#isOAuth}}
+    char *accessToken;
+    {{/isOAuth}}
+    {{#isApiKey}}
+    list_t *apiKeys_{{name}};
+    {{/isApiKey}}
+    {{/authMethods}}
+    {{/hasAuthMethods}}
+} API_CLIENT_CTX;
+
+API_CLIENT_CTX* api_client_create( void );
+
+API_CLIENT_CTX* api_client_create_with_base_path( const char *basePath
+, SSL_CLIENT_CONFIG_ENT *ssl_config
+{{#hasAuthMethods}}
+{{#authMethods}}
+{{#isApiKey}}
+, list_t *apiKeys_{{name}}
+{{/isApiKey}}
+{{/authMethods}}
+{{/hasAuthMethods}}
+);
+
+void api_client_free( API_CLIENT_CTX **api_client );
+
+void api_client_invoke( API_CLIENT_CTX *api_client, const char* operation_parameter, list_t *query_parameters, struct evkeyvalq *header_parameters, list_t *form_parameters, list_t *header_type,list_t *content_type, const char *body_parameters, const char *request_type );
+
+SSL_CLIENT_CONFIG_ENT *ssl_config_create( const char *clientCertFile, const char *clientKeyFile, const char *CACertFile, int insecureSkipTlsVerify );
+
+void ssl_config_free( SSL_CLIENT_CONFIG_ENT **ssl_config );
+
+char *strReplace( char *orig, char *rep, char *with );
+
+
+#endif // INCLUDE_API_CLIENT_H

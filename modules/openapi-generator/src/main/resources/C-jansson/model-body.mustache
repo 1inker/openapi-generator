@@ -1,0 +1,1593 @@
+{{#models}}
+{{#model}}
+
+#include <inttypes.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <time.h>      /* struct tm{} */
+#include <sys/types.h>
+#include <regex.h>     /* regex_t, regcomp(), regexec() */
+
+#include "bsd_queue.h"
+#include "uuid.h"
+#include "jansson.h"
+#include "event2/http.h" /* struct evhttp_uri{}, evhttp_uri_parse(), evhttp_uri_free(), evhttp_uri_join() */
+
+#include "include/api_error.h"
+#include "include/api_datetime_utils.h"
+#include "{{classFilename}}.h"
+
+{{#isEnum}}
+/* 1 Enum */
+const char *{{apiPackage}}_{{classVarName}}_desc_arr[ /* E_{{apiPackage}}_{{classVarName}} */ ] =
+{
+   [ {{apiPackage}}_{{classVarName}}_NULL ] = "NULL"{{#allowableValues}}{{#enumVars}},
+   [ {{apiPackage}}_{{classVarName}}_{{name}} ] = "{{value}}"{{/enumVars}}{{/allowableValues}}
+};
+
+const char *
+{{apiPackage}}_{{classFilename}}2str( E_{{apiPackage}}_{{classVarName}} e_{{classname}} )
+{
+   return {{apiPackage}}_{{classVarName}}_desc_arr[ e_{{classname}} ];
+} /* end of {{apiPackage}}_{{classVarName}}2str() */
+
+E_{{apiPackage}}_{{classVarName}}
+str2{{apiPackage}}_{{classFilename}}( const char *str_{{classname}} )
+{
+   size_t i;
+   size_t {{apiPackage}}_{{classVarName}}_desc_arr_sz = sizeof( {{apiPackage}}_{{classVarName}}_desc_arr ) / sizeof( {{apiPackage}}_{{classVarName}}_desc_arr[ 0 ] );
+
+   if( str_{{classname}} != NULL )
+   {
+      for( i = 0; i < {{apiPackage}}_{{classVarName}}_desc_arr_sz; ++i )
+      {
+         /**
+          * If we found exact string in {{apiPackage}}_{{classVarName}}_desc_arr then we can return it's offset as
+          * an E_{{apiPackage}}_{{classVarName}} value
+          */
+         if( strcmp( str_{{classname}}, {{apiPackage}}_{{classVarName}}_desc_arr[ i ] ) == 0 )
+            return i;
+      }
+   }
+
+   return {{apiPackage}}_{{classVarName}}_NULL;
+} /* end of str2{{apiPackage}}_{{classFilename}}() */
+
+json_t *
+serialize_{{apiPackage}}_{{classFilename}}2json( E_{{apiPackage}}_{{classVarName}} e_{{classname}} )
+{
+   json_t *j_{{{classname}}} = json_object();
+{{#isString}}
+   if( json_object_set_new( j_{{{classname}}}, "{{{classname}}}", json_string( {{apiPackage}}_{{classFilename}}2str( e_{{{classname}}} ) ) ) )
+{{/isString}}
+{{#isNumeric}}
+   if( json_object_set_new( j_{{{classname}}}, "{{{classname}}}", json_integer( e_{{{classname}}} ) ) )
+{{/isNumeric}}
+{{#isBoolean}}
+   if( json_object_set_new( j_{{{classname}}}, "{{{classname}}}", json_boolean( e_{{{classname}}} ) ) )
+{{/isBoolean}}
+      goto fail;
+
+   return j_{{{classname}}};
+
+fail:
+   json_decref( j_{{{classname}}} );
+   return NULL;
+} /* end of serialize_{{apiPackage}}_{{classFilename}}2json() */
+
+E_{{apiPackage}}_{{classVarName}}
+deserialize_json2{{apiPackage}}_{{classFilename}}( const json_t *j_object, OPENAPI_ERROR_CTX *err_ctx_{{classname}} )
+{
+   E_{{apiPackage}}_{{classVarName}} e_{{classname}} = {{apiPackage}}_{{classVarName}}_NULL;
+   json_t *j_{{{classname}}} = json_object_get( j_object, "{{{classname}}}" );
+
+{{#isEnum}}
+{{#isNumeric}}
+   if( !json_is_number( j_{{{classname}}} ) )
+   {
+      SET_OPENAPI_ERROR_CTX( err_ctx_{{classname}}, "{{{classname}}}", "Should be numeric" );
+      goto end;
+   }
+   e_{{classname}} = int2{{apiPackage}}_{{classFilename}}( json_integer_value( j_{{classname}} ) );
+{{/isNumeric}}
+{{#isString}}
+   if( !json_is_string( j_{{{classname}}} ) )
+   {
+      SET_OPENAPI_ERROR_CTX( err_ctx_{{classname}}, "{{{classname}}}", "Should be string" );
+      goto end;
+   }
+   e_{{classname}} = str2{{apiPackage}}_{{classFilename}}( json_string_value( j_{{{classname}}} ) );
+{{/isString}}
+{{/isEnum}}
+   return e_{{classname}};
+
+end:
+   return 0;
+} /* end of deserialize_json2{{apiPackage}}_{{classFilename}}() */
+{{/isEnum}}
+{{^isEnum}}
+    {{#vars}}
+    {{^isContainer}}
+    {{^isModel}}
+    {{#isEnum}}
+/* 2 Enum */
+const char *{{apiPackage}}_{{classVarName}}_{{name}}_desc_arr[ /* E_{{apiPackage}}_{{classVarName}}_{{nameInSnakeCase}} */ ] =
+{
+   [ {{apiPackage}}_{{classVarName}}_{{nameInSnakeCase}}_NULL     ] = "NULL"{{#allowableValues}}{{#enumVars}},
+   [ {{apiPackage}}_{{classVarName}}_{{nameInSnakeCase}}_{{name}} ] = "{{value}}"{{/enumVars}}{{/allowableValues}}
+};
+
+const char *
+{{apiPackage}}_{{classname}}_{{name}}2str( E_{{apiPackage}}_{{classVarName}}_{{nameInSnakeCase}} e_{{classname}} )
+{
+   return {{apiPackage}}_{{classVarName}}_{{name}}_desc_arr[ e_{{classname}} ];
+} /* end of {{apiPackage}}_{{classname}}_{{name}}2str() */
+
+E_{{apiPackage}}_{{classVarName}}_{{nameInSnakeCase}}
+str2{{apiPackage}}_{{classname}}_{{name}}( const char *str_{{classname}} )
+{
+   size_t i;
+   size_t {{apiPackage}}_{{classVarName}}_{{name}}_desc_arr_sz = sizeof( {{apiPackage}}_{{classVarName}}_{{name}}_desc_arr ) / sizeof( {{apiPackage}}_{{classVarName}}_{{name}}_desc_arr[ 0 ] );
+
+   if( str_{{classname}} != NULL )
+   {
+      for( i = 0; i < {{apiPackage}}_{{classVarName}}_{{name}}_desc_arr_sz; ++i )
+      {
+         /**
+          * If we found exact string in *{{apiPackage}}_{{classVarName}}_{{name}}_desc_arr then we can return it's offset as an E_{{apiPackage}}_{{classVarName}}_{{nameInSnakeCase}} value
+          */
+         if( strcmp( str_{{classname}}, {{apiPackage}}_{{classVarName}}_{{name}}_desc_arr[ i ] ) == 0 )
+            return i;
+      }
+   }
+
+   return {{apiPackage}}_{{classVarName}}_{{nameInSnakeCase}}_NULL;
+} /* end of str2{{apiPackage}}_{{classname}}_{{name}}() */
+    {{/isEnum}}
+    {{/isModel}}
+    {{/isContainer}}
+    {{#isContainer}}
+    {{#items}}
+    {{^isModel}}
+    {{#isEnum}}
+/* 3 Enum */
+const char *{{apiPackage}}_{{classname}}_{{name}}_desc_arr[ /* E_{{apiPackage}}_{{classVarName}}_{{nameInSnakeCase}} */ ] =
+{
+   [ {{apiPackage}}_{{classVarName}}_{{nameInSnakeCase}}_NULL ] = "NULL"{{#allowableValues}}{{#values}},
+   [ {{apiPackage}}_{{classVarName}}_{{nameInSnakeCase}}_{{{.}}} ] = "{{.}}"{{/values}}{{/allowableValues}}
+};
+const char *
+{{apiPackage}}_{{classname}}_{{name}}2str( E_{{apiPackage}}_{{classVarName}}_{{nameInSnakeCase}} e_{{name}} )
+{
+   return {{apiPackage}}_{{classname}}_{{name}}_desc_arr[ e_{{name}} ];
+} /* end of {{apiPackage}}_{{classname}}_{{name}}2str() */
+
+E_{{apiPackage}}_{{classVarName}}_{{nameInSnakeCase}}
+str2{{apiPackage}}_{{classname}}_{{name}}( const char *str_{{name}} )
+{
+   size_t i;
+   size_t {{apiPackage}}_{{classname}}_{{name}}_desc_arr_sz = sizeof( {{apiPackage}}_{{classname}}_{{name}}_desc_arr ) / sizeof( {{apiPackage}}_{{classname}}_{{name}}_desc_arr[ 0 ] );
+
+   for( i = 0; i < {{apiPackage}}_{{classname}}_{{name}}_desc_arr_sz; ++i )
+   {
+      /**
+       * If we found exact string in {{classname}}_{{name}}_desc_arr then we can return it's offset as
+       * an E_{{apiPackage}}_{{classname}}_{{nameInSnakeCase}}
+       */
+      if( strcmp( str_{{name}}, {{apiPackage}}_{{classname}}_{{name}}_desc_arr[ i ] ) == 0 )
+         return i;
+   }
+
+   return {{apiPackage}}_{{classVarName}}_{{nameInSnakeCase}}_NULL;
+} /* end of str2{{apiPackage}}_{{classname}}_{{name}}() */
+    {{/isEnum}}
+    {{/isModel}}
+    {{/items}}
+    {{/isContainer}}
+    {{/vars}}
+
+{{apiPackage}}_{{classname}}_ENT *
+{{apiPackage}}_{{classname}}_create( {{#vars}}
+                      {{^isContainer}}
+                      {{^isPrimitiveType}}
+                      {{#isModel}}
+                      {{#isEnum}}
+                      E_{{apiPackage}}_{{classVarName}}_{{nameInSnakeCase}} e_{{name}}{{^-last}},{{/-last}}
+                      {{/isEnum}}
+                      {{^isEnum}}
+                      {{apiPackage}}_{{datatype}}_ENT *{{name}}{{^-last}},{{/-last}}
+                      {{/isEnum}}
+                      {{/isModel}}
+                      {{^isModel}}
+                      {{^isFreeFormObject}}
+                      E_{{apiPackage}}_{{classVarName}}_{{nameInSnakeCase}} e_{{name}}{{^-last}},{{/-last}}
+                      {{/isFreeFormObject}}
+                      {{/isModel}}
+                      {{#isFreeFormObject}}
+                      {{apiPackage}}_{{datatype}}_ENT *{{name}}{{^-last}},{{/-last}}
+                      {{/isFreeFormObject}}
+                      {{/isPrimitiveType}}
+                      {{#isPrimitiveType}}
+                      {{#isNumeric}}
+                      {{datatype}} dbl_{{name}},
+                      int32_t prc_{{name}}{{^-last}},{{/-last}}
+                      {{/isNumeric}}
+                      {{#isBoolean}}
+                      {{datatype}} {{name}}{{^-last}},{{/-last}}
+                      {{/isBoolean}}
+                      {{#isEnum}}
+                      {{#isString}}
+                      E_{{apiPackage}}_{{classVarName}}_{{nameInSnakeCase}} e_{{name}}{{^-last}},{{/-last}}
+                      {{/isString}}
+                      {{/isEnum}}
+                      {{^isEnum}}
+                      {{#isString}}
+                      {{#isUri}}
+                      {{datatype}} *{{name}}{{^-last}},{{/-last}}
+                      {{/isUri}}
+                      {{#isUuid}}
+                      const {{datatype}} {{name}}{{^-last}},{{/-last}}
+                      {{/isUuid}}
+                      {{#isEmail}}
+                      const {{datatype}} *{{name}}{{^-last}},{{/-last}}
+                      {{/isEmail}}
+                      {{^isUri}}
+                      {{^isUuid}}
+                      {{^isEmail}}
+                      const {{datatype}} *{{name}}{{^-last}},{{/-last}}
+                      {{/isEmail}}
+                      {{/isUuid}}
+                      {{/isUri}}
+                      {{/isString}}
+                      {{/isEnum}}
+                      {{#isByteArray}}
+                      {{datatype}} *{{name}}{{^-last}},{{/-last}}
+                      {{/isByteArray}}
+                      {{#isBinary}}
+                      {{datatype}} {{name}}{{^-last}},{{/-last}}
+                      {{/isBinary}}
+                      {{#isDate}}
+                      const {{datatype}} *{{name}}{{^-last}},{{/-last}}
+                      {{/isDate}}
+                      {{#isDateTime}}
+                      const {{datatype}} *{{name}}{{^-last}},{{/-last}}
+                      {{/isDateTime}}
+                      {{#isModel}}
+                      {{#isAnyType}}
+                      const char *{{name}}{{^-last}},{{/-last}}
+                      {{/isAnyType}}
+                      {{/isModel}}
+                      {{/isPrimitiveType}}
+                      {{/isContainer}}
+                      {{#isContainer}}
+                      {{#isArray}}
+                      {{#isPrimitiveType}}
+                      {{classVarName}}_{{nameInSnakeCase}}_LIST *{{name}}{{^-last}},{{/-last}}
+                      {{/isPrimitiveType}}
+                      {{^isPrimitiveType}}
+                      {{complexType}}_LIST *{{name}}{{^-last}},{{/-last}}
+                      {{/isPrimitiveType}}
+                      {{/isArray}}
+                      {{#isMap}}
+                      {{complexType}}_LIST *{{name}}{{^-last}},{{/-last}}
+                      {{/isMap}}
+                      {{/isContainer}}
+                      {{/vars}} )
+{
+   {{apiPackage}}_{{classname}}_ENT *result = malloc( sizeof( {{apiPackage}}_{{classname}}_ENT ) );
+   if( result != NULL )
+   {
+      {{#vars}}
+      {{^isContainer}}
+      {{#isEnum}}
+      result->e_{{name}} = e_{{{name}}}; /* Enum */
+      {{/isEnum}}
+      {{^isEnum}}
+      {{#isUri}}
+      result->{{name}} = {{name}}; /* URI */
+      {{/isUri}}
+      {{#isUuid}}
+      uuid_copy( result->{{name}}, {{name}} ); /* UUID */
+      {{/isUuid}}
+      {{#isDate}}
+      result->ind_{{name}} = ( {{name}} != NULL ) ? 1 : 0;
+      if( result->ind_{{name}} )
+         result->tm_{{name}} = *{{name}};
+      {{/isDate}}
+      {{#isDateTime}}
+      result->ind_{{name}} = ( {{name}} != NULL ) ? 1 : 0;
+      if( result->ind_{{name}} )
+         result->tm_{{name}} = *{{name}};
+      {{/isDateTime}}
+      {{^isUri}}
+      {{^isUuid}}
+      {{^isDate}}
+      {{^isDateTime}}
+      {{#isString}}
+      if( {{{name}}} != NULL )
+         result->{{name}} = strdup( {{{name}}} );
+      else
+         result->{{name}} = NULL;
+      {{/isString}}
+      {{^isString}}
+      {{#isNumeric}}
+      if( prc_{{name}} < 0 )
+      {
+         result->dbl_{{name}} = 0.0;
+         result->prc_{{name}} = 0;
+         result->ind_{{name}} = 0;
+      }
+      else
+      {
+         result->dbl_{{name}} = dbl_{{name}};
+         result->prc_{{name}} = prc_{{name}};
+         result->ind_{{name}} = 1;
+      }
+      {{/isNumeric}}
+      {{^isNumeric}}
+      {{#isAnyType}}
+      if( {{{name}}} != NULL )
+         result->{{name}} = strdup( {{{name}}} ); /* AnyType */
+      else
+         result->{{name}} = NULL;
+      {{/isAnyType}}
+      {{^isAnyType}}
+      result->{{{name}}} = {{{name}}}; /* Others */
+      {{/isAnyType}}
+      {{/isNumeric}}
+      {{/isString}}
+      {{/isDateTime}}
+      {{/isDate}}
+      {{/isUuid}}
+      {{/isUri}}
+      {{/isEnum}}
+      {{/isContainer}}
+      {{#isContainer}}
+      {{#isArray}}
+      {{#isPrimitiveType}}
+      LIST_INIT( &result->{{name}} );
+      if( {{{name}}} != NULL )
+         LIST_CONCAT( &result->{{name}}, {{{name}}}, {{classVarName}}_{{nameInSnakeCase}}_ent, llink ); /* primitive container */
+      {{/isPrimitiveType}}
+      {{^isPrimitiveType}}
+      LIST_INIT( &result->{{name}} );
+      if( {{{name}}} != NULL )
+         LIST_CONCAT( &result->{{name}}, {{{name}}}, {{complexType}}_ent, llink ); /* nonprimitive container */
+      {{/isPrimitiveType}}
+      {{/isArray}}
+      {{#isMap}}
+      result->{{name}}_map = {{{name}}}; /* map */
+      {{/isMap}}
+      {{/isContainer}}
+      {{/vars}}
+   }
+
+   return result;
+} /* end of {{apiPackage}}_{{classname}}_create() */
+
+void
+{{apiPackage}}_{{classname}}_free( {{apiPackage}}_{{classname}}_ENT **{{classname}}_ptr_ptr )
+{
+   {{apiPackage}}_{{classname}}_ENT *{{classname}}_ptr = *{{classname}}_ptr_ptr;
+
+   if( NULL == {{classname}}_ptr )
+      return;
+
+   {{#vars}}
+   {{^isContainer}}
+   {{^isPrimitiveType}}
+   {{#isModel}}
+   {{^isEnum}}
+   if( {{{classname}}}_ptr->{{{name}}} != NULL )
+   {
+      {{apiPackage}}_{{{complexType}}}_free( &{{{classname}}}_ptr->{{{name}}} );
+   }
+   {{/isEnum}}
+   {{/isModel}}
+   {{^isModel}}
+   {{^isFreeFormObject}}
+   {{{classname}}}_ptr->e_{{{name}}} = {{apiPackage}}_{{classVarName}}_{{nameInSnakeCase}}_NULL;
+   {{/isFreeFormObject}}
+   {{/isModel}}
+   {{#isFreeFormObject}}
+   if( {{{classname}}}_ptr->{{{name}}} != NULL )
+   {
+      object_free( &{{{classname}}}_ptr->{{{name}}} );
+   }
+   {{/isFreeFormObject}}
+   {{/isPrimitiveType}}
+   {{#isPrimitiveType}}
+   {{^isEnum}}
+   {{#isString}}
+   {{#isUuid}}
+   uuid_clear( {{{classname}}}_ptr->{{{name}}} );
+   {{/isUuid}}
+   {{^isUuid}}
+   {{#isEmail}}
+   if( {{{classname}}}_ptr->{{{name}}} != NULL )
+   {
+      free( {{{classname}}}_ptr->{{{name}}} );
+      {{classname}}_ptr->{{name}} = NULL;
+   }
+   {{/isEmail}}
+   {{^isEmail}}
+   if( {{{classname}}}_ptr->{{{name}}} != NULL )
+   {
+      free( {{{classname}}}_ptr->{{{name}}} );
+      {{classname}}_ptr->{{name}} = NULL;
+   }
+   {{/isEmail}}
+   {{/isUuid}}
+   {{/isString}}
+   {{/isEnum}}
+   {{#isByteArray}}
+   if( {{{classname}}}_ptr->{{{name}}} != NULL )
+   {
+      free( {{{classname}}}_ptr->{{{name}}} );
+      {{classname}}_ptr->{{name}} = NULL;
+   }
+   {{/isByteArray}}
+   {{#isBinary}}
+   if( {{{classname}}}_ptr->{{{name}}} != NULL )
+   {
+      free( {{{classname}}}_ptr->{{{name}}}->data );
+      {{classname}}_ptr->{{name}} = NULL;
+   }
+   {{/isBinary}}
+   {{#isDate}}
+   {{/isDate}}
+   {{#isDateTime}}
+   {{/isDateTime}}
+   {{#isUri}}
+   if( {{classname}}_ptr->{{name}} != NULL )
+   {
+      evhttp_uri_free( {{classname}}_ptr->{{name}} );
+      {{classname}}_ptr->{{name}} = NULL;
+   }
+   {{/isUri}}
+   {{#isAnyType}}
+   if( {{{classname}}}_ptr->{{{name}}} != NULL )
+   {
+      free( {{{classname}}}_ptr->{{{name}}} );
+      {{classname}}_ptr->{{name}} = NULL;
+   }
+   {{/isAnyType}}
+   {{/isPrimitiveType}}
+   {{/isContainer}}
+   {{#isContainer}}
+   {{#isArray}}
+   {{#isPrimitiveType}}
+   if( !LIST_EMPTY( &{{{classname}}}_ptr->{{{name}}} ) )
+   {
+      /* Primitive type */
+      {{apiPackage}}_{{classVarName}}_{{nameInSnakeCase}}_ENT *cur_entry;
+      {{apiPackage}}_{{classVarName}}_{{nameInSnakeCase}}_ENT *temp_entry;
+
+      LIST_FOREACH_SAFE( cur_entry, &{{classname}}_ptr->{{name}}, llink, temp_entry )
+      {
+         free( cur_entry );
+         cur_entry = NULL;
+      }
+
+      LIST_INIT( &{{classname}}_ptr->{{name}} );
+   }
+   {{/isPrimitiveType}}
+   {{^isPrimitiveType}}
+   if( !LIST_EMPTY( &{{{classname}}}_ptr->{{{name}}} ) )
+   {
+      /* Complex type */
+      {{apiPackage}}_{{complexType}}_ENT *cur_entry;
+      {{apiPackage}}_{{complexType}}_ENT *temp_entry;
+
+      LIST_FOREACH_SAFE( cur_entry, &{{classname}}_ptr->{{name}}, llink, temp_entry )
+      {
+         {{apiPackage}}_{{complexType}}_free( &cur_entry );
+      }
+
+      LIST_INIT( &{{classname}}_ptr->{{name}} );
+   }
+   {{/isPrimitiveType}}
+   {{/isArray}}
+   {{#isMap}}
+   if( !LIST_EMPTY( &{{{classname}}}_ptr->{{{name}}}_map ) )
+   {
+      {{apiPackage}}_{{datatype}}_ENT *cur_entry;
+      {{apiPackage}}_{{datatype}}_ENT *temp_entry;
+
+      LIST_FOREACH_SAFE( cur_entry, &{{classname}}_ptr->{{name}}, llink, tmp_entry )
+      {
+         free( cur_entry->key );
+         cur_entry->key = NULL;
+
+         free( cur_entry->value );
+         cur_entry->value == NULL;
+
+         LIST_REMOVE( cur_entry, llink );
+         free( cur_entry );
+         cur_entry = NULL;
+      }
+      LIST_INIT( &{{classname}}_ptr->{{name}} );
+   }
+   {{/isMap}}
+   {{/isContainer}}
+   {{/vars}}
+   free( {{classname}}_ptr );
+   *{{classname}}_ptr_ptr = NULL;
+} /* end of {{apiPackage}}_{{classname}}_free() */
+
+json_t *
+serialize_{{apiPackage}}_{{classname}}2json( const {{apiPackage}}_{{classname}}_ENT *{{classname}} )
+{
+   {{#vars}}
+   json_t *j_{{{name}}} = NULL;
+   {{/vars}}
+
+   json_t *result = json_object();
+
+   if( NULL == result )
+      goto fail_null;
+
+   {{#vars}}
+   /* Serialize {{openApiType}} {{baseName}} to {{{datatype}}} {{name}} */
+   {{#required}}
+   {{^isContainer}}
+   {{^isPrimitiveType}}
+   {{#isModel}}
+   {{#isEnum}}
+   if( {{apiPackage}}_{{classVarName}}_{{nameInSnakeCase}}_NULL == {{{classname}}}->e_{{name}} ) /* enum model */
+   {{/isEnum}}
+   {{/isModel}}
+   {{^isModel}}
+   {{^isFreeFormObject}}
+   if( {{apiPackage}}_{{classVarName}}_{{nameInSnakeCase}}_NULL == {{{classname}}}->e_{{name}} ) /* custom */
+   {{/isFreeFormObject}}
+   {{/isModel}}
+   {{#isFreeFormObject}}
+   if( NULL == {{{classname}}}->{{name}} ) /* object */
+   {{/isFreeFormObject}}
+   {{/isPrimitiveType}}
+   {{#isPrimitiveType}}
+   {{#isNumeric}}
+   if( 0 == {{{classname}}}->ind_{{name}} ) /* numeric value */
+   {{/isNumeric}}
+   {{#isBoolean}}
+   if( -1 == {{{classname}}}->{{name}} ) /* boolean */
+   {{/isBoolean}}
+   {{#isEnum}}
+   {{#isString}}
+   if( {{apiPackage}}_{{classVarName}}_{{nameInSnakeCase}}_NULL == {{{classname}}}->e_{{name}} ) /* enum */
+   {{/isString}}
+   {{/isEnum}}
+   {{^isEnum}}
+   {{#isString}}
+   {{#isUuid}}
+   if( uuid_is_null( {{{classname}}}->{{name}} ) ) /* UUID */
+   {{/isUuid}}
+   {{^isUuid}}
+   {{#isEmail}}
+   if( NULL == {{{classname}}}->{{name}} ) /* email */
+   {{/isEmail}}
+   {{^isEmail}}
+   if( NULL == {{{classname}}}->{{name}} ) /* string */
+   {{/isEmail}}
+   {{/isUuid}}
+   {{/isString}}
+   {{/isEnum}}
+   {{#isByteArray}}
+   if( NULL == {{{classname}}}->{{name}} ) /* ByteArray */
+   {{/isByteArray}}
+   {{#isBinary}}
+   if( NULL == {{{classname}}}->{{name}} ) /* binary */
+   {{/isBinary}}
+   {{#isDate}}
+   if( 0 == {{{classname}}}->ind_{{name}} ) /* date */
+   {{/isDate}}
+   {{#isDateTime}}
+   if( 0 == {{{classname}}}->ind_{{name}} ) /* date time */
+   {{/isDateTime}}
+   {{/isPrimitiveType}}
+   {{#isModel}}
+   if( NULL == {{{classname}}}->{{name}} ) /* AnyType or Others */
+   {{/isModel}}
+   {{/isContainer}}
+   {{#isContainer}}
+   {{#isArray}}
+   {{#isPrimitiveType}}
+   if( LIST_EMPTY( &{{{classname}}}->{{name}} ) ) /* primitive container */
+   {{/isPrimitiveType}}
+   {{^isPrimitiveType}}
+   if( LIST_EMPTY( &{{{classname}}}->{{name}} ) ) /* nonprimitive container */
+   {{/isPrimitiveType}}
+   {{/isArray}}
+   {{#isMap}}
+   if( NULL == {{{classname}}}->{{name}}_map ) /* map */
+   {{/isMap}}
+   {{/isContainer}}
+   {
+      goto fail; /* {{{classname}}}->e_{{{name}}} is empty when it should not */
+   }
+   {{/required}}
+   {{^required}}
+   {{#isEnum}}
+   if( {{{classname}}}->e_{{{name}}} != {{apiPackage}}_{{classVarName}}_{{nameInSnakeCase}}_NULL )
+   {
+   {{/isEnum}}
+   {{^isEnum}}
+   {{^isContainer}}
+   {{#isNumeric}}
+   if( {{{classname}}}->ind_{{{name}}} != 0 )
+   {{/isNumeric}}
+   {{#isString}}
+   {{#isUuid}}
+   if( !uuid_is_null( {{{classname}}}->{{{name}}} ) )
+   {{/isUuid}}
+   {{#isEmail}}
+   if( {{{classname}}}->{{{name}}} != NULL )
+   {{/isEmail}}
+   {{^isUri}}
+   {{^isUuid}}
+   {{^isEmail}}
+   if( {{{classname}}}->{{{name}}} != NULL )
+   {{/isEmail}}
+   {{/isUuid}}
+   {{/isUri}}
+   {{/isString}}
+   {{/isContainer}}
+   {{#isContainer}}
+   if( !LIST_EMPTY( &{{{classname}}}->{{{name}}} ) )
+   {{/isContainer}}
+   {
+   {{/isEnum}}
+   {{/required}}
+      {{^isContainer}}
+      {{#isPrimitiveType}}
+      {{#isNumeric}}
+      j_{{{name}}} = json_real_with_scale( {{{classname}}}->dbl_{{{name}}}, {{{classname}}}->prc_{{{name}}} );
+      if( json_object_set_new( result, "{{{baseName}}}", j_{{{name}}} ) )
+      {
+         goto fail; /* Numeric */
+      }
+      {{/isNumeric}}
+      {{#isBoolean}}
+      j_{{{name}}} = json_boolean( {{{classname}}}->{{{name}}} );
+      if( json_object_set_new( result, "{{{baseName}}}", j_{{{name}}} ) )
+      {
+         goto fail; /* Bool */
+      }
+      {{/isBoolean}}
+      {{#isEnum}}
+      {{#isString}}
+      j_{{{name}}} = json_string( {{apiPackage}}_{{classname}}_{{{name}}}2str( {{{classname}}}->e_{{{name}}} ) );
+      if( json_object_set_new( result, "{{{baseName}}}", j_{{{name}}} ) )
+      {
+         goto fail; /* Enum */
+      }
+      {{/isString}}
+      {{/isEnum}}
+      {{^isEnum}}
+      {{#isString}}
+      {{#isUuid}}
+      {
+         char str_{{{name}}}[ UUID_SZ + 1 ] = { 0 };
+         uuid_unparse( {{{classname}}}->{{{name}}}, str_{{{name}}} );
+         j_{{{name}}} = json_string( str_{{{name}}} );
+         if( json_object_set_new( result, "{{{baseName}}}", j_{{{name}}} ) )
+         {
+            goto fail; /* uuid */
+         }
+      }
+      {{/isUuid}}
+      {{#isEmail}}
+      j_{{{name}}} = json_string( {{{classname}}}->{{{name}}} );
+      if( json_object_set_new( result, "{{{baseName}}}", j_{{{name}}} ) )
+      {
+         goto fail; /* Email */
+      }
+      {{/isEmail}}
+      {{^isUri}}
+      {{^isUuid}}
+      {{^isEmail}}
+      j_{{{name}}} = json_string( {{{classname}}}->{{{name}}} );
+      if( json_object_set_new( result, "{{{baseName}}}", j_{{{name}}} ) )
+      {
+         goto fail; /* String */
+      }
+      {{/isEmail}}
+      {{/isUuid}}
+      {{/isUri}}
+      {{/isString}}
+      {{/isEnum}}
+      {{#isByteArray}}
+      j_{{{name}}} = json_string( {{{classname}}}->{{{name}}} );
+      if( json_object_set_new( result, "{{{baseName}}}", j_{{{name}}} ) )
+      {
+         goto fail; /* ByteArray */
+      }
+      {{/isByteArray}}
+      {{#isBinary}}
+      char* b64_{{{name}}} = base64encode( {{{classname}}}->{{{name}}}->data, {{{classname}}}->{{{name}}}->len );
+      j_{{{name}}} = json_string( b64_{{{name}}} );
+      if( json_object_set_new( result, "{{{baseName}}}", j_{{{name}}} ) )
+      {
+         goto fail; /* Binary */
+      }
+      free( b64_str_{{{name}}} );
+      {{/isBinary}}
+      {{#isDate}}
+      if( {{{classname}}}->ind_{{{name}}} != 0 )
+      {
+         char str_{{{name}}}[ API_DATE_SZ + 1 ] = { 0 };
+         j_{{{name}}} = json_string( {{apiPackage}}_date2str( str_{{{name}}}, sizeof( str_{{{name}}} ), &{{{classname}}}->tm_{{{name}}} ) );
+         if( json_object_set_new( result, "{{{baseName}}}", j_{{{name}}} ) )
+         {
+            goto fail; /* Date */
+         }
+      }
+      {{/isDate}}
+      {{#isDateTime}}
+      if( {{{classname}}}->ind_{{{name}}} != 0 )
+      {
+         char str_{{{name}}}[ API_DATETIME_SZ + 1 ] = { 0 };
+         j_{{{name}}} = json_string( {{apiPackage}}_datetime2str( str_{{{name}}}, sizeof( str_{{{name}}} ), &{{{classname}}}->tm_{{{name}}} ) );
+         if( json_object_set_new( result, "{{{baseName}}}", j_{{{name}}} ) )
+         {
+            goto fail; /* Date-Time */
+         }
+      }
+      {{/isDateTime}}
+      {{#isUri}}
+      if( {{{classname}}}->{{{name}}} != NULL )
+      {
+         char str_{{{name}}}[ 1024 ] = { 0 }; /* Temporary buffer to store URI as a whole string */
+         j_{{{name}}} = json_string( evhttp_uri_join( {{{classname}}}->{{{name}}}, str_{{{name}}}, sizeof( str_{{{name}}} ) ) );
+         if( json_object_set_new( result, "{{{baseName}}}", j_{{{name}}} ) )
+         {
+            goto fail; /* URI */
+         }
+      }
+      {{/isUri}}
+      {{#isModel}}
+      {{#isAnyType}}
+      j_{{{name}}} = json_string( {{{classname}}}->{{{name}}} );
+      if( json_object_set_new( result, "{{{baseName}}}", j_{{{name}}} ) )
+      {
+         goto fail; /* AnyType */
+      }
+      {{/isAnyType}}
+      {{/isModel}}
+      {{/isPrimitiveType}}
+      {{^isPrimitiveType}}
+      {{#isModel}}
+      {{#isEnum}}
+      j_{{{name}}} = serialize_{{apiPackage}}_{{datatypeWithEnum}}2json( {{{classname}}}->{{{name}}} );
+      if( NULL == j_{{{name}}} )
+      {
+         goto fail; /* enum */
+      }
+      json_object_set_new( item, "{{{baseName}}}", j_{{{name}}} );
+      {{/isEnum}}
+      {{^isEnum}}
+      j_{{{name}}} = serialize_{{apiPackage}}_{{complexType}}{{#isFreeFormObject}}object{{/isFreeFormObject}}2json( {{{classname}}}->{{{name}}} );
+      if( NULL == j_{{{name}}} )
+      {
+         goto fail; /* model */
+      }
+      json_object_set_new( result, "{{{baseName}}}", j_{{{name}}} );
+      {{/isEnum}}
+      {{/isModel}}
+      {{^isModel}}
+      {{^isFreeFormObject}}
+      j_{{{name}}} = json_string( {{apiPackage}}_{{classname}}_{{name}}2str( {{{classname}}}->e_{{{name}}} ) );
+      if( NULL == j_{{{name}}} )
+      {
+         goto fail; /* custom */
+      }
+      json_object_set_new( result, "{{{baseName}}}", j_{{{name}}} );
+      {{/isFreeFormObject}}
+      {{/isModel}}
+      {{#isFreeFormObject}}
+      j_{{{name}}} = object2json( {{{classname}}}->{{{name}}} );
+      if( NULL == j_{{{name}}} )
+      {
+         goto fail; /* model */
+      }
+      json_object_set_new( result, "{{{baseName}}}", json_string( {{{name}}}_object ) );
+      {{/isFreeFormObject}}
+      {{/isPrimitiveType}}
+      {{/isContainer}}
+      {{#isContainer}}
+      {{#isArray}}
+      {{#isPrimitiveType}}
+      j_{{{name}}} = json_array();
+      if( NULL == j_{{{name}}} )
+      {
+         goto fail; /* primitive container */
+      }
+
+      {{apiPackage}}_{{classVarName}}_{{nameInSnakeCase}}_ENT *{{{name}}}_item;
+      json_t                                   *j_{{{name}}}_item;
+      LIST_FOREACH( {{{name}}}_item, &{{classname}}->{{{name}}}, llink )
+      {
+         {{#items}}
+         {{#isString}}
+         j_{{{name}}}_item = json_string( {{apiPackage}}_{{classFilename}}_{{name}}2str( {{{name}}}_item->value ) );
+         {{/isString}}
+         {{#isBoolean}}
+         j_{{{name}}}_item = json_boolean( {{apiPackage}}_{{classFilename}}_{{name}}2str( {{{name}}}_item->value ) );
+         {{/isBoolean}}
+         {{#isNumeric}}
+         j_{{{name}}}_item = json_integer( {{apiPackage}}_{{classFilename}}_{{name}}2str( {{{name}}}_item->value ) );
+         {{/isNumeric}}
+         {{/items}}
+         if( NULL == j_{{{name}}}_item )
+         {
+            goto fail; /* primitive container */
+         }
+
+         json_array_append_new( j_{{{name}}}, j_{{{name}}}_item );
+      }
+      json_object_set_new( result, "{{{baseName}}}", j_{{{name}}} );
+      {{/isPrimitiveType}}
+      {{^isPrimitiveType}}
+      j_{{{name}}} = json_array();
+      if( NULL == j_{{{name}}} )
+      {
+         goto fail; /* nonprimitive container */
+      }
+
+      if( !LIST_EMPTY( &{{{classname}}}->{{{name}}} ) )
+      {
+         {{apiPackage}}_{{complexType}}_ENT *{{{name}}}_ptr;
+         json_t *j_{{{name}}}_item;
+
+         LIST_FOREACH( {{{name}}}_ptr, &{{classname}}->{{{name}}}, llink )
+         {
+            j_{{{name}}}_item = serialize_{{apiPackage}}_{{complexType}}2json( {{#isEnum}}{{#items}}({{apiPackage}}_{{classVarName}}_{{enumName}}_e){{/items}}{{/isEnum}}{{{name}}}_ptr );
+            if( j_{{{name}}}_item == NULL )
+            {
+               json_decref( j_{{{name}}} );
+               goto fail;
+            }
+
+            if( json_array_append_new( j_{{{name}}}, j_{{{name}}}_item ) )
+            {
+               json_decref( j_{{{name}}}_item );
+               json_decref( j_{{{name}}} );
+               goto fail;
+            }
+         }
+      }
+
+      if( json_object_set_new( result, "{{{baseName}}}", j_{{{name}}} ) )
+      {
+         json_decref( j_{{{name}}} );
+         goto fail;
+      }
+      {{/isPrimitiveType}}
+      {{/isArray}}
+      {{#isMap}}
+      json_t *j_{{{name}}} = cJSON_AddObjectToObject( item, "{{{baseName}}}" );
+      if( NULL == j_{{{name}}} )
+      {
+          goto fail; /* primitive map container */
+      }
+      json_t *localMapObject = {{{name}}};
+      listEntry_t *{{{name}}}ListEntry;
+      if( {{{classname}}}->{{{name}}} )
+      {
+         list_ForEach( {{{name}}}ListEntry, {{{classname}}}->{{{name}}} )
+         {
+            keyValuePair_t *localKeyValue = (keyValuePair_t*){{{name}}}ListEntry->data;
+            {{#items}}
+            {{#isString}}
+            if(cJSON_AddStringToObject(localMapObject, localKeyValue->key, (char*)localKeyValue->value) == NULL)
+            {
+               goto fail;
+            }
+            {{/isString}}
+            {{#isByteArray}}
+            if(cJSON_AddStringToObject(localMapObject, localKeyValue->key, (char*)localKeyValue->value) == NULL)
+            {
+               goto fail;
+            }
+            {{/isByteArray}}
+            {{#isNumeric}}
+            if(cJSON_AddNumberToObject(localMapObject, localKeyValue->key, *(double *)localKeyValue->value) == NULL)
+            {
+               goto fail;
+            }
+            {{/isNumeric}}
+            {{#isBoolean}}
+            if(cJSON_AddBoolToObject(localMapObject, localKeyValue->key, *(cJSON_bool *)localKeyValue->value) == NULL)
+            {
+               goto fail;
+            }
+            {{/isBoolean}}
+            {{/items}}
+         }
+      }
+      {{/isMap}}
+      {{/isContainer}}
+      {{^required}}
+   }
+   {{/required}}
+
+   {{/vars}}
+   return result;
+
+fail:
+   json_decref( result );
+
+fail_null:
+   return NULL;
+} /* end of serialize_{{apiPackage}}_{{classname}}2json() */
+
+{{apiPackage}}_{{classname}}_ENT *
+deserialize_json2{{apiPackage}}_{{classname}}( const json_t *j_{{classname}}, OPENAPI_ERROR_CTX *err_ctx_{{classname}} )
+{
+   {{apiPackage}}_{{classname}}_ENT *new_{{classname}} = NULL;
+
+   {{#vars}}
+   /* Declare the local JSON variable to deserialize {{{datatype}}} {{{classname}}}->{{{name}}} */
+   json_t *j_{{{name}}} = NULL;
+   {{#isEnum}}
+   E_{{apiPackage}}_{{classVarName}}_{{nameInSnakeCase}} e_{{name}} = {{apiPackage}}_{{classVarName}}_{{nameInSnakeCase}}_NULL;
+   {{/isEnum}}
+   {{#isContainer}}
+   {{#isArray}}
+   {{#isPrimitiveType}}
+   {{classVarName}}_{{nameInSnakeCase}}_LIST {{name}}_list = LIST_HEAD_INITIALIZER( {{{name}}}_list );
+   {{/isPrimitiveType}}
+   {{^isPrimitiveType}}
+   {{complexType}}_LIST {{{name}}}_list = LIST_HEAD_INITIALIZER( {{{name}}}_list );
+   {{/isPrimitiveType}}
+   {{/isArray}}
+
+   {{#isMap}}
+   {{complexType}}_LIST {{{name}}}_list = LIST_HEAD_INITIALIZER( {{{name}}}_list );
+   {{/isMap}}
+
+   {{/isContainer}}
+   {{^isContainer}}
+   {{^isPrimitiveType}}
+   {{#isModel}}
+   {{^isEnum}}
+   /* Declare the local variable for {{{classname}}}->{{{name}}} */
+   {{apiPackage}}_{{^isFreeFormObject}}{{complexType}}{{/isFreeFormObject}}{{#isFreeFormObject}}object{{/isFreeFormObject}}_ENT *local_nonprim_{{name}} = NULL;
+
+   {{/isEnum}}
+   {{/isModel}}
+   {{/isPrimitiveType}}
+   {{#isPrimitiveType}}
+   {{#isNumeric}}
+   int32_t prc_{{{name}}} = -1;
+   double  dbl_{{{name}}} = 0.0;
+   {{/isNumeric}}
+   {{#isString}}
+   {{#isUri}}
+   struct evhttp_uri *uri_{{name}} = NULL;
+   {{/isUri}}
+   {{#isUuid}}
+   uuid_t uuid_{{{name}}} = { 0 };
+   {{/isUuid}}
+   {{/isString}}
+   {{#isDate}}
+   struct tm tm_{{{name}}} = { 0 };
+   {{/isDate}}
+   {{#isDateTime}}
+   struct tm tm_{{{name}}} = { 0 };
+   {{/isDateTime}}
+   {{/isPrimitiveType}}
+   {{/isContainer}}
+   {{/vars}}
+   {{#vars}}
+   /* {{{classname}}}->{{{name}}} */
+   j_{{{name}}} = json_object_get( j_{{classname}}, "{{{baseName}}}" );
+   {{#required}}
+   if( NULL == j_{{{name}}} )
+   {
+      SET_OPENAPI_ERROR_CTX( err_ctx_{{classname}}, "{{name}}", "Mandatory object {{name}} is absent in {{classname}}" );
+      goto end;
+   }
+
+   {{/required}}
+   {{^isContainer}}
+   {{#isPrimitiveType}}
+   {{#isNumeric}}
+   {{^required}}if( j_{{{name}}} != NULL ) { {{/required}}
+   if( !json_is_number( j_{{{name}}}) )
+   {
+      SET_OPENAPI_ERROR_CTX( err_ctx_{{classname}}, "{{name}}", "Should be numeric" );
+      goto end; /* Numeric */
+   }
+   prc_{{{name}}} = json_is_real( j_{{{name}}} ) ? json_real_scale( j_{{{name}}} ) : 0;
+   dbl_{{{name}}} = json_number_value( j_{{{name}}} );
+   {{#hasValidation}}
+   {
+      {{#maximum}}
+      if( dbl_{{{name}}} > {{{maximum}}} ) /* Check maximum value */
+      {
+         SET_OPENAPI_ERROR_CTX( err_ctx_{{classname}}, "{{name}}", "Invalid value: must be smaller than or equal to {{{maximum}}}" );
+         goto end;
+      }
+      {{/maximum}}
+      {{#minimum}}
+      if( dbl_{{{name}}} < {{{minimum}}} ) /* Check minimum value */
+      {
+         SET_OPENAPI_ERROR_CTX( err_ctx_{{classname}}, "{{name}}", "Invalid value: must be greater than or equal to {{{minimum}}}" );
+         goto end;
+      }
+      {{/minimum}}
+   }
+   {{/hasValidation}}
+   {{/isNumeric}}
+   {{#isBoolean}}
+   {{^required}}if( j_{{{name}}} != NULL ) { {{/required}}
+   if( !json_is_boolean( j_{{{name}}}) )
+   {
+      SET_OPENAPI_ERROR_CTX( err_ctx_{{classname}}, "{{name}}", "Should be boolean" );
+      goto end; /* Bool */
+   }
+   {{/isBoolean}}
+   {{#isEnum}}
+   {{#isString}}
+   {{^required}}if( j_{{{name}}} != NULL ) { {{/required}}
+   if( !json_is_string( j_{{{name}}}) )
+   {
+      SET_OPENAPI_ERROR_CTX( err_ctx_{{classname}}, "{{name}}", "Should be string" );
+      goto end; /* Enum */
+   }
+   e_{{name}} = str2{{apiPackage}}_{{classname}}_{{{name}}}( json_string_value( j_{{{name}}} ) );
+   {{/isString}}
+   {{/isEnum}}
+   {{^isEnum}}
+   {{#isString}}
+   {{^required}}if( j_{{{name}}} != NULL )
+   {
+   {{/required}}
+   if( !json_is_string( j_{{{name}}} ){{^required}} || json_is_null( j_{{{name}}}){{/required}} )
+   {
+      SET_OPENAPI_ERROR_CTX( err_ctx_{{classname}}, "{{name}}", "Should be not null string" );
+      goto end; /* String */
+   }
+   {{#hasChildren}}
+   {{/hasChildren}}
+   {{^hasChildren}}
+   {{#hasValidation}}
+   {
+      const char *str_{{{name}}} = json_string_value( j_{{{name}}} );
+      {{#maxLength}}
+      if( strlen( str_{{{name}}} ) > {{{maxLength}}} ) /* Check maximum length */
+      {
+         SET_OPENAPI_ERROR_CTX( err_ctx_{{classname}}, "{{name}}", "Invalid value: the string length must be smaller than or equal to {{{maxLength}}}" );
+         goto end;
+      }
+      {{/maxLength}}
+      {{#minLength}}
+      if( strlen( str_{{{name}}} ) < {{{minLength}}} ) /* Check minimum length */
+      {
+         SET_OPENAPI_ERROR_CTX( err_ctx_{{classname}}, "{{name}}", "Invalid value: the string length must be greater than or equal to {{{minLength}}}" );
+         goto end;
+      }
+      {{/minLength}}
+      {{#pattern}}
+      {
+         regex_t regex;
+         int     reg_rc;
+         if( regcomp( &regex, "{{{pattern}}}", REG_EXTENDED ) != 0 )
+         {
+            regfree( &regex );
+            SET_OPENAPI_ERROR_CTX( err_ctx_{{classname}}, "{{name}}", "Failed to compile a regular expression '{{{pattern}}}' to check {{name}} data" );
+            goto end;
+         }
+
+         reg_rc = regexec( &regex, str_{{{name}}}, 0, NULL, 0 );
+         regfree( &regex );
+
+         if( reg_rc != 0 )
+         {
+            SET_OPENAPI_ERROR_CTX( err_ctx_{{classname}}, "{{name}}", "Invalid value: must conform to the pattern '{{{pattern}}}'" );
+            goto end;
+         }
+      }
+      {{/pattern}}
+   }
+   {{/hasValidation}}
+   {{/hasChildren}}
+   {{#isUri}}
+   uri_{{{name}}} = evhttp_uri_parse( json_string_value( j_{{{name}}} ) );
+   if( NULL == uri_{{{name}}} )
+   {
+      SET_OPENAPI_ERROR_CTX( err_ctx_{{classname}}, "{{name}}", "Invalid value: must conform URI specification RFC 3986" );
+      goto end; /* URI */
+   }
+   {{/isUri}}
+   {{#isUuid}}
+   uuid_clear( uuid_{{{name}}} );
+   uuid_parse( json_string_value( j_{{{name}}} ), uuid_{{{name}}} );
+   if( uuid_is_null( uuid_{{{name}}} ) )
+   {
+      SET_OPENAPI_ERROR_CTX( err_ctx_{{classname}}, "{{name}}", "Invalid value: must conform UUID specification RFC 4122" );
+      goto end; /* uuid */
+   }
+   {{/isUuid}}
+   {{/isString}}
+   {{/isEnum}}
+   {{#isByteArray}}
+   {{^required}}if( j_{{{name}}} != NULL ) { {{/required}}
+   if( !json_is_string( j_{{{name}}}) )
+   {
+      SET_OPENAPI_ERROR_CTX( err_ctx_{{classname}}, "{{name}}", "Should be string" );
+      goto end; /* ByteArray */
+   }
+   {{/isByteArray}}
+   {{#isBinary}}
+   binary_t* decoded_str_{{{name}}} = malloc( sizeof(struct binary_t) );
+   {{^required}}if( j_{{{name}}} != NULL ) { {{/required}}
+   if( !json_is_string( j_{{{name}}}) )
+   {
+      SET_OPENAPI_ERROR_CTX( err_ctx_{{classname}}, "{{name}}", "Should be string" );
+      goto end; /* Binary */
+   }
+   decoded_str_{{{name}}}->data = base64decode( j_{{{name}}}->valuestring, strlen( j_{{{name}}}->valuestring ), &decoded_str_{{{name}}}->len );
+   if( !decoded_str_{{{name}}}->data )
+   {
+      SET_OPENAPI_ERROR_CTX( err_ctx_{{classname}}, "{{name}}", "Should be base64-encoded" );
+      goto end;
+   }
+   {{/isBinary}}
+   {{#isDate}}
+   {{^required}}if( j_{{{name}}} != NULL ) { {{/required}}
+   if( !json_is_string( j_{{{name}}} ) )
+   {
+      SET_OPENAPI_ERROR_CTX( err_ctx_{{classname}}, "{{name}}", "Should be string" );
+      goto end; /* Date */
+   }
+   if( {{apiPackage}}_str2date( &tm_{{{name}}}, json_string_value( j_{{{name}}} ) ) != 0 )
+   {
+      SET_OPENAPI_ERROR_CTX( err_ctx_{{classname}}, "{{name}}", "Invalid value: must conform timstamps specification RFC3339" );
+      goto end; /* Date parsing error */
+   }
+   {{/isDate}}
+   {{#isDateTime}}
+   {{^required}}if( j_{{{name}}} != NULL ) { {{/required}}
+   if( !json_is_string( j_{{{name}}} ) && !json_is_null( j_{{{name}}} ) )
+   {
+      SET_OPENAPI_ERROR_CTX( err_ctx_{{classname}}, "{{name}}", "Should not be null string" );
+      goto end; /* DateTime */
+   }
+   if( {{apiPackage}}_str2datetime( &tm_{{{name}}}, json_string_value( j_{{{name}}} ) ) != 0 )
+   {
+      SET_OPENAPI_ERROR_CTX( err_ctx_{{classname}}, "{{name}}", "Invalid value: must conform timstamps specification RFC3339" );
+      goto end; /* DateTime parsing error */
+   }
+   {{/isDateTime}}
+   {{#isModel}}
+   {{#isAnyType}}
+   {{^required}}if( j_{{{name}}} != NULL ) { {{/required}}
+   if( !json_is_string( j_{{{name}}} ) && !json_is_null( j_{{{name}}} ) )
+   {
+      SET_OPENAPI_ERROR_CTX( err_ctx_{{classname}}, "{{name}}", "Should not be null string" );
+      goto end; /* DateTime */
+   }
+   {{#hasValidation}}
+   {
+      const char *str_{{{name}}} = json_string_value( j_{{{name}}} );
+      {{#maxLength}}
+      if( strlen( str_{{{name}}} ) > {{{maxLength}}} ) /* Check maximum length */
+      {
+         SET_OPENAPI_ERROR_CTX( err_ctx_{{classname}}, "{{name}}", "Invalid value: the string length must be smaller than or equal to {{{maxLength}}}" );
+         goto end;
+      }
+      {{/maxLength}}
+      {{#minLength}}
+      if( strlen( str_{{{name}}} ) < {{{minLength}}} ) /* Check minimum length */
+      {
+         SET_OPENAPI_ERROR_CTX( err_ctx_{{classname}}, "{{name}}", "Invalid value: the string length must be greater than or equal to {{{minLength}}}" );
+         goto end;
+      }
+      {{/minLength}}
+      {{#pattern}}
+      {
+         regex_t regex;
+         int     reg_rc;
+         if( regcomp( &regex, "{{{pattern}}}", REG_EXTENDED ) != 0 )
+         {
+            regfree( &regex );
+            SET_OPENAPI_ERROR_CTX( err_ctx_{{classname}}, "{{name}}", "Failed to compile a regular expression '{{{pattern}}}' to check {{name}} data" );
+            goto end;
+         }
+
+         reg_rc = regexec( &regex, str_{{{name}}}, 0, NULL, 0 );
+         regfree( &regex );
+
+         if( reg_rc != 0 )
+         {
+            SET_OPENAPI_ERROR_CTX( err_ctx_{{classname}}, "{{name}}", "Invalid value: must conform to the pattern '{{{pattern}}}'" );
+            goto end;
+         }
+      }
+      {{/pattern}}
+   }
+   {{/hasValidation}}
+   {{/isAnyType}}
+   {{/isModel}}
+   {{/isPrimitiveType}}
+   {{^isPrimitiveType}}
+   {{#isModel}}
+   {{#isEnum}}
+   E_{{classFilename}}_{{datatypeWithEnum}}_{{nameInSnakeCase}} e_{{name}}; /* Non primimitive enum */
+   {{^required}}if( j_{{{name}}} != NULL ) { {{/required}}
+   e_{{{name}}} = deserialize_json2{{apiPackage}}_{{datatypeWithEnum}}( j_{{{name}}}, err_ctx_{{classname}} ); /* enum model */
+   {{/isEnum}}
+   {{^isEnum}}
+   {{^required}}if( j_{{{name}}} != NULL ) { {{/required}}
+   local_nonprim_{{{name}}} = deserialize_json2{{apiPackage}}_{{complexType}}{{#isFreeFormObject}}object{{/isFreeFormObject}}( j_{{{name}}}, err_ctx_{{classname}} ); /* Non primitive data type */
+   {{/isEnum}}
+   {{/isModel}}
+   {{^isModel}}
+   {{^isFreeFormObject}}
+   {{^required}}if( j_{{{name}}} != NULL && !json_is_null( j_{{{name}}} ) ) { {{/required}}
+   e_{{{name}}} = str2{{apiPackage}}_{{classname}}_{{name}}( json_string_value( j_{{{name}}} ) ); /* custom */
+   {{/isFreeFormObject}}
+   {{/isModel}}
+   {{#isFreeFormObject}}
+   object_t *{{name}}_local_object = NULL;
+   {{^required}}if( j_{{{name}}} != NULL ) { {{/required}}
+   {{{name}}}_local_object = object_parseFromJSON( j_{{{name}}} ); /* object */
+   {{/isFreeFormObject}}
+   {{/isPrimitiveType}}
+   {{/isContainer}}
+   {{#isContainer}}
+   {{#isArray}}
+   {{#isPrimitiveType}}
+   {{^required}}if( j_{{{name}}} != NULL ) { {{/required}}
+   if( !json_is_array( j_{{{name}}} ) )
+   {
+      SET_OPENAPI_ERROR_CTX( err_ctx_{{classname}}, "{{name}}", "Should be array" );
+      goto end; /* primitive container */
+   }
+   else
+   {
+      size_t i = 0; /* Index for enumerating elements of primitive container */
+      json_t *j_{{name}}_item = NULL;
+
+      json_array_foreach( j_{{name}}, i, j_{{name}}_item )
+      {
+         {{apiPackage}}_{{classVarName}}_{{nameInSnakeCase}}_ENT *new_{{name}} = NULL;
+
+         {{#items}}
+         {{#isString}}
+         if( json_is_string( j_{{{name}}}_item ) )
+         {
+            new_{{name}} = malloc( sizeof( {{apiPackage}}_{{classVarName}}_{{nameInSnakeCase}}_ENT ) );
+            new_{{name}}->value = str2{{apiPackage}}_{{classFilename}}_{{name}}( json_string_value( j_{{{name}}}_item ) );
+         }
+         else
+         {
+            SET_OPENAPI_ERROR_CTX( err_ctx_{{classname}}, "{{name}}", "Should be string" );
+            goto end;
+         }
+         {{/isString}}
+         {{#isNumeric}}
+         if( json_is_number( j_{{{name}}}_item ) )
+         {
+            new_{{name}} = malloc( sizeof( {{apiPackage}}_{{classVarName}}_{{nameInSnakeCase}}_ENT ) );
+            new_{{name}}->value = str2{{apiPackage}}_{{classFilename}}_{{name}}( json_number_value( j_{{{name}}}_item ) );
+         }
+         else
+         {
+            SET_OPENAPI_ERROR_CTX( err_ctx_{{classname}}, "{{name}}", "Should be numeric" );
+            goto end;
+         }
+         {{/isNumeric}}
+         {{#isBoolean}}
+         if( json_is_boolean( j_{{{name}}}_item) )
+         {
+         }
+         else
+         {
+            SET_OPENAPI_ERROR_CTX( err_ctx_{{classname}}, "{{name}}", "Should be boolean" );
+            goto end;
+         }
+         {{/isBoolean}}
+         {{/items}}
+
+         if( new_{{{name}}} != NULL )
+         {
+            LIST_INSERT_HEAD( &{{name}}_list, new_{{name}}, llink );
+         }
+         else
+         {
+            SET_OPENAPI_ERROR_CTX( err_ctx_{{classname}}, "{{name}}", "Should not be null" );
+            goto end;
+         }
+      }
+   }
+   {{/isPrimitiveType}}
+   {{^isPrimitiveType}}
+   {{^required}}if( j_{{{name}}} != NULL ) { {{/required}}
+   if( !json_is_array( j_{{{name}}}) )
+   {
+      SET_OPENAPI_ERROR_CTX( err_ctx_{{classname}}, "{{name}}", "Should be array" );
+      goto end; /* nonprimitive container */
+   }
+   else
+   {
+      size_t i = 0; /* Index for enumerating containers (lists, arrays, maps) */
+
+      json_t *j_{{{name}}}_item = NULL;
+
+      json_array_foreach( j_{{{name}}}, i, j_{{{name}}}_item )
+      {
+         {{#isEnum}}{{#items}}E_{{apiPackage}}_{{classFilename}}_{{datatypeWithEnum}} {{/items}}{{/isEnum}}{{^isEnum}}{{apiPackage}}_{{complexType}}_ENT *{{/isEnum}}{{{name}}}_item;
+
+         if( !json_is_object( j_{{{name}}}_item ) )
+         {
+            SET_OPENAPI_ERROR_CTX( err_ctx_{{classname}}, "{{name}}", "Should be object" );
+            goto end;
+         }
+         {{{name}}}_item = deserialize_json2{{apiPackage}}_{{complexType}}( j_{{{name}}}_item, err_ctx_{{classname}} );
+
+         if( {{{name}}}_item != NULL )
+         {
+            LIST_INSERT_HEAD( &{{{name}}}_list, {{#isEnum}}{{#items}}(void *){{/items}}{{/isEnum}}{{{name}}}_item, llink );
+         }
+         else
+         {
+            SET_OPENAPI_ERROR_CTX( err_ctx_{{classname}}, "{{name}}", "Should not be null" );
+            goto end;
+         }
+      }
+   }
+   {{/isPrimitiveType}}
+   {{/isArray}}
+   {{#isMap}}
+   {{^required}}if( j_{{{name}}} != NULL ) { {{/required}}
+   {{#isPrimitiveType}}
+   json_t *{{{name}}}_local_map = NULL;
+   if( !json_is_object( j_{{{name}}} ) && !json_is_null( j_{{{name}}} ) )
+   {
+      SET_OPENAPI_ERROR_CTX( err_ctx_{{classname}}, "{{name}}", "Should be not null object" );
+      goto end; /* primitive map container */
+   }
+
+   if( json_is_object( j_{{{name}}} ) )
+   {
+      keyValuePair_t *localMapKeyPair;
+      json_array_foreach( {{{name}}}_local_map, i, j_{{{name}}}_item )
+      {
+         json_t *localMapObject = {{{name}}}_local_map;
+         {{#items}}
+         {{#isString}}
+         if( !json_is_string( localMapObject ) )
+         {
+            SET_OPENAPI_ERROR_CTX( err_ctx_{{classname}}, "{{name}}", "Should be string" );
+            goto end;
+         }
+         localMapKeyPair = keyValuePair_create(strdup(localMapObject->string),strdup(localMapObject->valuestring));
+         {{/isString}}
+         {{#isByteArray}}
+         if( !json_is_string( localMapObject ) )
+         {
+            SET_OPENAPI_ERROR_CTX( err_ctx_{{classname}}, "{{name}}", "Should be string" );
+            goto end;
+         }
+         localMapKeyPair = keyValuePair_create(strdup(localMapObject->string),strdup(localMapObject->valuestring));
+         {{/isByteArray}}
+         {{#isBoolean}}
+         if(!cJSON_IsBool(localMapObject))
+         {
+            SET_OPENAPI_ERROR_CTX( err_ctx_{{classname}}, "{{name}}", "Should be boolean" );
+            goto end;
+         }
+         localMapKeyPair = keyValuePair_create(strdup(localMapObject->string), &localMapObject->valueint);
+         {{/isBoolean}}
+         {{#isNumeric}}
+         if(!cJSON_IsNumber(localMapObject))
+         {
+            SET_OPENAPI_ERROR_CTX( err_ctx_{{classname}}, "{{name}}", "Should be numeric" );
+            goto end;
+         }
+         localMapKeyPair = keyValuePair_create(strdup(localMapObject->string),&localMapObject->valuedouble );
+         {{/isNumeric}}
+         {{/items}}
+         list_addElement({{{name}}}List , localMapKeyPair);
+      }
+   }
+   {{/isPrimitiveType}}
+   {{^isPrimitiveType}}
+
+   /* The data type of the elements in {{{classname}}}->{{{name}}} is currently not supported. */
+
+   {{/isPrimitiveType}}
+   {{/isMap}}
+   {{/isContainer}}
+   {{^required}}
+   }
+   {{/required}}
+
+   {{/vars}}
+
+   new_{{classname}} = {{apiPackage}}_{{classname}}_create( {{#vars}}
+                                             {{^isContainer}}
+                                             {{^isPrimitiveType}}
+                                             {{#isModel}}
+                                             {{#isEnum}}
+                                             {{^required}}( j_{{{name}}} != NULL ) ? {{/required}}e_{{{name}}}{{^required}} : {{apiPackage}}_{{classVarName}}_NULL{{/required}}{{^-last}},{{/-last}}
+                                             {{/isEnum}}
+                                             {{^isEnum}}
+                                             {{^required}}( j_{{{name}}} != NULL ) ? {{/required}}local_nonprim_{{{name}}}{{^required}} : NULL{{/required}}{{^-last}},{{/-last}}
+                                             {{/isEnum}}
+                                             {{/isModel}}
+                                             {{^isModel}}
+                                             {{^isFreeFormObject}}
+                                             e_{{{name}}}{{^-last}},{{/-last}}
+                                             {{/isFreeFormObject}}
+                                             {{/isModel}}
+                                             {{#isEmail}}
+                                             {{^required}}( j_{{{name}}} != NULL ) ? {{/required}}json_string_value( j_{{{name}}} ){{^required}} : NULL{{/required}}{{^-last}},{{/-last}}
+                                             {{/isEmail}}
+                                             {{#isFreeFormObject}}
+                                             {{^required}}( j_{{{name}}} != NULL ) ? {{/required}}{{{name}}}_local_object{{^required}} : NULL{{/required}}{{^-last}},{{/-last}}
+                                             {{/isFreeFormObject}}
+                                             {{/isPrimitiveType}}
+                                             {{#isPrimitiveType}}
+                                             {{#isNumeric}}
+                                             dbl_{{{name}}}, prc_{{{name}}}{{^-last}},{{/-last}}
+                                             {{/isNumeric}}
+                                             {{#isBoolean}}
+                                             {{^required}}( j_{{{name}}} != NULL ) ? {{/required}}json_number_value( j_{{{name}}} ){{^required}} : 0{{/required}}{{^-last}},{{/-last}}
+                                             {{/isBoolean}}
+                                             {{#isEnum}}
+                                             {{#isString}}
+                                             {{^required}}( j_{{{name}}} != NULL ) ? {{/required}}e_{{name}}{{^required}} : {{apiPackage}}_{{classVarName}}_{{nameInSnakeCase}}_NULL{{/required}}{{^-last}},{{/-last}}
+                                             {{/isString}}
+                                             {{/isEnum}}
+                                             {{^isEnum}}
+                                             {{#isString}}
+                                             {{#isUri}}
+                                             uri_{{{name}}}{{^-last}},{{/-last}}
+                                             {{/isUri}}
+                                             {{#isUuid}}
+                                             uuid_{{{name}}}{{^-last}},{{/-last}}
+                                             {{/isUuid}}
+                                             {{^isUri}}
+                                             {{^isUuid}}
+                                             {{^required}}( j_{{{name}}} != NULL && !json_is_null( j_{{{name}}} ) ) ? {{/required}}json_string_value( j_{{{name}}} ){{^required}} : NULL{{/required}}{{^-last}},{{/-last}}
+                                             {{/isUuid}}
+                                             {{/isUri}}
+                                             {{/isString}}
+                                             {{/isEnum}}
+                                             {{#isByteArray}}
+                                             {{^required}}( j_{{{name}}} != NULL ) ? {{/required}}json_string_value( j_{{{name}}} ){{^required}} : NULL{{/required}}{{^-last}},{{/-last}}
+                                             {{/isByteArray}}
+                                             {{#isBinary}}
+                                             {{^required}}( j_{{{name}}} != NULL ) ? {{/required}}decoded_str_{{{name}}}{{^required}} : NULL{{/required}}{{^-last}},{{/-last}}
+                                             {{/isBinary}}
+                                             {{#isDate}}
+                                             {{^required}}( j_{{{name}}} != NULL && !json_is_null( j_{{{name}}} ) ) ? {{/required}} &tm_{{{name}}}{{^required}} : NULL{{/required}}{{^-last}},{{/-last}}
+                                             {{/isDate}}
+                                             {{#isDateTime}}
+                                             {{^required}}( j_{{{name}}} != NULL && !json_is_null( j_{{{name}}} ) ) ? {{/required}} &tm_{{{name}}}{{^required}} : NULL{{/required}}{{^-last}},{{/-last}}
+                                             {{/isDateTime}}
+                                             {{#isModel}}
+                                             {{#isAnyType}}
+                                             {{^required}}( j_{{{name}}} != NULL && !json_is_null( j_{{{name}}} ) ) ? {{/required}}json_string_value( j_{{{name}}} ){{^required}} : NULL{{/required}}{{^-last}},{{/-last}}
+                                             {{/isAnyType}}
+                                             {{/isModel}}
+                                             {{/isPrimitiveType}}
+                                             {{/isContainer}}
+                                             {{#isContainer}}
+                                             {{#isArray}}
+                                             {{#isPrimitiveType}}
+                                             {{^required}}( j_{{{name}}} != NULL ) ? {{/required}}&{{{name}}}_list{{^required}} : NULL{{/required}}{{^-last}},{{/-last}}
+                                             {{/isPrimitiveType}}
+                                             {{^isPrimitiveType}}
+                                             {{^required}}( j_{{{name}}} != NULL ) ? {{/required}}&{{{name}}}_list{{^required}} : NULL{{/required}}{{^-last}},{{/-last}}
+                                             {{/isPrimitiveType}}
+                                             {{/isArray}}
+                                             {{#isMap}}
+                                             {{^required}}( j_{{{name}}} != NULL ) ? {{/required}}&{{{name}}}_ist{{^required}} : NULL{{/required}}{{^-last}},{{/-last}}
+                                             {{/isMap}}
+                                             {{/isContainer}}
+                                             {{/vars}} );
+
+   return new_{{classname}};
+
+end:
+    {{#vars}}
+    {{^isContainer}}
+    {{^isPrimitiveType}}
+    {{#isModel}}
+    {{^isEnum}}
+    if( local_nonprim_{{{name}}} != NULL )
+    {
+       {{apiPackage}}_{{complexType}}_free( &local_nonprim_{{{name}}} );
+    }
+    {{/isEnum}}
+    {{/isModel}}
+    {{^isModel}}
+    {{^isFreeFormObject}}
+#if 0
+    if( local_nonprim_{{{name}}} != NULL )
+    {
+       {{apiPackage}}_{{complexType}}_free( &local_nonprim_{{{name}}} );
+    }
+#endif
+    {{/isFreeFormObject}}
+    {{/isModel}}
+    {{/isPrimitiveType}}
+    {{/isContainer}}
+    {{#isContainer}}
+    {{#isArray}}
+    {{#isPrimitiveType}}
+    if( !LIST_EMPTY( &{{{name}}}_list ) )
+    {
+       {{apiPackage}}_{{classVarName}}_{{nameInSnakeCase}}_ENT *cur_{{name}} = NULL;
+       {{apiPackage}}_{{classVarName}}_{{nameInSnakeCase}}_ENT *tmp_{{name}} = NULL;
+
+       LIST_FOREACH_SAFE( cur_{{name}}, &{{{name}}}_list, llink, tmp_{{name}} )
+       {
+          free( cur_{{name}} );
+       }
+
+       LIST_INIT( &{{{name}}}_list );
+    }
+    {{/isPrimitiveType}}
+    {{^isPrimitiveType}}
+    if( !LIST_EMPTY( &{{{name}}}_list ) )
+    {
+        {{apiPackage}}_{{complexType}}_ENT *cur_{{{name}}} = NULL;
+        {{apiPackage}}_{{complexType}}_ENT *tmp_{{{name}}} = NULL;
+
+        LIST_FOREACH_SAFE( cur_{{{name}}}, &{{{name}}}_list, llink, tmp_{{{name}}} )
+        {
+           {{apiPackage}}_{{complexType}}_free( &cur_{{{name}}} );
+        }
+
+        LIST_INIT( &{{{name}}}_list );
+    }
+    {{/isPrimitiveType}}
+    {{/isArray}}
+    {{#isMap}}
+    {{#isPrimitiveType}}
+    if( {{{name}}}List )
+    {
+        listEntry_t *listEntry = NULL;
+        list_ForEach(listEntry, {{{name}}}List) {
+            keyValuePair_t *localKeyValue = (keyValuePair_t*) listEntry->data;
+            free(localKeyValue->key);
+            localKeyValue->key = NULL;
+            {{#items}}
+            {{#isString}}
+            free(localKeyValue->value);
+            localKeyValue->value = NULL;
+            {{/isString}}
+            {{#isByteArray}}
+            free(localKeyValue->value);
+            localKeyValue->value = NULL;
+            {{/isByteArray}}
+            {{/items}}
+            keyValuePair_free(localKeyValue);
+            localKeyValue = NULL;
+        }
+        list_freeList({{{name}}}List);
+        {{{name}}}List = NULL;
+    }
+    {{/isPrimitiveType}}
+    {{^isPrimitiveType}}
+
+    /* The data type of the elements in {{{classname}}}->{{{name}}} is currently not supported. */
+
+    {{/isPrimitiveType}}
+    {{/isMap}}
+    {{/isContainer}}
+    {{/vars}}
+
+    return NULL;
+} /* end of deserialize_json2{{apiPackage}}_{{classname}}() */
+{{/isEnum}}
+{{/model}}
+{{/models}}

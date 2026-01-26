@@ -1,0 +1,295 @@
+{{#models}}{{#model}}/*
+ * {{classFilename}}.h
+ *
+ * {{description}}
+ */
+
+#ifndef __{{classname}}_h_STATIC_CHAR_ARMOR__
+#define __{{classname}}_h_STATIC_CHAR_ARMOR__
+
+#include <inttypes.h> /* int16_t, int32_t, int64_t */
+#include <time.h>     /* struct tm{} */
+
+#include "bsd_queue.h"
+#include "uuid.h"
+#include "jansson.h"
+#include "event2/http.h" /* struct evhttp_uri{} */
+
+#include "include/api_error.h"
+{{#imports}}
+#include "{{{.}}}.h"
+{{/imports}}
+
+{{#isEnum}}
+{{#allowableValues}}
+/* 1. Enum E_{{apiPackage}}_{{classVarName}} for {{name}} */
+
+typedef enum
+{
+   {{apiPackage}}_{{classVarName}}_NULL = 0{{#enumVars}},
+   {{apiPackage}}_{{classVarName}}_{{name}}{{/enumVars}}
+} E_{{apiPackage}}_{{classVarName}};
+{{/allowableValues}}
+
+const char* {{apiPackage}}_{{classFilename}}2str( E_{{apiPackage}}_{{classVarName}} e_{{classname}} );
+
+E_{{apiPackage}}_{{classVarName}} str2{{apiPackage}}_{{classFilename}}( const char* {{classname}} );
+
+json_t *serialize_{{apiPackage}}_{{classFilename}}2json( E_{{apiPackage}}_{{classVarName}} e_{{classname}} );
+
+E_{{apiPackage}}_{{classVarName}} deserialize_json2{{apiPackage}}_{{classFilename}}( const json_t *j_{{classname}}, OPENAPI_ERROR_CTX *err_ctx_{{classname}} );
+
+{{/isEnum}}
+{{^isEnum}}
+{{#vars}}
+{{^isContainer}}
+    {{^isModel}}
+    {{#isEnum}}
+/* 2. Enum E_{{apiPackage}}_{{classVarName}}_{{nameInSnakeCase}} for {{name}} */
+        {{#allowableValues}}
+typedef enum
+{
+   {{apiPackage}}_{{classVarName}}_{{nameInSnakeCase}}_NULL = 0{{#enumVars}},
+   {{apiPackage}}_{{classVarName}}_{{nameInSnakeCase}}_{{name}}{{/enumVars}}
+} E_{{apiPackage}}_{{classVarName}}_{{nameInSnakeCase}};
+        {{/allowableValues}}
+
+const char* {{apiPackage}}_{{classFilename}}_{{name}}2str( E_{{apiPackage}}_{{classVarName}}_{{nameInSnakeCase}} e_{{name}} );
+
+E_{{apiPackage}}_{{classVarName}}_{{nameInSnakeCase}} str2{{apiPackage}}_{{classFilename}}_{{name}}( const char* str_{{name}} );
+
+    {{/isEnum}}
+    {{/isModel}}
+    {{/isContainer}}
+    {{#isContainer}}
+    {{#items}}
+        {{^isModel}}
+        {{#isEnum}}
+/* 3. Enum {{classVarName}} for {{name}} */
+
+            {{#allowableValues}}
+typedef enum
+{
+   {{apiPackage}}_{{classVarName}}_{{nameInSnakeCase}}_NULL = 0{{#enumVars}},
+   {{apiPackage}}_{{classVarName}}_{{nameInSnakeCase}}_{{{value}}}{{/enumVars}}
+} E_{{apiPackage}}_{{classVarName}}_{{nameInSnakeCase}};
+            {{/allowableValues}}
+
+/* Declare list of {{apiPackage}}_{{classVarName}}_{{nameInSnakeCase}}_ENT */
+struct {{classVarName}}_{{nameInSnakeCase}}_ent
+{
+   LIST_ENTRY( {{classVarName}}_{{nameInSnakeCase}}_ent ) llink; /* double linked list */
+   E_{{apiPackage}}_{{classVarName}}_{{nameInSnakeCase}}  value;
+};
+typedef struct {{classVarName}}_{{nameInSnakeCase}}_ent {{apiPackage}}_{{classVarName}}_{{nameInSnakeCase}}_ENT;
+
+LIST_HEAD( {{classVarName}}_{{nameInSnakeCase}}_list, {{classVarName}}_{{nameInSnakeCase}}_ent );
+typedef struct {{classVarName}}_{{nameInSnakeCase}}_list {{classVarName}}_{{nameInSnakeCase}}_LIST;
+
+const char* {{apiPackage}}_{{classFilename}}_{{name}}2str( E_{{apiPackage}}_{{classVarName}}_{{nameInSnakeCase}} e_{{name}} );
+
+E_{{apiPackage}}_{{classVarName}}_{{nameInSnakeCase}} str2{{apiPackage}}_{{classFilename}}_{{name}}( const char* str_{{name}} );
+
+        {{/isEnum}}
+        {{/isModel}}
+        {{/items}}
+    {{/isContainer}}
+{{/vars}}
+
+
+struct {{classname}}_ent
+{
+   LIST_ENTRY( {{classname}}_ent ) llink; /* double linked list */
+   {{#vars}}
+   {{#description}}
+   /**
+    * {{{.}}}
+    */
+   {{/description}}
+   {{^isContainer}}
+   {{^isPrimitiveType}}
+   {{#isModel}}
+   {{#isEnum}}
+   E_{{apiPackage}}_{{classVarName}}_{{nameInSnakeCase}} e_{{name}}; /* enum model */
+   {{/isEnum}}
+   {{^isEnum}}
+   {{apiPackage}}_{{datatype}}_ENT *{{name}}; /* model */
+   {{/isEnum}}
+   {{/isModel}}
+   {{^isModel}}
+   {{^isFreeFormObject}}
+   E_{{apiPackage}}_{{classVarName}}_{{nameInSnakeCase}} e_{{name}}; /* custom */
+   {{/isFreeFormObject}}
+   {{/isModel}}
+   {{#isFreeFormObject}}
+   {{apiPackage}}_{{datatype}}_ENT *{{name}}; /* object */
+   {{/isFreeFormObject}}
+   {{/isPrimitiveType}}
+   {{#isPrimitiveType}}
+   {{#isNumeric}}
+   {{datatype}} dbl_{{name}}; /* numeric value */
+   uint64_t ind_{{name}}:1;   /* is value and precision set */
+   uint64_t prc_{{name}}:63;  /* numeric precision */
+   {{/isNumeric}}
+   {{#isBoolean}}
+   {{datatype}} {{name}};     /* boolean */
+   {{/isBoolean}}
+   {{#isEnum}}
+   {{#isString}}
+   E_{{apiPackage}}_{{classVarName}}_{{nameInSnakeCase}} e_{{name}}; /* enum */
+   {{/isString}}
+   {{/isEnum}}
+   {{^isEnum}}
+   {{#isString}}
+   {{#isUuid}}
+   {{datatype}} {{name}}; /* UUID */
+   {{/isUuid}}
+   {{^isUuid}}
+   {{#isEmail}}
+   {{datatype}} *{{name}}; /* email */
+   {{/isEmail}}
+   {{^isEmail}}
+   {{datatype}} *{{name}}; /* string */
+   {{/isEmail}}
+   {{/isUuid}}
+   {{/isString}}
+   {{/isEnum}}
+   {{#isByteArray}}
+   {{datatype}} *{{name}}; /* ByteArray */
+   {{/isByteArray}}
+   {{#isBinary}}
+   {{datatype}} {{name}}; /* binary */
+   {{/isBinary}}
+   {{#isDate}}
+   uint8_t ind_{{name}};
+   {{datatype}} tm_{{name}}; /* date */
+   {{/isDate}}
+   {{#isDateTime}}
+   uint8_t ind_{{name}};
+   {{datatype}} tm_{{name}}; /* date time */
+   {{/isDateTime}}
+   {{#isModel}}
+   {{#isAnyType}}
+   char *{{name}}; /* AnyType */
+   {{/isAnyType}}
+   {{/isModel}}
+   {{/isPrimitiveType}}
+   {{/isContainer}}
+   {{#isContainer}}
+   {{#isArray}}
+   {{#isPrimitiveType}}
+   {{classVarName}}_{{nameInSnakeCase}}_LIST {{name}}; /* primitive container */
+   {{/isPrimitiveType}}
+   {{^isPrimitiveType}}
+   {{complexType}}_LIST {{name}}; /* nonprimitive container */
+   {{/isPrimitiveType}}
+   {{/isArray}}
+   {{#isMap}}
+   {{complexType}}_LSU {{name}}_map; /* map */
+   {{/isMap}}
+   {{/isContainer}}
+   {{/vars}}
+};
+typedef struct {{classname}}_ent {{apiPackage}}_{{classname}}_ENT;
+
+/* Declare list of {{apiPackage}}_{{classname}}_ENT */
+LIST_HEAD( {{classname}}_list, {{classname}}_ent );
+typedef struct {{classname}}_list {{classname}}_LIST;
+
+{{apiPackage}}_{{classname}}_ENT *
+{{apiPackage}}_{{classname}}_create( {{#vars}}
+                                      {{^isContainer}}
+                                      {{^isPrimitiveType}}
+                                      {{#isModel}}
+                                      {{#isEnum}}
+                                      E_{{apiPackage}}_{{classVarName}}_{{nameInSnakeCase}} e_{{name}}{{^-last}},{{/-last}}
+                                      {{/isEnum}}
+                                      {{^isEnum}}
+                                      {{apiPackage}}_{{datatype}}_ENT *{{name}}{{^-last}},{{/-last}}
+                                      {{/isEnum}}
+                                      {{/isModel}}
+                                      {{^isModel}}
+                                      {{^isFreeFormObject}}
+                                      E_{{apiPackage}}_{{classVarName}}_{{nameInSnakeCase}} e_{{name}}{{^-last}},{{/-last}}
+                                      {{/isFreeFormObject}}
+                                      {{/isModel}}
+                                      {{#isFreeFormObject}}
+                                      {{apiPackage}}_{{datatype}}_ENT *{{name}}{{^-last}},{{/-last}}
+                                      {{/isFreeFormObject}}
+                                      {{/isPrimitiveType}}
+                                      {{#isPrimitiveType}}
+                                      {{#isNumeric}}
+                                      {{datatype}} dbl_{{name}},
+                                      int32_t prc_{{name}}{{^-last}},{{/-last}}
+                                      {{/isNumeric}}
+                                      {{#isBoolean}}
+                                      {{datatype}} {{name}}{{^-last}},{{/-last}}
+                                      {{/isBoolean}}
+                                      {{#isEnum}}
+                                      {{#isString}}
+                                      E_{{apiPackage}}_{{classVarName}}_{{nameInSnakeCase}} e_{{name}}{{^-last}},{{/-last}}
+                                      {{/isString}}
+                                      {{/isEnum}}
+                                      {{^isEnum}}
+                                      {{#isString}}
+                                      {{#isUri}}
+                                      {{datatype}} *{{name}}{{^-last}},{{/-last}}
+                                      {{/isUri}}
+                                      {{#isUuid}}
+                                      const {{datatype}} {{name}}{{^-last}},{{/-last}}
+                                      {{/isUuid}}
+                                      {{#isEmail}}
+                                      const {{datatype}} *{{name}}{{^-last}},{{/-last}}
+                                      {{/isEmail}}
+                                      {{^isUri}}
+                                      {{^isUuid}}
+                                      {{^isEmail}}
+                                      const {{datatype}} *{{name}}{{^-last}},{{/-last}}
+                                      {{/isEmail}}
+                                      {{/isUuid}}
+                                      {{/isUri}}
+                                      {{/isString}}
+                                      {{/isEnum}}
+                                      {{#isByteArray}}
+                                      {{datatype}} *{{name}}{{^-last}},{{/-last}}
+                                      {{/isByteArray}}
+                                      {{#isBinary}}
+                                      {{datatype}} {{name}}{{^-last}},{{/-last}}
+                                      {{/isBinary}}
+                                      {{#isDate}}
+                                      const {{datatype}} *{{name}}{{^-last}},{{/-last}}
+                                      {{/isDate}}
+                                      {{#isDateTime}}
+                                      const {{datatype}} *{{name}}{{^-last}},{{/-last}}
+                                      {{/isDateTime}}
+                                      {{#isModel}}
+                                      {{#isAnyType}}
+                                      const char *{{name}}{{^-last}},{{/-last}}
+                                      {{/isAnyType}}
+                                      {{/isModel}}
+                                      {{/isPrimitiveType}}
+                                      {{/isContainer}}
+                                      {{#isContainer}}
+                                      {{#isArray}}
+                                      {{#isPrimitiveType}}
+                                      {{classVarName}}_{{nameInSnakeCase}}_LIST *{{name}}{{^-last}},{{/-last}}
+                                      {{/isPrimitiveType}}
+                                      {{^isPrimitiveType}}
+                                      {{complexType}}_LIST *{{name}}{{^-last}},{{/-last}}
+                                      {{/isPrimitiveType}}
+                                      {{/isArray}}
+                                      {{#isMap}}
+                                      {{complexType}}_LIST *{{name}}{{^-last}},{{/-last}}
+                                      {{/isMap}}
+                                      {{/isContainer}}
+                                      {{/vars}}
+);
+
+void {{apiPackage}}_{{classname}}_free( {{apiPackage}}_{{classname}}_ENT **{{classname}}_ptr_ptr );
+
+{{apiPackage}}_{{classname}}_ENT *deserialize_json2{{apiPackage}}_{{classname}}( const json_t *j_{{classname}}, OPENAPI_ERROR_CTX *err_ctx_{{classname}} );
+json_t *serialize_{{apiPackage}}_{{classname}}2json( const {{apiPackage}}_{{classname}}_ENT *{{classname}} );
+
+{{/isEnum}}
+#endif /* !__{{classname}}_h_STATIC_CHAR_ARMOR__ */
+{{/model}}{{/models}}

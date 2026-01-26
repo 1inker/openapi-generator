@@ -1,0 +1,64 @@
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+
+#include "object.h"
+
+object_t *
+object_create( void )
+{
+    object_t *object = malloc( sizeof( object_t ) );
+
+    return object;
+}
+
+void
+object_free( object_t **object_ptr_ptr )
+{
+   object_t *object_ptr = *object_ptr_ptr;
+
+   if( object_ptr != NULL )
+   {
+      if( object_ptr->temporary != NULL )
+      {
+         free( object_ptr->temporary );
+         object_ptr->temporary = NULL;
+      }
+
+      free( object_ptr );
+      *object_ptr_ptr = NULL;
+   }
+}
+
+json_t *
+object_convertToJSON( object_t *object )
+{
+   json_error_t jerror = { 0 };
+
+   if( NULL == object )
+      return NULL;
+
+   if( NULL == object->temporary )
+      return json_object();
+
+   return json_loads( object->temporary, 0, &jerror );
+}
+
+object_t *
+object_parseFromJSON( json_t *json )
+{
+   object_t *object = NULL;
+
+   if( NULL == json )
+      goto end;
+
+   object = object_create();
+   if( NULL == object )
+      goto end;
+
+   object->temporary = json_dumps( json, 0 );
+   return object;
+
+end:
+   return NULL;
+}

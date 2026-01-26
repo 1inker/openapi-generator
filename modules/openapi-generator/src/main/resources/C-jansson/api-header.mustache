@@ -1,0 +1,71 @@
+#ifndef __{{classname}}_h_STATIC_CHAR_ARMOR__
+#define __{{classname}}_h_STATIC_CHAR_ARMOR__
+
+#define {{#lambda.uppercase}}{{apiPackage}}{{/lambda.uppercase}}_API_VERSION "{{{appVersion}}}"
+
+#include <stdlib.h>
+#include <stdio.h>
+
+#include "bsd_queue.h"
+#include "jansson.h"
+
+#include "bsd_queue.h"
+#include "jansson.h"
+
+#include "umf.h"           /* umf_ent{} */
+#include "db_3ds_trans.h"  /* TDS_ENT{} */
+#include "ec_utils.h"      /* ECOM_SECURITY_DATA_ENT{} */
+#include "emv_trans.h"     /* EMVTRANS_ENT{} */
+#include "rest_tx.h"
+
+{{#imports}}{{{import}}}
+{{/imports}}
+
+{{#operations}}
+{{#operation}}
+{{#summary}}
+/**
+ * {{{.}}}
+ *
+{{/summary}}
+{{#notes}}
+ * {{{.}}}
+ */
+{{/notes}}
+void {{apiPackage}}_{{#bodyParams}}{{dataType}}{{/bodyParams}}2umf( DB_CONTEXT RESTRICT sql_ctx, umf_ent * RESTRICT umf_ptr, TDS_ENT * RESTRICT tds_ptr, ECOM_SECURITY_DATA_ENT * RESTRICT ecom_sec_ptr, const {{apiPackage}}_{{#bodyParams}}{{dataType}}{{/bodyParams}}_ENT *RESTRICT {{#bodyParams}}{{dataType}}{{/bodyParams}} );
+
+{{apiPackage}}_{{#bodyParams}}{{dataType}}{{/bodyParams}}_ENT *umf2{{apiPackage}}_{{#bodyParams}}{{dataType}}{{/bodyParams}}( DB_CONTEXT sql_ctx, umf_ent *RESTRICT umf_ptr );
+
+
+REST_SRV_REQUEST_STATE handle_{{apiPackage}}_{{{operationIdSnakeCase}}}_{{#lambda.lowercase}}{{httpMethod}}{{/lambda.lowercase}}( DB_CONTEXT                        sql_ctx,
+                             char                    *RESTRICT request_id,
+                             size_t                            request_id_sz,
+                             char                    *RESTRICT requestor_id,
+                             size_t                            requestor_id_sz,
+                             char                    *RESTRICT external_id,
+                             size_t                            external_id_sz,
+                             umf_ent                 *RESTRICT umf_ptr,
+                             TDS_ENT                 *RESTRICT tds_ptr,
+                             ECOM_SECURITY_DATA_ENT  *RESTRICT ecom_sec_ptr,
+                             EMVTRANS_ENT            *RESTRICT emv_data_ptr,
+                             const char              *RESTRICT service,
+                             const HTTP_HEADERS_LIST *RESTRICT request_headers,
+                             const json_t            *RESTRICT request_body,
+                             struct evhttp_uri       **RESTRICT async_callback_uri,
+                             REST_TX_ERROR           *RESTRICT error )
+                             OLTP_NONNULL13( 1, 2, 4, 6, 8, 9, 10, 11, 12, 13, 14, 15, 16 );
+
+OLTP_RC respond_{{apiPackage}}_{{{operationIdSnakeCase}}}_{{#lambda.lowercase}}{{httpMethod}}{{/lambda.lowercase}}( DB_CONTEXT                        sql_ctx,
+                          const char              *RESTRICT request_id,
+                          const char              *RESTRICT service,
+                          umf_ent                 *RESTRICT pstdmsg,
+                          int                     *RESTRICT http_code,
+                          const HTTP_HEADERS_LIST *RESTRICT request_headers,
+                          HTTP_HEADERS_LIST       *RESTRICT response_headers,
+                          json_t                  *RESTRICT response_body )
+                          OLTP_NONNULL8( 1, 2, 3, 4, 5, 6, 7, 8 );
+
+{{/operation}}
+{{/operations}}
+
+#endif /* !__{{classname}}_h_STATIC_CHAR_ARMOR__ */

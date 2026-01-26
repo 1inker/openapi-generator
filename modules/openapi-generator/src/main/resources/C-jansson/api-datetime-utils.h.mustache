@@ -1,0 +1,16 @@
+#ifndef API_DATETIME_UTILS_H
+#define API_DATETIME_UTILS_H
+
+#include <sys/types.h> /* size_t */
+#include <time.h>      /* struct tm{} */
+
+#define API_DATE_SZ     10
+#define API_DATETIME_SZ 20
+
+char *{{apiPackage}}_date2str( char *dst, size_t dst_sz, const struct tm *src );
+char *{{apiPackage}}_datetime2str( char *dst, size_t dst_sz, const struct tm *src );
+
+int {{apiPackage}}_str2date( struct tm *dst, const char *src );
+int {{apiPackage}}_str2datetime( struct tm *dst, const char *src );
+
+#endif /* API_DATETIME_UTILS_H */

@@ -1,0 +1,26 @@
+#ifndef OPENAPI_ERROR_H
+#define OPENAPI_ERROR_H
+
+#include <stdint.h>
+
+typedef struct
+{
+   uint32_t    error_line;
+   const char *error_file;
+   const char *error_fct;
+   const char *error_fld;
+   const char *error_desc;
+} OPENAPI_ERROR_CTX;
+
+#define SET_OPENAPI_ERROR_CTX( err_ctx, fld, desc ) do { \
+   if( 0 == (err_ctx)->error_line )                      \
+   {                                                     \
+      (err_ctx)->error_line = __LINE__;                  \
+      (err_ctx)->error_file = __FILE__;                  \
+      (err_ctx)->error_fct  = __func__;                  \
+      (err_ctx)->error_fld  = (fld);                     \
+      (err_ctx)->error_desc = (desc);                    \
+   }                                                     \
+} while( 0 )
+
+#endif /* OPENAPI_ERROR_H */

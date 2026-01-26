@@ -1,0 +1,60 @@
+# {{classname}}{{#description}}
+{{.}}{{/description}}
+
+All URIs are relative to *{{basePath}}*
+
+Method | HTTP request | Description
+------------- | ------------- | -------------
+{{#operations}}{{#operation}}[**{{classname}}_{{operationId}}**]({{classname}}.md#{{classname}}_{{operationId}}) | **{{httpMethod}}** {{path}} | {{summary}}
+{{/operation}}{{/operations}}
+
+{{#operations}}
+{{#operation}}
+# **{{classname}}_{{{operationId}}}**
+```c
+{{#summary}}
+// {{{.}}}
+//
+{{/summary}}
+{{#notes}}
+// {{{.}}}
+//
+{{/notes}}
+{{#returnType}}{{#returnTypeIsPrimitive}}{{#returnSimpleType}}{{{.}}}*{{/returnSimpleType}}{{^returnSimpleType}}{{#isArray}}{{{.}}}_LIST*{{/isArray}}{{#isMap}}{{{.}}}{{/isMap}}{{/returnSimpleType}}{{/returnTypeIsPrimitive}}{{^returnTypeIsPrimitive}}{{{.}}}_ENT*{{/returnTypeIsPrimitive}}{{/returnType}}{{^returnType}}void{{/returnType}} {{{classname}}}_{{{operationId}}}(API_CLIENT_CTX *apiClient{{#allParams}}, {{#isPrimitiveType}}{{#isNumber}}{{{dataType}}} {{/isNumber}}{{#isLong}}{{{dataType}}} {{/isLong}}{{#isInteger}}{{{dataType}}} *{{/isInteger}}{{#isDouble}}{{{dataType}}} {{/isDouble}}{{#isFloat}}{{{dataType}}} {{/isFloat}}{{#isBoolean}}{{dataType}} *{{/isBoolean}}{{#isEnum}}{{#isString}}{{projectName}}_{{operationId}}_{{baseName}}_e {{/isString}}{{/isEnum}}{{^isEnum}}{{#isString}}{{{dataType}}} *{{/isString}}{{/isEnum}}{{#isByteArray}}{{{dataType}}} *{{/isByteArray}}{{#isDate}}{{{dataType}}} {{/isDate}}{{#isDateTime}}{{{dataType}}} {{/isDateTime}}{{#isFile}}{{{dataType}}} {{/isFile}}{{#isFreeFormObject}}{{dataType}}_ENT *{{/isFreeFormObject}}{{/isPrimitiveType}}{{^isArray}}{{^isPrimitiveType}}{{#isModel}}{{#isEnum}}{{datatypeWithEnum}}_e {{/isEnum}}{{^isEnum}}{{{dataType}}}_ENT *{{/isEnum}}{{/isModel}}{{^isModel}}{{#isEnum}}{{datatypeWithEnum}}_e {{/isEnum}}{{/isModel}}{{#isUuid}}{{dataType}} *{{/isUuid}}{{#isEmail}}{{dataType}} {{/isEmail}}{{/isPrimitiveType}}{{/isArray}}{{#isContainer}}{{#isArray}}{{dataType}}_LIST *{{/isArray}}{{#isMap}}{{dataType}} {{/isMap}}{{/isContainer}}{{{paramName}}}{{/allParams}});
+```
+
+### Parameters
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**apiClient** | **API_CLIENT_CTX \*** | context containing the client configuration |
+{{#allParams}}
+**{{paramName}}** | {{#isPrimitiveType}}{{#isNumber}}**{{{dataType}}}**{{/isNumber}}{{#isLong}}**{{{dataType}}}**{{/isLong}}{{#isInteger}}**{{{dataType}}} \***{{/isInteger}}{{#isDouble}}**{{{dataType}}}**{{/isDouble}}{{#isFloat}}**{{{dataType}}}**{{/isFloat}}{{#isBoolean}}**{{dataType}} \***{{/isBoolean}}{{#isEnum}}{{#isString}}**{{projectName}}_{{operationId}}_{{baseName}}_e**{{/isString}}{{/isEnum}}{{^isEnum}}{{#isString}}**{{{dataType}}} \***{{/isString}}{{/isEnum}}{{#isByteArray}}**{{{dataType}}} \***{{/isByteArray}}{{#isDate}}**{{{dataType}}}**{{/isDate}}{{#isDateTime}}**{{{dataType}}}**{{/isDateTime}}{{#isFile}}**{{{dataType}}}**{{/isFile}}{{#isFreeFormObject}}**[{{dataType}}_ENT]({{baseType}}.md) \***{{/isFreeFormObject}}{{/isPrimitiveType}}{{^isArray}}{{^isPrimitiveType}}{{#isModel}}{{#isEnum}}**{{datatypeWithEnum}}_e**{{/isEnum}}{{^isEnum}}**[{{{dataType}}}_ENT]({{{baseType}}}.md) \***{{/isEnum}}{{/isModel}}{{^isModel}}{{#isEnum}}**{{datatypeWithEnum}}_e**{{/isEnum}}{{/isModel}}{{#isUuid}}**{{dataType}} \***{{/isUuid}}{{#isEmail}}**{{dataType}}**{{/isEmail}}{{/isPrimitiveType}}{{/isArray}}{{#isContainer}}{{#isArray}}**[{{dataType}}_LIST]({{baseType}}.md) \***{{/isArray}}{{#isMap}}**{{dataType}}**{{/isMap}}{{/isContainer}} | {{description}} | {{^required}}[optional] {{/required}}{{#defaultValue}}[default to {{.}}]{{/defaultValue}}
+{{/allParams}}
+
+### Return type
+
+{{#returnType}}
+{{#returnTypeIsPrimitive}}
+{{#returnSimpleType}}{{{.}}}*{{/returnSimpleType}}
+{{^returnSimpleType}}
+{{#isArray}}[{{{.}}}_LIST]({{returnBaseType}}.md) *{{/isArray}}
+{{#isMap}}{{{.}}}{{/isMap}}
+{{/returnSimpleType}}
+{{/returnTypeIsPrimitive}}
+{{^returnTypeIsPrimitive}}[{{{.}}}_ENT]({{returnBaseType}}.md) *{{/returnTypeIsPrimitive}}
+{{/returnType}}
+{{^returnType}}void{{/returnType}}
+
+### Authorization
+
+{{^authMethods}}No authorization required{{/authMethods}}{{#authMethods}}[{{{name}}}](../README.md#{{{name}}}){{^-last}}, {{/-last}}{{/authMethods}}
+
+### HTTP request headers
+
+ - **Content-Type**: {{#consumes}}{{{mediaType}}}{{^-last}}, {{/-last}}{{/consumes}}{{^consumes}}Not defined{{/consumes}}
+ - **Accept**: {{#produces}}{{{mediaType}}}{{^-last}}, {{/-last}}{{/produces}}{{^produces}}Not defined{{/produces}}
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+{{/operation}}
+{{/operations}}

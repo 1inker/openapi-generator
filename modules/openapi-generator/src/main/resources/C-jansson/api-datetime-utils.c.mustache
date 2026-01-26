@@ -1,0 +1,105 @@
+#define _XOPEN_SOURCE
+#include <sys/types.h> /* size_t */
+#include <time.h>      /* struct tm{}, strptime() */
+#include <ctype.h>     /* toupper(), isdigit() */
+
+#include "include/api_datetime_utils.h"
+
+char *
+{{apiPackage}}_date2str( char *dst, size_t dst_sz, const struct tm *src )
+{
+   strftime( dst, dst_sz, "%Y-%m-%dT%H:%M:%S", src );
+   return dst;
+} /* end of {{apiPackage}}_date2str() */
+
+char *
+{{apiPackage}}_datetime2str( char *dst, size_t dst_sz, const struct tm *src )
+{
+   strftime( dst, dst_sz, "%Y-%m-%dT%H:%M:%S.000Z", src );
+   return dst;
+} /* end of {{apiPackage}}_datetime2str() */
+
+int
+{{apiPackage}}_str2date( struct tm *dst, const char *src )
+{
+   int rc = -1; /* Bad result */
+
+   const char *last_unparsed_postion = strptime( src, "%Y-%m-%dT%H:%M:%S", dst );
+   if( NULL == last_unparsed_postion )
+   {
+      /* Error */
+   }
+   else
+   {
+      rc = 0; /* Good result */
+   }
+
+   return rc;
+} /* end of {{apiPackage}}_str2date() */
+
+int
+{{apiPackage}}_str2datetime( struct tm *dst, const char *src )
+{
+   int rc = -1; /* Bad result */
+
+   const char *last_unparsed_postion = strptime( src, "%Y-%m-%dT%H:%M:%S", dst );
+   if( NULL == last_unparsed_postion )
+   {
+      /* Error */
+   }
+   else
+   {
+      if( last_unparsed_postion[ 0 ] != 0 )
+      {
+         /* Handle seconds fraction (up to 6 digits for usec) and timezone */
+         if( '.' == last_unparsed_postion[ 0 ] )
+         {
+            int i;
+            char str_fraction[ 7 ] = { 0 };
+
+            ++last_unparsed_postion;
+            for( i = 0; i < 6; ++i )
+            {
+               if( isdigit( last_unparsed_postion[ i ] ) )
+                  str_fraction[ i ] = last_unparsed_postion[ i ];
+               else
+                  break;
+            }
+            /* We don't care about fraction part because it does not fit into 'struct tm' */
+            last_unparsed_postion += i;
+
+            /* Parse timezone */
+            switch( last_unparsed_postion[ 0 ] )
+            {
+               case 'Z':
+               case 'z':
+                  if( 0 == last_unparsed_postion[ 1 ] )
+                     rc = 0; /* Good result */
+                  break;
+
+               case '-':
+               case '+':
+                  {
+                     struct tm tm_offset = { 0 };
+                     last_unparsed_postion = strptime( &last_unparsed_postion[ 1 ], "%H:%M", &tm_offset );
+                     if( NULL == last_unparsed_postion )
+                     {
+                        /* Error */
+                     }
+                     else
+                     {
+                        if( 0 == last_unparsed_postion[ 0 ] )
+                        {
+                           int gmt_offset = tm_offset.tm_hour * 60 + tm_offset.tm_min;
+                           rc = 0; /* Good result */
+                        }
+                     }
+                  }
+                  break;
+            }
+         }
+      }
+   }
+
+   return rc;
+} /* end of {{apiPackage}}_str2datetime() */

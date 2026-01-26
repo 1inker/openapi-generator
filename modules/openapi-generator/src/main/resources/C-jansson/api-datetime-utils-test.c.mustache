@@ -1,0 +1,125 @@
+#define _XOPEN_SOURCE
+#include <sys/types.h> /* size_t */
+#include <time.h>      /* struct tm{}, strptime() */
+
+#include "include/api_datetime_utils.h"
+
+static UT_RC {{apiPackage}}_date2str_fixture_setup( void );
+static UT_RC {{apiPackage}}_date2str_fixture_teardown( void );
+static UT_RC {{apiPackage}}_date2str_suite_init( void );
+/* Testcases */
+static void {{apiPackage}}_date2str_test( void );
+
+static UT_RC {{apiPackage}}_datetime2str_fixture_setup( void );
+static UT_RC {{apiPackage}}_datetime2str_fixture_teardown( void );
+static UT_RC {{apiPackage}}_datetime2str_suite_init( void );
+/* Testcases */
+static void {{apiPackage}}_datetime2str_test( void );
+
+static UT_RC {{apiPackage}}_str2date_fixture_setup( void );
+static UT_RC {{apiPackage}}_str2date_fixture_teardown( void );
+static UT_RC {{apiPackage}}_str2date_suite_init( void );
+/* Testcases */
+static void {{apiPackage}}_str2date_test( void );
+
+static UT_RC {{apiPackage}}_str2datetime_fixture_setup( void );
+static UT_RC {{apiPackage}}_str2datetime_fixture_teardown( void );
+static UT_RC {{apiPackage}}_str2datetime_suite_init( void );
+/* Testcases */
+static void {{apiPackage}}_str2datetime_test( void );
+
+static UT_RC
+{{apiPackage}}_date2str_fixture_setup( void )
+{
+   GENERIC_FIXTURE_SETUP( "ut_{{apiPackage}}_date2str_suite" );
+
+   return CU_EXIT_SUCCESS;
+} /* end of {{apiPackage}}_date2str_fixture_setup() */
+
+static UT_RC
+{{apiPackage}}_date2str_fixture_teardown( void )
+{
+   GENERIC_FIXTURE_TEARDOWN;
+
+   return CU_EXIT_SUCCESS;
+} /* end of {{apiPackage}}_date2str_fixture_teardown() */
+
+static UT_RC
+{{apiPackage}}_date2str_suite_init( void )
+{
+   UT_CREATE_SUITE( "Check {{apiPackage}}_date2str()",
+                    {{apiPackage}}_date2str_fixture_setup, {{apiPackage}}_date2str_fixture_teardown );
+
+   UT_ADD_TESTCASE( "", {{apiPackage}}_date2str_test );
+}
+
+static void
+{{apiPackage}}_date2str_test( void )
+{
+   struct tm = { 0 };
+   char buff[ 256 ] = { 0 };
+
+   strftime( dst, dst_sz, "%Y-%m-%dT%H:%M:%S", src );
+   return dst;
+} /* end of {{apiPackage}}_date2str() */
+
+char *
+{{apiPackage}}_datetime2str( char *dst, size_t dst_sz, const struct tm *src )
+{
+   strftime( dst, dst_sz, "%Y-%m-%dT%H:%M:%S", src );
+   return dst;
+} /* end of {{apiPackage}}_datetime2str() */
+
+int
+{{apiPackage}}_str2date( struct tm *dst, const char *src )
+{
+   int rc = -1; /* Bad result */
+
+   const char *last_unparsed_postion = strptime( src, "%Y-%m-%dT%H:%M:%S", dst );
+   if( NULL == last_unparsed_postion )
+   {
+   }
+   else
+   {
+      if( *last_unparsed_postion != 0 )
+      {
+         /* TODO handle timezone */
+      }
+
+      rc = 0; /* Good result */
+   }
+
+   return rc;
+} /* end of {{apiPackage}}_str2date() */
+
+int
+{{apiPackage}}_str2datetime( struct tm *dst, const char *src )
+{
+   int rc = -1; /* Bad result */
+
+   const char *last_unparsed_postion = strptime( src, "%Y-%m-%dT%H:%M:%S", dst );
+   if( NULL == last_unparsed_postion )
+   {
+   }
+   else
+   {
+      if( *last_unparsed_postion != 0 )
+      {
+         /* TODO handle timezone */
+      }
+
+      rc = 0; /* Good result */
+   }
+
+   return rc;
+} /* end of {{apiPackage}}_str2datetime() */
+
+/* main */
+UT_EXECUTION_DECLARE_BEGIN( "ut_api_datetime_utils_test" );
+
+   UT_INIT_SUITE( {{apiPackage}}_date2str_suite_init );
+   UT_INIT_SUITE( {{apiPackage}}_datetime2str_suite_init );
+   UT_INIT_SUITE( {{apiPackage}}_str2date_suite_init );
+   UT_INIT_SUITE( {{apiPackage}}_str2datetime_suite_init );
+
+UT_EXECUTION_DECLARE_END;

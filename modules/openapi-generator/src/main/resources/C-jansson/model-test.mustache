@@ -1,0 +1,142 @@
+{{#models}}
+{{#model}}
+#include "ut.h"
+#include "suite.h"
+
+#include <stdbool.h> /* bool */
+#include <time.h>    /* struct tm{} */
+
+#include "jansson.h"     /* json_t */
+#include "event2/http.h" /* struct evhttp_uri{}, evhttp_uri_parse() */
+
+#include "include/api_datetime_utils.h" /* {{apiPackage}}_str2date(), {{apiPackage}}_str2datetime() */
+#include "model/{{classFilename}}.h"
+
+/***************************************************************************/
+/*********************** Function Prototypes *******************************/
+/****** (should be static, if not they should be in '.h' file) *************/
+/***************************************************************************/
+/* {{classname}} test suites */
+static int {{apiPackage}}_{{classname}}_fixture_setup( void );
+static int {{apiPackage}}_{{classname}}_fixture_teardown( void );
+static int {{apiPackage}}_{{classname}}_suite_init( void );
+
+/* Testcases */
+static void {{apiPackage}}_{{classname}}_create_test_mandatory( void );
+static void {{apiPackage}}_{{classname}}_create_test_optional( void );
+static void {{apiPackage}}_{{classname}}_free_test( void );
+static void serialize_{{apiPackage}}_{{classname}}2json_test( void );
+static void deserialize_json2{{apiPackage}}_{{classname}}_test( void );
+
+{{#vars}}{{#isModel}}{{#isEnum}}
+// it is enum. Work in Progress
+{{/isEnum}}{{^isEnum}}#include "{{{dataType}}}.h"
+{{/isEnum}}{{/isModel}}{{/vars}}
+
+static int
+{{apiPackage}}_{{classname}}_fixture_setup( void )
+{
+   GENERIC_FIXTURE_SETUP( "ut_{{apiPackage}}_{{classname}}_suite" );
+   return CU_EXIT_SUCCESS;
+} /* end of {{apiPackage}}_{{classname}}_fixture_setup() */
+
+static int
+{{apiPackage}}_{{classname}}_fixture_teardown( void )
+{
+   GENERIC_FIXTURE_TEARDOWN;
+   return CU_EXIT_SUCCESS;
+} /* end of {{apiPackage}}_{{classname}}_fixture_teardown() */
+
+static int
+{{apiPackage}}_{{classname}}_suite_init( void )
+{
+   UT_CREATE_SUITE( "Check {{classname}} manipulation routimes",
+                    {{apiPackage}}_{{classname}}_fixture_setup,
+                    {{apiPackage}}_{{classname}}_fixture_teardown );
+
+   UT_ADD_TESTCASE( "Check whether {{apiPackage}}_{{classname}}_create() function works and use mandatory fields", {{apiPackage}}_{{classname}}_create_test_mandatory );
+   UT_ADD_TESTCASE( "Check whether {{apiPackage}}_{{classname}}_create() function works and use optional fields", {{apiPackage}}_{{classname}}_create_test_optional );
+   UT_ADD_TESTCASE( "Check whether {{apiPackage}}_{{classname}}_free() function works and use optional fields", {{apiPackage}}_{{classname}}_free_test );
+   UT_ADD_TESTCASE( "Check whether serialize_{{apiPackage}}_{{classname}}2json() function works and use optional fields", serialize_{{apiPackage}}_{{classname}}2json_test );
+   UT_ADD_TESTCASE( "Check whether deserialize_json2{{apiPackage}}_{{classname}}() function works and use optional fields", deserialize_json2{{apiPackage}}_{{classname}}_test );
+
+   return OLTP_SUCCESS;
+} /* end of {{classname}}_suite_init() */
+
+static void
+{{apiPackage}}_{{classname}}_create_test_mandatory( void )
+{
+{{#vars}}
+   {{#isUri}}struct evhttp_uri *uri_{{name}} = NULL;{{/isUri}}
+   {{#isUuid}}uuid_t uuid_{{name}} = { 0 };{{/isUuid}}
+   {{#isDate}}struct tm tm_{{name}} = { 0 };{{/isDate}}
+   {{#isDateTime}}struct tm tm_{{name}} = { 0 };{{/isDateTime}}
+{{/vars}}
+   {{apiPackage}}_{{classname}}_ENT *{{classname}}_ptr = NULL;
+
+{{#vars}}
+   {{#isUri}}uri_{{name}} = evhttp_uri_parse( {{{example}}} );{{/isUri}}
+   {{#isUuid}}uuid_parse( {{{example}}}, uuid_{{name}} );{{/isUuid}}
+   {{#isDate}}{{apiPackage}}_str2date( &tm_{{name}}, {{{example}}} );{{/isDate}}
+   {{#isDateTime}}{{apiPackage}}_str2datetime( &tm_{{name}}, {{{example}}} );{{/isDateTime}}
+{{/vars}}
+   {{classname}}_ptr = {{apiPackage}}_{{classname}}_create(
+{{#vars}}      {{#isEnum}}{{^isContainer}}{{#example}}{{apiPackage}}_{{classVarName}}_{{nameInSnakeCase}}_{{#lambda.removeDoubleQuotes}}{{{.}}}{{/lambda.removeDoubleQuotes}}{{/example}}{{/isContainer}}{{#isContainer}}{{{example}}}{{/isContainer}}{{/isEnum}}{{^isEnum}}{{#isUri}}uri_{{name}}{{/isUri}}{{#isUuid}}uuid_{{name}}{{/isUuid}}{{#isDate}}&tm_{{name}}{{/isDate}}{{#isDateTime}}&tm_{{name}}{{/isDateTime}}{{^isUri}}{{^isUuid}}{{^isDate}}{{^isDateTime}}{{{example}}}{{#isNumeric}}, 2{{/isNumeric}}{{/isDateTime}}{{/isDate}}{{/isUuid}}{{/isUri}}{{/isEnum}}{{^example}}{{#isModel}}{{#isEnum}}// enum {{datatypeWithEnum}}_e Work in Progress
+{{/isEnum}}{{^isEnum}}NULL{{/isEnum}}{{/isModel}}{{^isModel}}0{{/isModel}}{{/example}}{{^-last}},{{/-last}}
+{{/vars}}
+   );
+
+   CU_ASSERT_PTR_NOT_NULL_FATAL( {{classname}}_ptr );
+} /* end of {{apiPackage}}_{{classname}}_create_test_mandatory() */
+
+static void
+{{apiPackage}}_{{classname}}_create_test_optional( void )
+{
+{{#vars}}
+   {{#isUri}}struct evhttp_uri *uri_{{name}} = NULL;{{/isUri}}
+   {{#isUuid}}uuid_t uuid_{{name}} = { 0 };{{/isUuid}}
+   {{#isDate}}struct tm tm_{{name}} = { 0 };{{/isDate}}
+   {{#isDateTime}}struct tm tm_{{name}} = { 0 };{{/isDateTime}}
+{{/vars}}
+   {{apiPackage}}_{{classname}}_ENT *{{classname}}_ptr = NULL;
+
+{{#vars}}
+   {{#isUri}}uri_{{name}} = evhttp_uri_parse( {{{example}}} );{{/isUri}}
+   {{#isUuid}}uuid_parse( {{{example}}}, uuid_{{name}} );{{/isUuid}}
+   {{#isDate}}{{apiPackage}}_str2date( &tm_{{name}}, {{{example}}} );{{/isDate}}
+   {{#isDateTime}}{{apiPackage}}_str2datetime( &tm_{{name}}, {{{example}}} );{{/isDateTime}}
+{{/vars}}
+
+   {{classname}}_ptr = {{apiPackage}}_{{classname}}_create(
+{{#vars}}      {{#isEnum}}{{^isContainer}}{{#example}}{{apiPackage}}_{{classVarName}}_{{nameInSnakeCase}}_{{#lambda.removeDoubleQuotes}}{{{.}}}{{/lambda.removeDoubleQuotes}}{{/example}}{{/isContainer}}{{#isContainer}}{{{example}}}{{/isContainer}}{{/isEnum}}{{^isEnum}}{{#isUri}}uri_{{name}}{{/isUri}}{{#isUuid}}uuid_{{name}}{{/isUuid}}{{#isDate}}&tm_{{name}}{{/isDate}}{{#isDateTime}}&tm_{{name}}{{/isDateTime}}{{^isUri}}{{^isUuid}}{{^isDate}}{{^isDateTime}}{{{example}}}{{#isNumeric}}, 2{{/isNumeric}}{{/isDateTime}}{{/isDate}}{{/isUuid}}{{/isUri}}{{/isEnum}}{{^example}}{{#isModel}}{{#isEnum}}// enum {{datatypeWithEnum}}_e Work in Progress
+{{/isEnum}}{{^isEnum}} // false, not to have infinite recursion
+      NULL{{/isEnum}}{{/isModel}}{{^isModel}}0{{/isModel}}{{/example}}{{^-last}},{{/-last}}
+{{/vars}}
+   );
+
+   CU_ASSERT_PTR_NOT_NULL_FATAL( {{classname}}_ptr );
+} /* end of {{apiPackage}}_{{classname}}_create_test_optional() */
+
+static void
+{{apiPackage}}_{{classname}}_free_test( void )
+{
+}
+
+static void
+serialize_{{apiPackage}}_{{classname}}2json_test( void )
+{
+}
+
+static void
+deserialize_json2{{apiPackage}}_{{classname}}_test( void )
+{
+}
+
+/* main */
+UT_EXECUTION_DECLARE_BEGIN( "ut_{{apiPackage}}_{{classname}}_test" );
+
+   UT_INIT_SUITE( {{apiPackage}}_{{classname}}_suite_init );
+
+UT_EXECUTION_DECLARE_END;
+{{/model}}
+{{/models}}

@@ -372,7 +372,7 @@ public class CLibcurlClientCodegen extends DefaultCodegen implements CodegenConf
 
     @Override
     public String getName() {
-        return "c";
+        return "c-libcurl";
     }
 
     @Override

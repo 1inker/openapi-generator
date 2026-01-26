@@ -1,0 +1,32 @@
+#ifndef INCLUDE_API_SERVER_H
+#define INCLUDE_API_SERVER_H
+
+#include <stdint.h>
+
+/* System headers */
+#include <regex.h>               /* regex_t */
+
+/* Library headers */
+#include "event2/http.h"         /* enum evhttp_cmd_type */
+#include "event2/http_struct.h"
+
+#include "uuid.h"
+
+struct api_server_ctx;
+
+typedef int (server_request_handler)( struct api_server_ctx *server_ctx, const json_t *request );
+typedef int (server_response_handler)( struct api_server_ctx *server_ctx, json_t *response );
+
+struct
+{
+   char                  *service_uri;
+   void                  *cb_arg;
+   struct evhttp_request *request;
+} api_server_ctx;
+
+typedef api_server_ctx API_SERVER_CTX;
+
+API_SERVER_CTX* api_server_create( void );
+
+
+#endif /* INCLUDE_API_SERVER_H */

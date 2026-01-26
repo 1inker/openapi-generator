@@ -1,0 +1,43 @@
+include $(top_srcdir)/include.mk
+
+noinst_LTLIBRARIES = lib{{projectName}}.la
+
+AM_CPPFLAGS = -I@top_builddir@/jansson/src -I@top_builddir@/libevent/include -I@top_srcdir@/comms/rest_srv -I@srcdir@
+AM_CFLAGS = @BASE_CFLAGS@ # These are automatically generated files
+
+lib{{projectName}}_la_SOURCES = \
+	glue.c \
+	include/api_error.h \
+	include/api_datetime_utils.h \
+	include/binary.h \
+	src/binary.c \
+	src/api_datetime_utils.c \
+	model/object.h \
+	model/object.c \
+{{#models}}
+{{#model}}
+	model/{{classFilename}}.h \
+	model/{{classFilename}}.c \
+{{/model}}
+{{/models}}
+{{#apiInfo}}
+{{#apis}}
+{{#operations}}
+	api/{{classFilename}}.h \
+	api/{{classFilename}}.c{{^-last}} \{{/-last}}
+{{/operations}}
+{{/apis}}
+{{/apiInfo}}
+
+# Unit tests
+check_PROGRAMS = api_datetime_utils_test {{#models}}{{#model}}{{classFilename}}_test{{^-last}} {{/-last}}{{/model}}{{/models}}
+TESTS = $(check_PROGRAMS)
+
+api_datetime_utils_test_SOURCES = src/api_datetime_utils_test.c
+api_datetime_utils_test_LDADD = src/api_datetime_utils_test.$(OBJEXT) $(top_builddir)/lib/ut/libut.la $(top_builddir)/libevent/libevent.la $(top_builddir)/jansson/src/libjansson.la src/api_datetime_utils.$(OBJEXT)
+{{#models}}
+{{#model}}
+{{classFilename}}_test_SOURCES = model/{{classFilename}}_test.c
+{{classFilename}}_test_LDADD = model/{{classFilename}}.$(OBJEXT) $(top_builddir)/lib/ut/libut.la $(top_builddir)/libevent/libevent.la $(top_builddir)/jansson/src/libjansson.la src/api_datetime_utils.$(OBJEXT)
+{{/model}}
+{{/models}}
