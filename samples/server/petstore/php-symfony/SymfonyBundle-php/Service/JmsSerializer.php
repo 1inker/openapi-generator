@@ -29,7 +29,13 @@ class JmsSerializer implements SerializerInterface
      */
     public function serialize($data, string $format): string
     {
-        return SerializerBuilder::create()->build()->serialize($data, $this->convertFormat($format));
+        $convertFormat = $this->convertFormat($format);
+        if ($convertFormat !== null) {
+           return SerializerBuilder::create()->build()->serialize($data, $convertFormat);
+        } else {
+           // don't use var_export if $data is already a string: it may corrupt binary strings
+           return is_string($data) ? $data : var_export($data, true);
+        }
     }
 
     /**
@@ -101,12 +107,16 @@ class JmsSerializer implements SerializerInterface
             case '\DateTime':
                 return is_null($data) ? null :new DateTime($data);
             default:
+                if (is_null($data)) {
+                    return null;
+                }
+
                 if (!class_exists($type)) {
                     throw new RuntimeException(sprintf("Type %s is unsupported", $type));
                 }
 
                 $reflectionClass = new \ReflectionClass($type);
-                if (!$reflectionClass->implementsInterface('\BackedENum')) {
+                if (!$reflectionClass->implementsInterface('\BackedEnum')) {
                     throw new RuntimeException(sprintf("Type %s is unsupported", $type));
                 }
 

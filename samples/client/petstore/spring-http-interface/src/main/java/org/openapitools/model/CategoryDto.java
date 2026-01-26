@@ -5,6 +5,7 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import org.springframework.lang.Nullable;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import jakarta.validation.constraints.NotNull;
@@ -18,14 +19,18 @@ import jakarta.annotation.Generated;
  */
 
 @JsonTypeName("Category")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.6.0-SNAPSHOT")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.20.0-SNAPSHOT")
 public class CategoryDto {
 
-  private Long id;
+  private @Nullable Long id;
 
   private String name = "default-name";
 
-  public CategoryDto id(Long id) {
+  public CategoryDto() {
+    super();
+  }
+
+  public CategoryDto id(@Nullable Long id) {
     this.id = id;
     return this;
   }
@@ -33,14 +38,14 @@ public class CategoryDto {
   /**
    * Get id
    * @return id
-  */
+   */
   
   @JsonProperty("id")
-  public Long getId() {
+  public @Nullable Long getId() {
     return id;
   }
 
-  public void setId(Long id) {
+  public void setId(@Nullable Long id) {
     this.id = id;
   }
 
@@ -52,7 +57,7 @@ public class CategoryDto {
   /**
    * Get name
    * @return name
-  */
+   */
   @NotNull
   @JsonProperty("name")
   public String getName() {
@@ -95,7 +100,7 @@ public class CategoryDto {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(@Nullable Object o) {
     if (o == null) {
       return "null";
     }

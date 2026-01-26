@@ -11,6 +11,9 @@ docs/AllOfModelArrayAnyOfAllOfAttributes.md
 docs/AllOfModelArrayAnyOfAllOfAttributesC.md
 docs/AllOfModelArrayAnyOfAllOfLinkListColumn1.md
 docs/AllOfModelArrayAnyOfAllOfLinkListColumn1Value.md
+docs/AllOfRefToDouble.md
+docs/AllOfRefToFloat.md
+docs/AllOfRefToLong.md
 docs/Animal.md
 docs/AnotherFakeApi.md
 docs/Apple.md
@@ -42,12 +45,17 @@ docs/EnumClass.md
 docs/EnumStringDiscriminator.md
 docs/EnumTest.md
 docs/EquilateralTriangle.md
+docs/FakeAnyOfWIthSameErasureGet200Response.md
 docs/FakeApi.md
 docs/FakeClassnameTags123Api.md
+docs/FakeOneOfWIthSameErasureGet200Response.md
+docs/FakeRefParameterPetIdParameter.md
 docs/FileSchemaTestClass.md
 docs/Foo.md
 docs/FooGetDefaultResponse.md
 docs/FormatTest.md
+docs/FreeFormObjectTestClass.md
+docs/FreeFormObjectTestClassProperties.md
 docs/Fruit.md
 docs/FruitReq.md
 docs/GmFruit.md
@@ -56,6 +64,7 @@ docs/HasOnlyReadOnly.md
 docs/HealthCheckResult.md
 docs/IsoscelesTriangle.md
 docs/Mammal.md
+docs/MammalAnyof.md
 docs/MapTest.md
 docs/MixedPropertiesAndAdditionalPropertiesClass.md
 docs/Model200Response.md
@@ -65,6 +74,7 @@ docs/ModelList.md
 docs/ModelReturn.md
 docs/ModelWithOneOfAnyOfProperties.md
 docs/Name.md
+docs/NestedArrayWithDefaultValues.md
 docs/NewPet.md
 docs/NewPetCategoryInlineAllof.md
 docs/NewPetCategoryInlineAllofAllOfCategoryTag.md
@@ -154,6 +164,9 @@ src/main/java/org/openapitools/client/model/AllOfModelArrayAnyOfAllOfAttributes.
 src/main/java/org/openapitools/client/model/AllOfModelArrayAnyOfAllOfAttributesC.java
 src/main/java/org/openapitools/client/model/AllOfModelArrayAnyOfAllOfLinkListColumn1.java
 src/main/java/org/openapitools/client/model/AllOfModelArrayAnyOfAllOfLinkListColumn1Value.java
+src/main/java/org/openapitools/client/model/AllOfRefToDouble.java
+src/main/java/org/openapitools/client/model/AllOfRefToFloat.java
+src/main/java/org/openapitools/client/model/AllOfRefToLong.java
 src/main/java/org/openapitools/client/model/Animal.java
 src/main/java/org/openapitools/client/model/Apple.java
 src/main/java/org/openapitools/client/model/AppleReq.java
@@ -183,10 +196,15 @@ src/main/java/org/openapitools/client/model/EnumClass.java
 src/main/java/org/openapitools/client/model/EnumStringDiscriminator.java
 src/main/java/org/openapitools/client/model/EnumTest.java
 src/main/java/org/openapitools/client/model/EquilateralTriangle.java
+src/main/java/org/openapitools/client/model/FakeAnyOfWIthSameErasureGet200Response.java
+src/main/java/org/openapitools/client/model/FakeOneOfWIthSameErasureGet200Response.java
+src/main/java/org/openapitools/client/model/FakeRefParameterPetIdParameter.java
 src/main/java/org/openapitools/client/model/FileSchemaTestClass.java
 src/main/java/org/openapitools/client/model/Foo.java
 src/main/java/org/openapitools/client/model/FooGetDefaultResponse.java
 src/main/java/org/openapitools/client/model/FormatTest.java
+src/main/java/org/openapitools/client/model/FreeFormObjectTestClass.java
+src/main/java/org/openapitools/client/model/FreeFormObjectTestClassProperties.java
 src/main/java/org/openapitools/client/model/Fruit.java
 src/main/java/org/openapitools/client/model/FruitReq.java
 src/main/java/org/openapitools/client/model/GmFruit.java
@@ -195,6 +213,7 @@ src/main/java/org/openapitools/client/model/HasOnlyReadOnly.java
 src/main/java/org/openapitools/client/model/HealthCheckResult.java
 src/main/java/org/openapitools/client/model/IsoscelesTriangle.java
 src/main/java/org/openapitools/client/model/Mammal.java
+src/main/java/org/openapitools/client/model/MammalAnyof.java
 src/main/java/org/openapitools/client/model/MapTest.java
 src/main/java/org/openapitools/client/model/MixedPropertiesAndAdditionalPropertiesClass.java
 src/main/java/org/openapitools/client/model/Model200Response.java
@@ -204,6 +223,7 @@ src/main/java/org/openapitools/client/model/ModelList.java
 src/main/java/org/openapitools/client/model/ModelReturn.java
 src/main/java/org/openapitools/client/model/ModelWithOneOfAnyOfProperties.java
 src/main/java/org/openapitools/client/model/Name.java
+src/main/java/org/openapitools/client/model/NestedArrayWithDefaultValues.java
 src/main/java/org/openapitools/client/model/NewPet.java
 src/main/java/org/openapitools/client/model/NewPetCategoryInlineAllof.java
 src/main/java/org/openapitools/client/model/NewPetCategoryInlineAllofAllOfCategoryTag.java

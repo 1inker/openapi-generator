@@ -51,6 +51,7 @@ data class Pet (
 
     /* pet status in the store */
     @SerializedName("status")
+    @Deprecated(message = "This property is deprecated.")
     val status: Pet.Status? = null
 
 ) {
@@ -66,5 +67,6 @@ data class Pet (
         @SerializedName(value = "sold") sold("sold"),
         @SerializedName(value = "unknown_default_open_api") unknown_default_open_api("unknown_default_open_api");
     }
+
 }
 

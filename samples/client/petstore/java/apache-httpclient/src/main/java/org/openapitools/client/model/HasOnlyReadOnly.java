@@ -34,33 +34,37 @@ import java.util.StringJoiner;
   HasOnlyReadOnly.JSON_PROPERTY_FOO
 })
 @JsonTypeName("hasOnlyReadOnly")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.6.0-SNAPSHOT")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.20.0-SNAPSHOT")
 public class HasOnlyReadOnly {
   public static final String JSON_PROPERTY_BAR = "bar";
+  @javax.annotation.Nullable
   private String bar;
 
   public static final String JSON_PROPERTY_FOO = "foo";
+  @javax.annotation.Nullable
   private String foo;
 
   public HasOnlyReadOnly() {
   }
-
+  /**
+   * Constructor with only readonly parameters
+   */
   @JsonCreator
   public HasOnlyReadOnly(
-    @JsonProperty(JSON_PROPERTY_BAR) String bar, 
-    @JsonProperty(JSON_PROPERTY_FOO) String foo
+    @JsonProperty(value = JSON_PROPERTY_BAR, required = false) String bar, 
+    @JsonProperty(value = JSON_PROPERTY_FOO, required = false) String foo
   ) {
     this();
     this.bar = bar;
     this.foo = foo;
   }
 
-   /**
+  /**
    * Get bar
    * @return bar
-  **/
+   */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_BAR)
+  @JsonProperty(value = JSON_PROPERTY_BAR, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public String getBar() {
@@ -69,13 +73,12 @@ public class HasOnlyReadOnly {
 
 
 
-
-   /**
+  /**
    * Get foo
    * @return foo
-  **/
+   */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_FOO)
+  @JsonProperty(value = JSON_PROPERTY_FOO, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public String getFoo() {
@@ -158,7 +161,7 @@ public class HasOnlyReadOnly {
     // add `bar` to the URL query string
     if (getBar() != null) {
       try {
-        joiner.add(String.format("%sbar%s=%s", prefix, suffix, URLEncoder.encode(String.valueOf(getBar()), "UTF-8").replaceAll("\\+", "%20")));
+        joiner.add(String.format(java.util.Locale.ROOT, "%sbar%s=%s", prefix, suffix, URLEncoder.encode(String.valueOf(getBar()), "UTF-8").replaceAll("\\+", "%20")));
       } catch (UnsupportedEncodingException e) {
         // Should never happen, UTF-8 is always supported
         throw new RuntimeException(e);
@@ -168,7 +171,7 @@ public class HasOnlyReadOnly {
     // add `foo` to the URL query string
     if (getFoo() != null) {
       try {
-        joiner.add(String.format("%sfoo%s=%s", prefix, suffix, URLEncoder.encode(String.valueOf(getFoo()), "UTF-8").replaceAll("\\+", "%20")));
+        joiner.add(String.format(java.util.Locale.ROOT, "%sfoo%s=%s", prefix, suffix, URLEncoder.encode(String.valueOf(getFoo()), "UTF-8").replaceAll("\\+", "%20")));
       } catch (UnsupportedEncodingException e) {
         // Should never happen, UTF-8 is always supported
         throw new RuntimeException(e);

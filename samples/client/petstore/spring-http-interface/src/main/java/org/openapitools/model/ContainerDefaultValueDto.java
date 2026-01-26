@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.openapitools.jackson.nullable.JsonNullable;
+import org.springframework.lang.Nullable;
 import java.util.NoSuchElementException;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
@@ -23,7 +24,7 @@ import jakarta.annotation.Generated;
  */
 
 @JsonTypeName("ContainerDefaultValue")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.6.0-SNAPSHOT")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.20.0-SNAPSHOT")
 public class ContainerDefaultValueDto {
 
   
@@ -37,6 +38,10 @@ public class ContainerDefaultValueDto {
 
   
   private JsonNullable<List<String>> nullableArrayWithDefault = JsonNullable.<List<String>>undefined();
+
+  public ContainerDefaultValueDto() {
+    super();
+  }
 
   public ContainerDefaultValueDto nullableArray(List<String> nullableArray) {
     this.nullableArray = JsonNullable.of(nullableArray);
@@ -54,7 +59,7 @@ public class ContainerDefaultValueDto {
   /**
    * Get nullableArray
    * @return nullableArray
-  */
+   */
   
   @JsonProperty("nullable_array")
   public JsonNullable<List<String>> getNullableArray() {
@@ -81,7 +86,7 @@ public class ContainerDefaultValueDto {
   /**
    * Get nullableRequiredArray
    * @return nullableRequiredArray
-  */
+   */
   @NotNull
   @JsonProperty("nullable_required_array")
   public JsonNullable<List<String>> getNullableRequiredArray() {
@@ -108,7 +113,7 @@ public class ContainerDefaultValueDto {
   /**
    * Get requiredArray
    * @return requiredArray
-  */
+   */
   @NotNull
   @JsonProperty("required_array")
   public List<String> getRequiredArray() {
@@ -135,7 +140,7 @@ public class ContainerDefaultValueDto {
   /**
    * Get nullableArrayWithDefault
    * @return nullableArrayWithDefault
-  */
+   */
   
   @JsonProperty("nullable_array_with_default")
   public JsonNullable<List<String>> getNullableArrayWithDefault() {
@@ -193,7 +198,7 @@ public class ContainerDefaultValueDto {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(@Nullable Object o) {
     if (o == null) {
       return "null";
     }

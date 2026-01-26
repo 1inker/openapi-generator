@@ -35,34 +35,36 @@ import io.github.threetenjaxb.core.*;
   Model200Response.JSON_PROPERTY_PROPERTY_CLASS
 })
 @JsonTypeName("200_response")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.6.0-SNAPSHOT")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.20.0-SNAPSHOT")
 @XmlRootElement(name = "Name")
 @XmlAccessorType(XmlAccessType.FIELD)
 @JacksonXmlRootElement(localName = "Name")
 public class Model200Response {
   public static final String JSON_PROPERTY_NAME = "name";
   @XmlElement(name = "name")
+  @javax.annotation.Nullable
   private Integer name;
 
   public static final String JSON_PROPERTY_PROPERTY_CLASS = "class";
   @XmlElement(name = "class")
+  @javax.annotation.Nullable
   private String propertyClass;
 
   public Model200Response() {
   }
 
-  public Model200Response name(Integer name) {
+  public Model200Response name(@javax.annotation.Nullable Integer name) {
     
     this.name = name;
     return this;
   }
 
-   /**
+  /**
    * Get name
    * @return name
-  **/
+   */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_NAME)
+  @JsonProperty(value = JSON_PROPERTY_NAME, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   @JacksonXmlProperty(localName = "name")
 
@@ -71,26 +73,25 @@ public class Model200Response {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_NAME)
+  @JsonProperty(value = JSON_PROPERTY_NAME, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   @JacksonXmlProperty(localName = "name")
-  public void setName(Integer name) {
+  public void setName(@javax.annotation.Nullable Integer name) {
     this.name = name;
   }
 
-
-  public Model200Response propertyClass(String propertyClass) {
+  public Model200Response propertyClass(@javax.annotation.Nullable String propertyClass) {
     
     this.propertyClass = propertyClass;
     return this;
   }
 
-   /**
+  /**
    * Get propertyClass
    * @return propertyClass
-  **/
+   */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_PROPERTY_CLASS)
+  @JsonProperty(value = JSON_PROPERTY_PROPERTY_CLASS, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   @JacksonXmlProperty(localName = "class")
 
@@ -99,12 +100,13 @@ public class Model200Response {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_PROPERTY_CLASS)
+  @JsonProperty(value = JSON_PROPERTY_PROPERTY_CLASS, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   @JacksonXmlProperty(localName = "class")
-  public void setPropertyClass(String propertyClass) {
+  public void setPropertyClass(@javax.annotation.Nullable String propertyClass) {
     this.propertyClass = propertyClass;
   }
+
 
   @Override
   public boolean equals(Object o) {

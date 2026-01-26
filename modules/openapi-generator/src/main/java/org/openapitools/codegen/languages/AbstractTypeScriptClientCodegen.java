@@ -18,10 +18,10 @@
 package org.openapitools.codegen.languages;
 
 import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.media.ArraySchema;
-import io.swagger.v3.oas.models.media.ComposedSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.Parameter;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -37,7 +37,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.function.BiPredicate;
@@ -236,23 +235,32 @@ public abstract class AbstractTypeScriptClientCodegen extends DefaultCodegen imp
     public static final String NULL_SAFE_ADDITIONAL_PROPS = "nullSafeAdditionalProps";
     public static final String NULL_SAFE_ADDITIONAL_PROPS_DESC = "Set to make additional properties types declare that their indexer may return undefined";
 
+    public static final String LICENSE_NAME_DEFAULT_VALUE = "Unlicense";
+
     // NOTE: SimpleDateFormat is not thread-safe and may not be static unless it is thread-local
     @SuppressWarnings("squid:S5164")
     protected static final ThreadLocal<SimpleDateFormat> SNAPSHOT_SUFFIX_FORMAT = ThreadLocal.withInitial(() -> new SimpleDateFormat("yyyyMMddHHmm", Locale.ROOT));
 
-    protected MODEL_PROPERTY_NAMING_TYPE modelPropertyNaming = MODEL_PROPERTY_NAMING_TYPE.original;
+    @Getter protected MODEL_PROPERTY_NAMING_TYPE modelPropertyNaming = MODEL_PROPERTY_NAMING_TYPE.original;
     protected ENUM_PROPERTY_NAMING_TYPE enumPropertyNaming = ENUM_PROPERTY_NAMING_TYPE.PascalCase;
-    protected PARAM_NAMING_TYPE paramNaming = PARAM_NAMING_TYPE.camelCase;
+    @Getter protected PARAM_NAMING_TYPE paramNaming = PARAM_NAMING_TYPE.camelCase;
     protected boolean enumPropertyNamingReplaceSpecialChar = false;
+    @Getter @Setter
     protected Boolean supportsES6 = false;
+    @Getter @Setter
     protected Boolean nullSafeAdditionalProps = false;
     protected HashSet<String> languageGenericTypes;
+    @Getter @Setter
     protected String npmName = null;
+    @Getter @Setter
     protected String npmVersion = "1.0.0";
 
     protected String enumSuffix = "Enum";
 
     protected String classEnumSeparator = ".";
+
+    @Getter() @Setter
+    protected String licenseName = getLicenseNameDefaultValue();
 
     public AbstractTypeScriptClientCodegen() {
         super();
@@ -296,6 +304,14 @@ public abstract class AbstractTypeScriptClientCodegen extends DefaultCodegen imp
                 // Typescript reserved words
                 "abstract", "await", "boolean", "break", "byte", "case", "catch", "char", "class", "const", "continue", "debugger", "default", "delete", "do", "double", "else", "enum", "export", "extends", "false", "final", "finally", "float", "for", "function", "goto", "if", "implements", "import", "in", "instanceof", "int", "interface", "let", "long", "native", "new", "null", "package", "private", "protected", "public", "return", "short", "static", "super", "switch", "synchronized", "this", "throw", "transient", "true", "try", "typeof", "var", "void", "volatile", "while", "with", "yield"));
 
+        Set<String> utilityTypes = new HashSet<>(Arrays.asList(
+                "Awaited","Partial","Required","Readonly","Record","Pick","Omit","Exclude","Extract","NonNullable",
+                "Parameters","ConstructorParameters","ReturnType","InstanceType","NoInfer","ThisParameterType",
+                "OmitThisParameter","ThisType","Uppercase","Lowercase","Capitalize","Uncapitalize")
+        );
+        defaultIncludes = new HashSet<>();
+        defaultIncludes.addAll(utilityTypes);
+
         languageSpecificPrimitives = new HashSet<>(Arrays.asList(
                 "string",
                 "String",
@@ -317,6 +333,7 @@ public abstract class AbstractTypeScriptClientCodegen extends DefaultCodegen imp
                 "object",
                 "Set"
         ));
+        languageSpecificPrimitives.addAll(utilityTypes);
 
         languageGenericTypes = new HashSet<>(Collections.singletonList(
                 "Array"
@@ -330,6 +347,7 @@ public abstract class AbstractTypeScriptClientCodegen extends DefaultCodegen imp
         typeMapping.put("Array", "Array");
         typeMapping.put("array", "Array");
         typeMapping.put("boolean", "boolean");
+        typeMapping.put("decimal", "string");
         typeMapping.put("string", "string");
         typeMapping.put("int", "number");
         typeMapping.put("float", "number");
@@ -366,6 +384,7 @@ public abstract class AbstractTypeScriptClientCodegen extends DefaultCodegen imp
                 false));
         this.cliOptions.add(new CliOption(NULL_SAFE_ADDITIONAL_PROPS, NULL_SAFE_ADDITIONAL_PROPS_DESC).defaultValue(String.valueOf(this.getNullSafeAdditionalProps())));
         this.cliOptions.add(CliOption.newBoolean(ENUM_PROPERTY_NAMING_REPLACE_SPECIAL_CHAR, ENUM_PROPERTY_NAMING_REPLACE_SPECIAL_CHAR_DESC, false));
+        cliOptions.add(new CliOption(CodegenConstants.LICENSE_NAME, CodegenConstants.LICENSE_NAME_DESC).defaultValue(this.licenseName));
     }
 
     protected void supportModelPropertyNaming(MODEL_PROPERTY_NAMING_TYPE defaultModelPropertyNaming) {
@@ -403,7 +422,9 @@ public abstract class AbstractTypeScriptClientCodegen extends DefaultCodegen imp
             setParamNaming((String) additionalProperties.get(CodegenConstants.PARAM_NAMING));
         }
 
-        setSupportsES6(convertPropertyToBooleanAndWriteBack(CodegenConstants.SUPPORTS_ES6));
+        if (additionalProperties.containsKey(CodegenConstants.SUPPORTS_ES6)) {
+            setSupportsES6(convertPropertyToBooleanAndWriteBack(CodegenConstants.SUPPORTS_ES6));
+        }
 
         if (additionalProperties.containsKey(NULL_SAFE_ADDITIONAL_PROPS)) {
             setNullSafeAdditionalProps(Boolean.valueOf(additionalProperties.get(NULL_SAFE_ADDITIONAL_PROPS).toString()));
@@ -411,6 +432,10 @@ public abstract class AbstractTypeScriptClientCodegen extends DefaultCodegen imp
 
         if (additionalProperties.containsKey(NPM_NAME)) {
             this.setNpmName(additionalProperties.get(NPM_NAME).toString());
+        }
+
+        if (additionalProperties.containsKey(CodegenConstants.LICENSE_NAME)) {
+            this.setLicenseName(additionalProperties.get(CodegenConstants.LICENSE_NAME).toString());
         }
     }
 
@@ -485,6 +510,7 @@ public abstract class AbstractTypeScriptClientCodegen extends DefaultCodegen imp
 
         }
 
+        additionalProperties.put(CodegenConstants.LICENSE_NAME, licenseName);
     }
 
     @Override
@@ -625,7 +651,11 @@ public abstract class AbstractTypeScriptClientCodegen extends DefaultCodegen imp
     public String getTypeDeclaration(Schema p) {
         if (ModelUtils.isArraySchema(p)) {
             Schema<?> items = ModelUtils.getSchemaItems(p);
-            return getSchemaType(p) + "<" + getTypeDeclaration(unaliasSchema(items)) + ">";
+            String postfix = "";
+            if (Boolean.TRUE.equals(items.getNullable())) {
+                postfix = " | null";
+            }
+            return getSchemaType(p) + "<" + getTypeDeclaration(unaliasSchema(items)) + postfix + ">";
         } else if (ModelUtils.isMapSchema(p)) {
             Schema<?> inner = getSchemaAdditionalProperties(p);
             String nullSafeSuffix = getNullSafeAdditionalProps() ? " | undefined" : "";
@@ -728,6 +758,11 @@ public abstract class AbstractTypeScriptClientCodegen extends DefaultCodegen imp
                 return p.getDefault().toString();
             }
             return UNDEFINED_VALUE;
+        } else if (ModelUtils.isDecimalSchema(p)) {
+            if (p.getDefault() != null) {
+                return p.getDefault().toString();
+            }
+            return UNDEFINED_VALUE;
         } else if (ModelUtils.isDateSchema(p)) {
             if (p.getDefault() != null) {
                 return p.getDefault().toString();
@@ -779,7 +814,8 @@ public abstract class AbstractTypeScriptClientCodegen extends DefaultCodegen imp
             return openAPIType;
         } else if (typeMapping.containsKey(openAPIType)) {
             type = typeMapping.get(openAPIType);
-            if (languageSpecificPrimitives.contains(type)) {
+            String typeWithoutGeneric = typeWithoutGeneric(type);
+            if (languageSpecificPrimitives.contains(typeWithoutGeneric)) {
                 return type;
             }
         } else {
@@ -827,14 +863,6 @@ public abstract class AbstractTypeScriptClientCodegen extends DefaultCodegen imp
         }
     }
 
-    public MODEL_PROPERTY_NAMING_TYPE getModelPropertyNaming() {
-        return modelPropertyNaming;
-    }
-
-    public PARAM_NAMING_TYPE getParamNaming() {
-        return paramNaming;
-    }
-
     private String getNameUsingParamNaming(String name) {
         switch (getParamNaming()) {
             case original:
@@ -856,6 +884,7 @@ public abstract class AbstractTypeScriptClientCodegen extends DefaultCodegen imp
     private String getNameUsingModelPropertyNaming(String name) {
         switch (getModelPropertyNaming()) {
             case original:
+                additionalProperties.put("modelPropertyNamingOriginal", true);
                 return name;
             case camelCase:
                 return camelize(name, LOWERCASE_FIRST_LETTER);
@@ -1037,38 +1066,6 @@ public abstract class AbstractTypeScriptClientCodegen extends DefaultCodegen imp
         return result;
     }
 
-    public void setSupportsES6(Boolean value) {
-        supportsES6 = value;
-    }
-
-    public Boolean getSupportsES6() {
-        return supportsES6;
-    }
-
-    public Boolean getNullSafeAdditionalProps() {
-        return nullSafeAdditionalProps;
-    }
-
-    public void setNullSafeAdditionalProps(Boolean value) {
-        nullSafeAdditionalProps = value;
-    }
-
-    public String getNpmName() {
-        return npmName;
-    }
-
-    public void setNpmName(String npmName) {
-        this.npmName = npmName;
-    }
-
-    public String getNpmVersion() {
-        return npmVersion;
-    }
-
-    public void setNpmVersion(String npmVersion) {
-        this.npmVersion = npmVersion;
-    }
-
     private void setDiscriminatorValue(CodegenModel model, String baseName, String value) {
         for (CodegenProperty prop : model.allVars) {
             if (prop.baseName.equals(baseName)) {
@@ -1123,20 +1120,7 @@ public abstract class AbstractTypeScriptClientCodegen extends DefaultCodegen imp
         }
         // only process files with ts extension
         if ("ts".equals(FilenameUtils.getExtension(file.toString()))) {
-            String command = tsPostProcessFile + " " + file;
-            try {
-                Process p = Runtime.getRuntime().exec(command);
-                int exitValue = p.waitFor();
-                if (exitValue != 0) {
-                    LOGGER.error("Error running the command ({}). Exit value: {}", command, exitValue);
-                } else {
-                    LOGGER.info("Successfully executed: {}", command);
-                }
-            } catch (InterruptedException | IOException e) {
-                LOGGER.error("Error running the command ({}). Exception: {}", command, e.getMessage());
-                // Restore interrupted state
-                Thread.currentThread().interrupt();
-            }
+            this.executePostProcessor(new String[]{tsPostProcessFile, file.toString()});
         }
     }
 
@@ -1184,7 +1168,21 @@ public abstract class AbstractTypeScriptClientCodegen extends DefaultCodegen imp
     }
 
     @Override
+    protected boolean needToImport(String type) {
+        return super.needToImport(typeWithoutGeneric(type));
+    }
+
+    private String typeWithoutGeneric(String type) {
+        int genericIndex = type.indexOf("<");
+        return genericIndex == -1 ? type : type.substring(0, genericIndex);
+    }
+
+    @Override
     public GeneratorLanguage generatorLanguage() {
         return GeneratorLanguage.TYPESCRIPT;
+    }
+
+    protected String getLicenseNameDefaultValue() {
+        return LICENSE_NAME_DEFAULT_VALUE;
     }
 }

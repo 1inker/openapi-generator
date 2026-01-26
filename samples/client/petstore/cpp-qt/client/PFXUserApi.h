@@ -38,6 +38,7 @@ public:
     void initializeServerConfigs();
     int setDefaultServerValue(int serverIndex,const QString &operation, const QString &variable,const QString &val);
     void setServerIndex(const QString &operation, int serverIndex);
+    void setServerIndex(int serverIndex);
     void setApiKey(const QString &apiKeyName, const QString &apiKey);
     void setBearerToken(const QString &token);
     void setUsername(const QString &username);
@@ -59,42 +60,42 @@ public:
     /**
     * @param[in]  pfx_user PFXUser [required]
     */
-    void createUser(const PFXUser &pfx_user);
+    virtual void createUser(const PFXUser &pfx_user);
 
     /**
     * @param[in]  pfx_user QList<PFXUser> [required]
     */
-    void createUsersWithArrayInput(const QList<PFXUser> &pfx_user);
+    virtual void createUsersWithArrayInput(const QList<PFXUser> &pfx_user);
 
     /**
     * @param[in]  pfx_user QList<PFXUser> [required]
     */
-    void createUsersWithListInput(const QList<PFXUser> &pfx_user);
+    virtual void createUsersWithListInput(const QList<PFXUser> &pfx_user);
 
     /**
     * @param[in]  username QString [required]
     */
-    void deleteUser(const QString &username);
+    virtual void deleteUser(const QString &username);
 
     /**
     * @param[in]  username QString [required]
     */
-    void getUserByName(const QString &username);
+    virtual void getUserByName(const QString &username);
 
     /**
     * @param[in]  username QString [required]
     * @param[in]  password QString [required]
     */
-    void loginUser(const QString &username, const QString &password);
+    virtual void loginUser(const QString &username, const QString &password);
 
 
-    void logoutUser();
+    virtual void logoutUser();
 
     /**
     * @param[in]  username QString [required]
     * @param[in]  pfx_user PFXUser [required]
     */
-    void updateUser(const QString &username, const PFXUser &pfx_user);
+    virtual void updateUser(const QString &username, const PFXUser &pfx_user);
 
 
 private:
@@ -138,6 +139,7 @@ Q_SIGNALS:
     void loginUserSignal(QString summary);
     void logoutUserSignal();
     void updateUserSignal();
+
 
     void createUserSignalFull(PFXHttpRequestWorker *worker);
     void createUsersWithArrayInputSignalFull(PFXHttpRequestWorker *worker);

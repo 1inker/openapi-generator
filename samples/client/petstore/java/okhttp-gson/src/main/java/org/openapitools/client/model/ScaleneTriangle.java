@@ -37,7 +37,6 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
 
-import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -49,53 +48,55 @@ import org.openapitools.client.JSON;
 /**
  * ScaleneTriangle
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.6.0-SNAPSHOT")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.20.0-SNAPSHOT")
 public class ScaleneTriangle {
   public static final String SERIALIZED_NAME_SHAPE_TYPE = "shapeType";
   @SerializedName(SERIALIZED_NAME_SHAPE_TYPE)
+  @javax.annotation.Nonnull
   private String shapeType;
 
   public static final String SERIALIZED_NAME_TRIANGLE_TYPE = "triangleType";
   @SerializedName(SERIALIZED_NAME_TRIANGLE_TYPE)
+  @javax.annotation.Nonnull
   private String triangleType;
 
   public ScaleneTriangle() {
   }
 
-  public ScaleneTriangle shapeType(String shapeType) {
+  public ScaleneTriangle shapeType(@javax.annotation.Nonnull String shapeType) {
     this.shapeType = shapeType;
     return this;
   }
 
-   /**
+  /**
    * Get shapeType
    * @return shapeType
-  **/
+   */
   @javax.annotation.Nonnull
   public String getShapeType() {
     return shapeType;
   }
 
-  public void setShapeType(String shapeType) {
+  public void setShapeType(@javax.annotation.Nonnull String shapeType) {
     this.shapeType = shapeType;
   }
 
 
-  public ScaleneTriangle triangleType(String triangleType) {
+  public ScaleneTriangle triangleType(@javax.annotation.Nonnull String triangleType) {
     this.triangleType = triangleType;
     return this;
   }
 
-   /**
+  /**
    * Get triangleType
    * @return triangleType
-  **/
+   */
   @javax.annotation.Nonnull
   public String getTriangleType() {
     return triangleType;
   }
 
-  public void setTriangleType(String triangleType) {
+  public void setTriangleType(@javax.annotation.Nonnull String triangleType) {
     this.triangleType = triangleType;
   }
 
@@ -192,41 +193,37 @@ public class ScaleneTriangle {
 
   static {
     // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>();
-    openapiFields.add("shapeType");
-    openapiFields.add("triangleType");
+    openapiFields = new HashSet<String>(Arrays.asList("shapeType", "triangleType"));
 
     // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>();
-    openapiRequiredFields.add("shapeType");
-    openapiRequiredFields.add("triangleType");
+    openapiRequiredFields = new HashSet<String>(Arrays.asList("shapeType", "triangleType"));
   }
 
- /**
-  * Validates the JSON Element and throws an exception if issues found
-  *
-  * @param jsonElement JSON Element
-  * @throws IOException if the JSON Element is invalid with respect to ScaleneTriangle
-  */
+  /**
+   * Validates the JSON Element and throws an exception if issues found
+   *
+   * @param jsonElement JSON Element
+   * @throws IOException if the JSON Element is invalid with respect to ScaleneTriangle
+   */
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
         if (!ScaleneTriangle.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in ScaleneTriangle is not found in the empty JSON string", ScaleneTriangle.openapiRequiredFields.toString()));
+          throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in ScaleneTriangle is not found in the empty JSON string", ScaleneTriangle.openapiRequiredFields.toString()));
         }
       }
 
       // check to make sure all required properties/fields are present in the JSON string
       for (String requiredField : ScaleneTriangle.openapiRequiredFields) {
         if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-          throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
+          throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
       if (!jsonObj.get("shapeType").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `shapeType` to be a primitive type in the JSON string but got `%s`", jsonObj.get("shapeType").toString()));
+        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `shapeType` to be a primitive type in the JSON string but got `%s`", jsonObj.get("shapeType").toString()));
       }
       if (!jsonObj.get("triangleType").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `triangleType` to be a primitive type in the JSON string but got `%s`", jsonObj.get("triangleType").toString()));
+        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `triangleType` to be a primitive type in the JSON string but got `%s`", jsonObj.get("triangleType").toString()));
       }
   }
 
@@ -287,7 +284,7 @@ public class ScaleneTriangle {
                    else if (entry.getValue().getAsJsonPrimitive().isBoolean())
                      instance.putAdditionalProperty(entry.getKey(), entry.getValue().getAsBoolean());
                    else
-                     throw new IllegalArgumentException(String.format("The field `%s` has unknown primitive type. Value: %s", entry.getKey(), entry.getValue().toString()));
+                     throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` has unknown primitive type. Value: %s", entry.getKey(), entry.getValue().toString()));
                  } else if (entry.getValue().isJsonArray()) {
                      instance.putAdditionalProperty(entry.getKey(), gson.fromJson(entry.getValue(), List.class));
                  } else { // JSON object
@@ -302,22 +299,22 @@ public class ScaleneTriangle {
     }
   }
 
- /**
-  * Create an instance of ScaleneTriangle given an JSON string
-  *
-  * @param jsonString JSON string
-  * @return An instance of ScaleneTriangle
-  * @throws IOException if the JSON string is invalid with respect to ScaleneTriangle
-  */
+  /**
+   * Create an instance of ScaleneTriangle given an JSON string
+   *
+   * @param jsonString JSON string
+   * @return An instance of ScaleneTriangle
+   * @throws IOException if the JSON string is invalid with respect to ScaleneTriangle
+   */
   public static ScaleneTriangle fromJson(String jsonString) throws IOException {
     return JSON.getGson().fromJson(jsonString, ScaleneTriangle.class);
   }
 
- /**
-  * Convert an instance of ScaleneTriangle to an JSON string
-  *
-  * @return JSON string
-  */
+  /**
+   * Convert an instance of ScaleneTriangle to an JSON string
+   *
+   * @return JSON string
+   */
   public String toJson() {
     return JSON.getGson().toJson(this);
   }

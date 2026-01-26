@@ -13,15 +13,18 @@
         /// <param name="{{#lambda.camel_case}}{{name}}{{/lambda.camel_case}}"></param>
         {{/composedSchemas.anyOf}}
         {{#allVars}}
+        {{^isDiscriminator}}
         /// <param name="{{#lambda.camel_case}}{{name}}{{/lambda.camel_case}}">{{description}}{{^description}}{{#lambda.camel_case}}{{name}}{{/lambda.camel_case}}{{/description}}{{#defaultValue}} (default to {{.}}){{/defaultValue}}</param>
+        {{/isDiscriminator}}
         {{/allVars}}
-        {{#model.vendorExtensions.x-model-is-mutatable}}{{>visibility}}{{/model.vendorExtensions.x-model-is-mutatable}}{{^model.vendorExtensions.x-model-is-mutatable}}internal{{/model.vendorExtensions.x-model-is-mutatable}} {{classname}}({{#lambda.joinWithComma}}{{{dataType}}} {{#lambda.escape_reserved_word}}{{#lambda.camel_case}}{{name}}{{/lambda.camel_case}}{{/lambda.escape_reserved_word}}  {{#model.composedSchemas.anyOf}}{{^required}}Option<{{/required}}{{{dataType}}}{{>NullConditionalProperty}}{{^required}}>{{/required}} {{#lambda.escape_reserved_word}}{{#lambda.camel_case}}{{baseType}}{{/lambda.camel_case}}{{/lambda.escape_reserved_word}}  {{/model.composedSchemas.anyOf}}{{>ModelSignature}}{{/lambda.joinWithComma}}){{#parent}} : base({{#lambda.joinWithComma}}{{#parentModel.composedSchemas.oneOf}}{{#lambda.escape_reserved_word}}{{#lambda.camel_case}}{{parent}}{{/lambda.camel_case}}{{/lambda.escape_reserved_word}}.{{#lambda.titlecase}}{{baseType}}{{/lambda.titlecase}}  {{/parentModel.composedSchemas.oneOf}}{{>ModelBaseSignature}}{{/lambda.joinWithComma}}){{/parent}}
+        {{#model.vendorExtensions.x-model-is-mutable}}{{>visibility}}{{/model.vendorExtensions.x-model-is-mutable}}{{^model.vendorExtensions.x-model-is-mutable}}internal{{/model.vendorExtensions.x-model-is-mutable}} {{classname}}({{#lambda.joinWithComma}}{{{dataType}}} {{#lambda.escape_reserved_word}}{{#lambda.camel_case}}{{name}}{{/lambda.camel_case}}{{/lambda.escape_reserved_word}}  {{#model.composedSchemas.anyOf}}{{^required}}Option<{{/required}}{{{dataType}}}{{>NullConditionalProperty}}{{^required}}>{{/required}} {{#lambda.escape_reserved_word}}{{#lambda.camel_case}}{{baseType}}{{/lambda.camel_case}}{{/lambda.escape_reserved_word}}  {{/model.composedSchemas.anyOf}}{{>ModelSignature}}{{/lambda.joinWithComma}}){{#parent}} : base({{#lambda.joinWithComma}}{{#parentModel.composedSchemas.oneOf}}{{#lambda.escape_reserved_word}}{{#lambda.camel_case}}{{parent}}{{/lambda.camel_case}}{{/lambda.escape_reserved_word}}.{{#lambda.titlecase}}{{baseType}}{{/lambda.titlecase}}  {{/parentModel.composedSchemas.oneOf}}{{>ModelBaseSignature}}{{/lambda.joinWithComma}}){{/parent}}
         {
             {{#composedSchemas.anyOf}}
             {{#lambda.titlecase}}{{name}}{{/lambda.titlecase}}{{^required}}Option{{/required}} = {{#lambda.escape_reserved_word}}{{#lambda.camel_case}}{{name}}{{/lambda.camel_case}}{{/lambda.escape_reserved_word}};
             {{/composedSchemas.anyOf}}
             {{name}} = {{#lambda.escape_reserved_word}}{{#lambda.camel_case}}{{name}}{{/lambda.camel_case}}{{/lambda.escape_reserved_word}};
             {{#allVars}}
+            {{^isDiscriminator}}
             {{^isInherited}}
             {{name}}{{^required}}Option{{/required}} = {{#lambda.escape_reserved_word}}{{#lambda.camel_case}}{{name}}{{/lambda.camel_case}}{{/lambda.escape_reserved_word}};
             {{/isInherited}}
@@ -30,6 +33,14 @@
             {{name}}{{^required}}Option{{/required}} = {{#lambda.escape_reserved_word}}{{#lambda.camel_case}}{{name}}{{/lambda.camel_case}}{{/lambda.escape_reserved_word}};
             {{/isNew}}
             {{/isInherited}}
+            {{/isDiscriminator}}
+            {{#vendorExtensions.x-is-base-or-new-discriminator}}
+            {{^model.composedSchemas.anyOf}}
+            {{^model.composedSchemas.oneOf}}
+            {{name}} = {{^isEnum}}this.GetType().Name{{/isEnum}}{{#isEnum}}({{datatypeWithEnum}})Enum.Parse(typeof({{datatypeWithEnum}}), this.GetType().Name){{/isEnum}};
+            {{/model.composedSchemas.oneOf}}
+            {{/model.composedSchemas.anyOf}}
+            {{/vendorExtensions.x-is-base-or-new-discriminator}}
             {{/allVars}}
             OnCreated();
         }
@@ -44,17 +55,20 @@
         /// <param name="{{#lambda.camel_case}}{{name}}{{/lambda.camel_case}}"></param>
         {{/composedSchemas.anyOf}}
         {{#allVars}}
+        {{^isDiscriminator}}
         /// <param name="{{#lambda.camel_case}}{{name}}{{/lambda.camel_case}}">{{description}}{{^description}}{{#lambda.camel_case}}{{name}}{{/lambda.camel_case}}{{/description}}{{#defaultValue}} (default to {{.}}){{/defaultValue}}</param>
+        {{/isDiscriminator}}
         {{/allVars}}
         {{^composedSchemas.anyOf}}
         [JsonConstructor]
         {{/composedSchemas.anyOf}}
-        {{#model.vendorExtensions.x-model-is-mutatable}}{{>visibility}}{{/model.vendorExtensions.x-model-is-mutatable}}{{^model.vendorExtensions.x-model-is-mutatable}}internal{{/model.vendorExtensions.x-model-is-mutatable}} {{classname}}({{#lambda.joinWithComma}}{{#composedSchemas.anyOf}}{{^required}}Option<{{/required}}{{{baseType}}}{{>NullConditionalProperty}}{{^required}}>{{/required}} {{#lambda.escape_reserved_word}}{{#lambda.camel_case}}{{name}}{{/lambda.camel_case}}{{/lambda.escape_reserved_word}}  {{/composedSchemas.anyOf}}{{>ModelSignature}}{{/lambda.joinWithComma}}){{#parent}} : base({{#lambda.joinWithComma}}{{>ModelBaseSignature}}{{/lambda.joinWithComma}}){{/parent}}
+        {{#model.vendorExtensions.x-model-is-mutable}}{{>visibility}}{{/model.vendorExtensions.x-model-is-mutable}}{{^model.vendorExtensions.x-model-is-mutable}}internal{{/model.vendorExtensions.x-model-is-mutable}} {{classname}}({{#lambda.joinWithComma}}{{#composedSchemas.anyOf}}{{^required}}Option<{{/required}}{{{datatypeWithEnum}}}{{>NullConditionalProperty}}{{^required}}>{{/required}} {{#lambda.escape_reserved_word}}{{#lambda.camel_case}}{{name}}{{/lambda.camel_case}}{{/lambda.escape_reserved_word}}  {{/composedSchemas.anyOf}}{{>ModelSignature}}{{/lambda.joinWithComma}}){{#parent}} : base({{#lambda.joinWithComma}}{{>ModelBaseSignature}}{{/lambda.joinWithComma}}){{/parent}}
         {
             {{#composedSchemas.anyOf}}
             {{#lambda.titlecase}}{{name}}{{/lambda.titlecase}}{{^required}}Option{{/required}} = {{#lambda.escape_reserved_word}}{{#lambda.camel_case}}{{name}}{{/lambda.camel_case}}{{/lambda.escape_reserved_word}};
             {{/composedSchemas.anyOf}}
             {{#allVars}}
+            {{^isDiscriminator}}
             {{^isInherited}}
             {{name}}{{^required}}Option{{/required}} = {{#lambda.escape_reserved_word}}{{#lambda.camel_case}}{{name}}{{/lambda.camel_case}}{{/lambda.escape_reserved_word}};
             {{/isInherited}}
@@ -63,6 +77,14 @@
             {{name}}{{^required}}Option{{/required}} = {{#lambda.escape_reserved_word}}{{#lambda.camel_case}}{{name}}{{/lambda.camel_case}}{{/lambda.escape_reserved_word}};
             {{/isNew}}
             {{/isInherited}}
+            {{/isDiscriminator}}
+            {{#vendorExtensions.x-is-base-or-new-discriminator}}
+            {{^model.composedSchemas.anyOf}}
+            {{^model.composedSchemas.oneOf}}
+            {{name}} = {{^isEnum}}this.GetType().Name{{/isEnum}}{{#isEnum}}({{datatypeWithEnum}})Enum.Parse(typeof({{datatypeWithEnum}}), this.GetType().Name){{/isEnum}};
+            {{/model.composedSchemas.oneOf}}
+            {{/model.composedSchemas.anyOf}}
+            {{/vendorExtensions.x-is-base-or-new-discriminator}}
             {{/allVars}}
             OnCreated();
         }
@@ -75,21 +97,24 @@
         {{#items}}
         {{^complexType}}
 {{>modelInnerEnum}}
+
         {{/complexType}}
         {{/items}}
         {{/items.isEnum}}
         {{#isEnum}}
         {{^complexType}}
 {{>modelInnerEnum}}
+
         {{/complexType}}
         {{/isEnum}}
+        {{^isDiscriminator}}
         {{#isEnum}}
         {{^required}}
         /// <summary>
         /// Used to track the state of {{{name}}}
         /// </summary>
         [JsonIgnore]
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
         public {{#isNew}}new {{/isNew}}Option<{{{datatypeWithEnum}}}{{>NullConditionalProperty}}> {{name}}Option { get; {{^isReadOnly}}private set; {{/isReadOnly}}}
 
         {{/required}}
@@ -100,7 +125,7 @@
         /// <value>{{.}}</value>
         {{/description}}
         {{#example}}
-        /// <example>{{.}}</example>
+        /* <example>{{.}}</example> */
         {{/example}}
         [JsonPropertyName("{{baseName}}")]
         {{#deprecated}}
@@ -109,6 +134,7 @@
         public {{#isNew}}new {{/isNew}}{{{datatypeWithEnum}}}{{#lambda.first}}{{#isNullable}}{{>NullConditionalProperty}}  {{/isNullable}}{{^required}}{{nrt?}}{{^nrt}}{{#vendorExtensions.x-is-value-type}}?{{/vendorExtensions.x-is-value-type}}{{/nrt}}  {{/required}}{{/lambda.first}} {{name}} {{#required}}{ get; {{^isReadOnly}}set; {{/isReadOnly}}}{{/required}}{{^required}}{ get { return this.{{name}}Option; } {{^isReadOnly}}set { this.{{name}}Option = new{{^net70OrLater}} Option<{{{datatypeWithEnum}}}{{>NullConditionalProperty}}>{{/net70OrLater}}(value); } {{/isReadOnly}}}{{/required}}
 
         {{/isEnum}}
+        {{/isDiscriminator}}
         {{/vars}}
         {{#composedSchemas.anyOf}}
         {{^vendorExtensions.x-duplicated-data-type}}
@@ -117,7 +143,7 @@
         /// Used to track the state of {{{name}}}
         /// </summary>
         [JsonIgnore]
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
         public {{#isNew}}new {{/isNew}}Option<{{{datatypeWithEnum}}}{{>NullConditionalProperty}}> {{#lambda.titlecase}}{{name}}{{/lambda.titlecase}}Option { get; {{^isReadOnly}}private set; {{/isReadOnly}}}
 
         {{/required}}
@@ -126,7 +152,7 @@
         /// </summary>{{#description}}
         /// <value>{{.}}</value>{{/description}}
         {{#example}}
-        /// <example>{{.}}</example>
+        /* <example>{{.}}</example> */
         {{/example}}
         {{#deprecated}}
         [Obsolete]
@@ -142,7 +168,7 @@
         /// </summary>{{#description}}
         /// <value>{{.}}</value>{{/description}}
         {{#example}}
-        /// <example>{{.}}</example>
+        /* <example>{{.}}</example> */
         {{/example}}
         {{#deprecated}}
         [Obsolete]
@@ -152,6 +178,20 @@
         {{/vendorExtensions.x-duplicated-data-type}}
         {{/composedSchemas.oneOf}}
         {{#allVars}}
+        {{#vendorExtensions.x-is-base-or-new-discriminator}}
+        {{^model.composedSchemas.anyOf}}
+        {{^model.composedSchemas.oneOf}}
+        /// <summary>
+        /// The discriminator
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public {{#isNew}}new {{/isNew}}{{datatypeWithEnum}} {{name}} { get; }
+
+        {{/model.composedSchemas.oneOf}}
+        {{/model.composedSchemas.anyOf}}
+        {{/vendorExtensions.x-is-base-or-new-discriminator}}
+        {{^vendorExtensions.x-is-base-or-new-discriminator}}
         {{^isEnum}}
         {{#isInherited}}
         {{#isNew}}
@@ -160,7 +200,7 @@
         /// Used to track the state of {{{name}}}
         /// </summary>
         [JsonIgnore]
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
         public new Option<{{{datatypeWithEnum}}}{{>NullConditionalProperty}}> {{name}}Option { get; {{^isReadOnly}}private set; {{/isReadOnly}}}
 
         {{/required}}
@@ -169,7 +209,7 @@
         /// </summary>{{#description}}
         /// <value>{{.}}</value>{{/description}}
         {{#example}}
-        /// <example>{{.}}</example>
+        /* <example>{{.}}</example> */
         {{/example}}
         [JsonPropertyName("{{baseName}}")]
         {{#deprecated}}
@@ -185,7 +225,7 @@
         /// Used to track the state of {{{name}}}
         /// </summary>
         [JsonIgnore]
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
         public Option<{{{datatypeWithEnum}}}{{>NullConditionalProperty}}> {{name}}Option { get; {{^isReadOnly}}private set; {{/isReadOnly}}}
 
         {{/required}}
@@ -194,7 +234,7 @@
         /// </summary>{{#description}}
         /// <value>{{.}}</value>{{/description}}
         {{#example}}
-        /// <example>{{.}}</example>
+        /* <example>{{.}}</example> */
         {{/example}}
         [JsonPropertyName("{{baseName}}")]
         {{#deprecated}}
@@ -204,6 +244,7 @@
 
         {{/isInherited}}
         {{/isEnum}}
+        {{/vendorExtensions.x-is-base-or-new-discriminator}}
         {{/allVars}}
         {{#isAdditionalPropertiesTrue}}
         {{^parentModel}}
@@ -227,7 +268,9 @@
             sb.Append("  ").Append(base.ToString()?.Replace("\n", "\n  ")).Append("\n");
             {{/parent}}
             {{#vars}}
+            {{^isDiscriminator}}
             sb.Append("  {{name}}: ").Append({{name}}).Append("\n");
+            {{/isDiscriminator}}
             {{/vars}}
             {{#isAdditionalPropertiesTrue}}
             {{^parentModel}}
@@ -318,15 +361,17 @@
                 {{/readOnlyVars}}
                 {{#readOnlyVars}}
                 {{#lambda.copy}}
-
                 if ({{name}} != null)
                     hashCode = (hashCode * 59) + {{name}}.GetHashCode();
+
                 {{/lambda.copy}}
                 {{#isNullable}}
-                {{#lambda.pasteOnce}}{{/lambda.pasteOnce}}
+                {{#lambda.pasteOnce}}
+                {{/lambda.pasteOnce}}
                 {{/isNullable}}
                 {{^required}}
-                {{#lambda.pasteOnce}}{{/lambda.pasteOnce}}
+                {{#lambda.pasteOnce}}
+                {{/lambda.pasteOnce}}
                 {{/required}}
                 {{/readOnlyVars}}
                 {{#isAdditionalPropertiesTrue}}
@@ -345,6 +390,7 @@
 {{^parentModel}}
 
 {{>validatable}}
+
 {{/parentModel}}
 {{/validatable}}
     }

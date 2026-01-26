@@ -37,7 +37,6 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
 
-import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -49,30 +48,31 @@ import org.openapitools.client.JSON;
 /**
  * TestInlineFreeformAdditionalPropertiesRequest
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.6.0-SNAPSHOT")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.20.0-SNAPSHOT")
 public class TestInlineFreeformAdditionalPropertiesRequest {
   public static final String SERIALIZED_NAME_SOME_PROPERTY = "someProperty";
   @SerializedName(SERIALIZED_NAME_SOME_PROPERTY)
+  @javax.annotation.Nullable
   private String someProperty;
 
   public TestInlineFreeformAdditionalPropertiesRequest() {
   }
 
-  public TestInlineFreeformAdditionalPropertiesRequest someProperty(String someProperty) {
+  public TestInlineFreeformAdditionalPropertiesRequest someProperty(@javax.annotation.Nullable String someProperty) {
     this.someProperty = someProperty;
     return this;
   }
 
-   /**
+  /**
    * Get someProperty
    * @return someProperty
-  **/
+   */
   @javax.annotation.Nullable
   public String getSomeProperty() {
     return someProperty;
   }
 
-  public void setSomeProperty(String someProperty) {
+  public void setSomeProperty(@javax.annotation.Nullable String someProperty) {
     this.someProperty = someProperty;
   }
 
@@ -167,28 +167,27 @@ public class TestInlineFreeformAdditionalPropertiesRequest {
 
   static {
     // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>();
-    openapiFields.add("someProperty");
+    openapiFields = new HashSet<String>(Arrays.asList("someProperty"));
 
     // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>();
+    openapiRequiredFields = new HashSet<String>(0);
   }
 
- /**
-  * Validates the JSON Element and throws an exception if issues found
-  *
-  * @param jsonElement JSON Element
-  * @throws IOException if the JSON Element is invalid with respect to TestInlineFreeformAdditionalPropertiesRequest
-  */
+  /**
+   * Validates the JSON Element and throws an exception if issues found
+   *
+   * @param jsonElement JSON Element
+   * @throws IOException if the JSON Element is invalid with respect to TestInlineFreeformAdditionalPropertiesRequest
+   */
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
         if (!TestInlineFreeformAdditionalPropertiesRequest.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in TestInlineFreeformAdditionalPropertiesRequest is not found in the empty JSON string", TestInlineFreeformAdditionalPropertiesRequest.openapiRequiredFields.toString()));
+          throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in TestInlineFreeformAdditionalPropertiesRequest is not found in the empty JSON string", TestInlineFreeformAdditionalPropertiesRequest.openapiRequiredFields.toString()));
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
       if ((jsonObj.get("someProperty") != null && !jsonObj.get("someProperty").isJsonNull()) && !jsonObj.get("someProperty").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `someProperty` to be a primitive type in the JSON string but got `%s`", jsonObj.get("someProperty").toString()));
+        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `someProperty` to be a primitive type in the JSON string but got `%s`", jsonObj.get("someProperty").toString()));
       }
   }
 
@@ -249,7 +248,7 @@ public class TestInlineFreeformAdditionalPropertiesRequest {
                    else if (entry.getValue().getAsJsonPrimitive().isBoolean())
                      instance.putAdditionalProperty(entry.getKey(), entry.getValue().getAsBoolean());
                    else
-                     throw new IllegalArgumentException(String.format("The field `%s` has unknown primitive type. Value: %s", entry.getKey(), entry.getValue().toString()));
+                     throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` has unknown primitive type. Value: %s", entry.getKey(), entry.getValue().toString()));
                  } else if (entry.getValue().isJsonArray()) {
                      instance.putAdditionalProperty(entry.getKey(), gson.fromJson(entry.getValue(), List.class));
                  } else { // JSON object
@@ -264,22 +263,22 @@ public class TestInlineFreeformAdditionalPropertiesRequest {
     }
   }
 
- /**
-  * Create an instance of TestInlineFreeformAdditionalPropertiesRequest given an JSON string
-  *
-  * @param jsonString JSON string
-  * @return An instance of TestInlineFreeformAdditionalPropertiesRequest
-  * @throws IOException if the JSON string is invalid with respect to TestInlineFreeformAdditionalPropertiesRequest
-  */
+  /**
+   * Create an instance of TestInlineFreeformAdditionalPropertiesRequest given an JSON string
+   *
+   * @param jsonString JSON string
+   * @return An instance of TestInlineFreeformAdditionalPropertiesRequest
+   * @throws IOException if the JSON string is invalid with respect to TestInlineFreeformAdditionalPropertiesRequest
+   */
   public static TestInlineFreeformAdditionalPropertiesRequest fromJson(String jsonString) throws IOException {
     return JSON.getGson().fromJson(jsonString, TestInlineFreeformAdditionalPropertiesRequest.class);
   }
 
- /**
-  * Convert an instance of TestInlineFreeformAdditionalPropertiesRequest to an JSON string
-  *
-  * @return JSON string
-  */
+  /**
+   * Convert an instance of TestInlineFreeformAdditionalPropertiesRequest to an JSON string
+   *
+   * @return JSON string
+   */
   public String toJson() {
     return JSON.getGson().toJson(this);
   }

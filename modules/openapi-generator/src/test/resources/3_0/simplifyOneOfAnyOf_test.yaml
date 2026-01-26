@@ -103,6 +103,17 @@ components:
         - type: string
         - type: number
         - type: integer
+    AnyOfAnyTypeWithRef:
+      anyOf:
+        - type: boolean
+        - type: array
+          items: { }
+        - type: object
+        - type: string
+        - type: number
+        - $ref: '#/components/schemas/IntegerRef'
+    IntegerRef:
+      type: integer
     OneOfAnyType:
       oneOf:
         - type: object
@@ -112,3 +123,29 @@ components:
         - type: integer
         - type: array
           items: {}
+    AnyOfParentRefTest:
+      type: object
+      properties:
+        number:
+          anyOf:
+            - type: null
+            - $ref: '#/components/schemas/IntegerRef'
+          writeOnly: true
+        number2:
+          anyOf:
+            - type: null
+            - $ref: '#/components/schemas/IntegerRef'
+          readOnly: true
+    OneOfParentRefTest:
+      type: object
+      properties:
+        number:
+          oneOf:
+            - type: null
+            - $ref: '#/components/schemas/IntegerRef'
+          writeOnly: true
+        number2:
+          oneOf:
+            - type: null
+            - $ref: '#/components/schemas/IntegerRef'
+          readOnly: true

@@ -13,6 +13,7 @@ import io.swagger.annotations.ApiModelProperty;
 import java.util.Arrays;
 import org.openapitools.jackson.nullable.JsonNullable;
 import org.openapitools.model.ParentWithNullable;
+import org.springframework.lang.Nullable;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import javax.validation.Valid;
@@ -27,12 +28,24 @@ import javax.annotation.Generated;
  */
 
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.6.0-SNAPSHOT")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.20.0-SNAPSHOT")
 public class ChildWithNullable extends ParentWithNullable {
 
-  private String otherProperty;
+  private @Nullable String otherProperty;
 
-  public ChildWithNullable otherProperty(String otherProperty) {
+  public ChildWithNullable() {
+    super();
+  }
+
+  /**
+   * Constructor with all args parameters
+   */
+  public ChildWithNullable(@Nullable String otherProperty, @Nullable TypeEnum type, String nullableProperty) {
+      super(type, nullableProperty);
+      this.otherProperty = otherProperty;
+  }
+
+  public ChildWithNullable otherProperty(@Nullable String otherProperty) {
     this.otherProperty = otherProperty;
     return this;
   }
@@ -40,15 +53,15 @@ public class ChildWithNullable extends ParentWithNullable {
   /**
    * Get otherProperty
    * @return otherProperty
-  */
+   */
   
   @ApiModelProperty(value = "")
   @JsonProperty("otherProperty")
-  public String getOtherProperty() {
+  public @Nullable String getOtherProperty() {
     return otherProperty;
   }
 
-  public void setOtherProperty(String otherProperty) {
+  public void setOtherProperty(@Nullable String otherProperty) {
     this.otherProperty = otherProperty;
   }
 
@@ -105,7 +118,7 @@ public class ChildWithNullable extends ParentWithNullable {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(@Nullable Object o) {
     if (o == null) {
       return "null";
     }

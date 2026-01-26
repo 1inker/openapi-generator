@@ -5,6 +5,7 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.math.BigDecimal;
+import org.springframework.lang.Nullable;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import jakarta.validation.constraints.NotNull;
@@ -17,12 +18,12 @@ import jakarta.annotation.Generated;
  * NumberOnly
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.6.0-SNAPSHOT")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.20.0-SNAPSHOT")
 public class NumberOnly {
 
-  private BigDecimal justNumber;
+  private @Nullable BigDecimal justNumber;
 
-  public NumberOnly justNumber(BigDecimal justNumber) {
+  public NumberOnly justNumber(@Nullable BigDecimal justNumber) {
     this.justNumber = justNumber;
     return this;
   }
@@ -30,14 +31,14 @@ public class NumberOnly {
   /**
    * Get justNumber
    * @return justNumber
-  */
+   */
   
   @JsonProperty("JustNumber")
-  public BigDecimal getJustNumber() {
+  public @Nullable BigDecimal getJustNumber() {
     return justNumber;
   }
 
-  public void setJustNumber(BigDecimal justNumber) {
+  public void setJustNumber(@Nullable BigDecimal justNumber) {
     this.justNumber = justNumber;
   }
 
@@ -71,7 +72,7 @@ public class NumberOnly {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(@Nullable Object o) {
     if (o == null) {
       return "null";
     }

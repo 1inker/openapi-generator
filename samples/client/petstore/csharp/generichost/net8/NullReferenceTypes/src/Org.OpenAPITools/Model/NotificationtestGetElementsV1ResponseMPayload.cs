@@ -84,7 +84,7 @@ namespace Org.OpenAPITools.Model
         /// </summary>
         /// <param name="validationContext">Validation context</param>
         /// <returns>Validation Result</returns>
-        IEnumerable<System.ComponentModel.DataAnnotations.ValidationResult> IValidatableObject.Validate(ValidationContext validationContext)
+        IEnumerable<ValidationResult> IValidatableObject.Validate(ValidationContext validationContext)
         {
             yield break;
         }
@@ -131,12 +131,10 @@ namespace Org.OpenAPITools.Model
                     switch (localVarJsonPropertyName)
                     {
                         case "a_objVariableobject":
-                            if (utf8JsonReader.TokenType != JsonTokenType.Null)
-                                aObjVariableobject = new Option<List<Dictionary<string, Object>>?>(JsonSerializer.Deserialize<List<Dictionary<string, Object>>>(ref utf8JsonReader, jsonSerializerOptions)!);
+                            aObjVariableobject = new Option<List<Dictionary<string, Object>>?>(JsonSerializer.Deserialize<List<Dictionary<string, Object>>>(ref utf8JsonReader, jsonSerializerOptions)!);
                             break;
                         case "pkiNotificationtestID":
-                            if (utf8JsonReader.TokenType != JsonTokenType.Null)
-                                pkiNotificationtestID = new Option<int?>(utf8JsonReader.GetInt32());
+                            pkiNotificationtestID = new Option<int?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (int?)null : utf8JsonReader.GetInt32());
                             break;
                         default:
                             break;
@@ -170,7 +168,7 @@ namespace Org.OpenAPITools.Model
         {
             writer.WriteStartObject();
 
-            WriteProperties(ref writer, notificationtestGetElementsV1ResponseMPayload, jsonSerializerOptions);
+            WriteProperties(writer, notificationtestGetElementsV1ResponseMPayload, jsonSerializerOptions);
             writer.WriteEndObject();
         }
 
@@ -181,7 +179,7 @@ namespace Org.OpenAPITools.Model
         /// <param name="notificationtestGetElementsV1ResponseMPayload"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public void WriteProperties(ref Utf8JsonWriter writer, NotificationtestGetElementsV1ResponseMPayload notificationtestGetElementsV1ResponseMPayload, JsonSerializerOptions jsonSerializerOptions)
+        public void WriteProperties(Utf8JsonWriter writer, NotificationtestGetElementsV1ResponseMPayload notificationtestGetElementsV1ResponseMPayload, JsonSerializerOptions jsonSerializerOptions)
         {
             if (notificationtestGetElementsV1ResponseMPayload.AObjVariableobject == null)
                 throw new ArgumentNullException(nameof(notificationtestGetElementsV1ResponseMPayload.AObjVariableobject), "Property is required for class NotificationtestGetElementsV1ResponseMPayload.");

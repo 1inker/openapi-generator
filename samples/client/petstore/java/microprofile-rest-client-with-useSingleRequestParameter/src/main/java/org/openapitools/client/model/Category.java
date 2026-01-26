@@ -1,4 +1,4 @@
-/**
+/*
  * OpenAPI Petstore
  * This is a sample server Petstore server. For this sample, you can use the api key `special-key` to test the authorization filters.
  *
@@ -12,6 +12,10 @@
 
 package org.openapitools.client.model;
 
+import java.util.Objects;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.HashMap;
 import java.lang.reflect.Type;
 import jakarta.json.bind.annotation.JsonbTypeDeserializer;
 import jakarta.json.bind.annotation.JsonbTypeSerializer;
@@ -22,10 +26,14 @@ import jakarta.json.bind.serializer.SerializationContext;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
 import jakarta.json.bind.annotation.JsonbProperty;
+import jakarta.json.bind.annotation.JsonbSubtype;
+import jakarta.json.bind.annotation.JsonbTransient;
+import jakarta.json.bind.annotation.JsonbTypeInfo;
+import jakarta.json.bind.annotation.JsonbCreator;
 
 /**
   * A category for a pet
- **/
+  */
 
 public class Category  {
   
@@ -35,17 +43,18 @@ public class Category  {
   @JsonbProperty("name")
   private String name;
 
- /**
+
+  /**
    * Get id
    * @return id
-  **/
+   **/
   public Long getId() {
     return id;
   }
 
   /**
-    * Set id
-  **/
+   * Set id
+   */
   public void setId(Long id) {
     this.id = id;
   }
@@ -55,17 +64,17 @@ public class Category  {
     return this;
   }
 
- /**
+  /**
    * Get name
    * @return name
-  **/
+   **/
   public String getName() {
     return name;
   }
 
   /**
-    * Set name
-  **/
+   * Set name
+   */
   public void setName(String name) {
     this.name = name;
   }
@@ -75,10 +84,27 @@ public class Category  {
     return this;
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Category category = (Category) o;
+    return Objects.equals(this.id, category.id) &&
+        Objects.equals(this.name, category.name);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, name);
+  }
 
   /**
-    * Create a string representation of this pojo.
-  **/
+   * Create a string representation of this pojo.
+   */
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
@@ -101,3 +127,4 @@ public class Category  {
     return o.toString().replace("\n", "\n    ");
   }
 }
+

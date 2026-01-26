@@ -13,6 +13,8 @@
 
 package org.openapitools.client.model;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import java.util.Map;
 import java.util.HashMap;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -61,7 +63,7 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import org.openapitools.client.JSON;
 
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.6.0-SNAPSHOT")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.20.0-SNAPSHOT")
 @JsonDeserialize(using = Shape.ShapeDeserializer.class)
 @JsonSerialize(using = Shape.ShapeSerializer.class)
 public class Shape extends AbstractOpenApiSchema {
@@ -108,7 +110,7 @@ public class Shape extends AbstractOpenApiSchema {
                     newShape.setActualInstance(deserialized);
                     return newShape;
                 default:
-                    log.log(Level.WARNING, String.format("Failed to lookup discriminator value `%s` for Shape. Possible values: Quadrilateral Triangle", discriminatorValue));
+                    log.log(Level.WARNING, String.format(java.util.Locale.ROOT, "Failed to lookup discriminator value `%s` for Shape. Possible values: Quadrilateral Triangle", discriminatorValue));
             }
 
             boolean typeCoercion = ctxt.isEnabled(MapperFeature.ALLOW_COERCION_OF_SCALARS);
@@ -151,7 +153,7 @@ public class Shape extends AbstractOpenApiSchema {
                 ret.setActualInstance(deserialized);
                 return ret;
             }
-            throw new IOException(String.format("Failed deserialization for Shape: %d classes match result, expected 1", match));
+            throw new IOException(String.format(java.util.Locale.ROOT, "Failed deserialization for Shape: %d classes match result, expected 1", match));
         }
 
         /**
@@ -164,7 +166,7 @@ public class Shape extends AbstractOpenApiSchema {
     }
 
     // store a list of schema names defined in oneOf
-    public static final Map<String, GenericType> schemas = new HashMap<>();
+    public static final Map<String, GenericType<?>> schemas = new HashMap<>();
 
     public Shape() {
         super("oneOf", Boolean.FALSE);
@@ -244,7 +246,7 @@ public class Shape extends AbstractOpenApiSchema {
     }
 
     @Override
-    public Map<String, GenericType> getSchemas() {
+    public Map<String, GenericType<?>> getSchemas() {
         return Shape.schemas;
     }
 

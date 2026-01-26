@@ -16,8 +16,8 @@
 
 package org.openapitools.codegen.languages;
 
-import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.Schema;
+import lombok.Setter;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.openapitools.codegen.*;
@@ -29,15 +29,12 @@ import org.openapitools.codegen.model.ModelsMap;
 import org.openapitools.codegen.model.OperationMap;
 import org.openapitools.codegen.model.OperationsMap;
 import org.openapitools.codegen.templating.mustache.PrefixWithHashLambda;
+import org.openapitools.codegen.templating.mustache.PascalCaseLambda;
 import org.openapitools.codegen.utils.ModelUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
@@ -50,17 +47,18 @@ public class CrystalClientCodegen extends DefaultCodegen {
     private static final String NUMERIC_ENUM_PREFIX = "N";
     protected static int emptyMethodNameCounter = 0;
 
-    protected String shardName = "openapi_client";
-    protected String moduleName = "OpenAPIClient";
-    protected String shardVersion = "1.0.0";
+    @Setter protected String shardName = "openapi_client";
+    @Setter protected String moduleName = "OpenAPIClient";
+    @Setter protected String shardVersion = "1.0.0";
     protected String specFolder = "spec";
     protected String srcFolder = "src";
-    protected String shardLicense = "unlicense";
-    protected String shardHomepage = "https://openapitools.org";
-    protected String shardSummary = "A Crystal SDK for the REST API";
-    protected String shardDescription = "This shard maps to a REST API";
-    protected String shardAuthor = "";
-    protected String shardAuthorEmail = "";
+    @Setter protected String shardLicense = "unlicense";
+    @Setter protected String shardHomepage = "https://openapitools.org";
+    @Setter protected String shardSummary = "A Crystal SDK for the REST API";
+    @Setter protected String shardDescription = "This shard maps to a REST API";
+    @Setter protected String shardAuthor = "";
+    @Setter protected String shardAuthorEmail = "";
+    @Setter protected String paramsEncoder = "Crest::NestedParamsEncoder";
     protected String apiDocPath = "docs/";
     protected String modelDocPath = "docs/";
     protected List<String> primitiveTypes = new ArrayList<String>();
@@ -74,6 +72,7 @@ public class CrystalClientCodegen extends DefaultCodegen {
     public static final String SHARD_DESCRIPTION = "shardDescription";
     public static final String SHARD_AUTHOR = "shardAuthor";
     public static final String SHARD_AUTHOR_EMAIL = "shardAuthorEmail";
+    public static final String PARAMS_ENCODER = "paramsEncoder";
 
     public CrystalClientCodegen() {
         super();
@@ -85,27 +84,31 @@ public class CrystalClientCodegen extends DefaultCodegen {
                         SecurityFeature.BasicAuth,
                         SecurityFeature.BearerToken,
                         SecurityFeature.ApiKey,
-                        SecurityFeature.OAuth2_Implicit))
+                        SecurityFeature.OAuth2_Implicit
+                ))
                 .excludeGlobalFeatures(
                         GlobalFeature.XMLStructureDefinitions,
                         GlobalFeature.Callbacks,
                         GlobalFeature.LinkObjects,
                         GlobalFeature.ParameterStyling,
                         GlobalFeature.ParameterizedServer,
-                        GlobalFeature.MultiServer)
+                        GlobalFeature.MultiServer
+                )
                 .includeSchemaSupportFeatures(
-                        SchemaSupportFeature.Polymorphism)
+                        SchemaSupportFeature.Polymorphism
+                )
                 .excludeParameterFeatures(
-                        ParameterFeature.Cookie)
+                        ParameterFeature.Cookie
+                )
                 .includeClientModificationFeatures(
                         ClientModificationFeature.BasePath,
-                        ClientModificationFeature.UserAgent));
-
-        generatorMetadata = GeneratorMetadata.newBuilder(generatorMetadata)
-                .stability(Stability.BETA)
-                .build();
+                        ClientModificationFeature.UserAgent
+                )
+        );
 
         supportsInheritance = true;
+
+        generatorMetadata = GeneratorMetadata.newBuilder(generatorMetadata).stability(Stability.BETA).build();
 
         // clear import mapping (from default generator) as crystal does not use it
         // at the moment
@@ -130,19 +133,24 @@ public class CrystalClientCodegen extends DefaultCodegen {
         hideGenerationTimestamp = Boolean.TRUE;
 
         // reserved word. Ref:
-        // https://github.com/crystal-lang/crystal/wiki/Crystal-for-Rubyists#available-keywords
+        // https://crystal-lang.org/reference/1.18/crystal_for_rubyists/index.html#available-keywords
+        // https://crystal-lang.org/api/1.18.2/Reference.html
         reservedWords = new HashSet<>(
                 Arrays.asList(
-                        "abstract", "annotation", "do", "if", "nil?", "select", "union",
-                        "alias", "else", "in", "of", "self", "unless",
-                        "as", "elsif", "include", "out", "sizeof", "until",
-                        "as?", "end", "instance", "sizeof", "pointerof", "struct", "verbatim",
-                        "asm", "ensure", "is_a?", "private", "super", "when",
-                        "begin", "enum", "lib", "protected", "then", "while",
-                        "break", "extend", "macro", "require", "true", "with",
-                        "case", "false", "module", "rescue", "type", "yield",
-                        "class", "for", "next", "responds_to?", "typeof",
-                        "def", "fun", "nil", "return", "uninitialized"));
+                    // language reserved words (keywords)
+                    "abstract",   "do",       "if",                "nil?",            "return",      "uninitialized",
+                    "alias",      "else",     "in",                "of",              "select",      "union",
+                    "as",         "elsif",    "include",           "out",             "self",        "unless",
+                    "as?",        "end",      "instance_sizeof",   "pointerof",       "sizeof",      "until",
+                    "asm",        "ensure",   "is_a?",             "previous_def",    "struct",      "verbatim",
+                    "begin",      "enum",     "lib",               "private",         "super",       "when",
+                    "break",      "extend",   "macro",             "protected",       "then",        "while",
+                    "case",       "false",    "module",            "require",         "true",        "with",
+                    "class",      "for",      "next",              "rescue",          "type",        "yield",
+                    "def",        "fun",      "nil",               "responds_to?",    "typeof",
+                    // additional reserved words (methods)
+                    "annotation", "object_id"
+                ));
 
         languageSpecificPrimitives.clear();
         languageSpecificPrimitives.add("String");
@@ -174,8 +182,8 @@ public class CrystalClientCodegen extends DefaultCodegen {
         typeMapping.put("List", "Array");
         typeMapping.put("set", "Set");
         typeMapping.put("map", "Hash");
-        typeMapping.put("object", "Object");
-        typeMapping.put("AnyType", "Object");
+        typeMapping.put("object", "JSON::Any");
+        typeMapping.put("AnyType", "JSON::Any");
         typeMapping.put("file", "::File");
         typeMapping.put("binary", "String");
         typeMapping.put("ByteArray", "String");
@@ -188,28 +196,18 @@ public class CrystalClientCodegen extends DefaultCodegen {
         primitiveTypes = new ArrayList<String>(typeMapping.values());
 
         // remove modelPackage and apiPackage added by default
-        cliOptions.removeIf(opt -> CodegenConstants.MODEL_PACKAGE.equals(opt.getOpt()) ||
-                CodegenConstants.API_PACKAGE.equals(opt.getOpt()));
+        cliOptions.removeIf(opt -> CodegenConstants.MODEL_PACKAGE.equals(opt.getOpt()) || CodegenConstants.API_PACKAGE.equals(opt.getOpt()));
 
         cliOptions.add(new CliOption(SHARD_NAME, "shard name (e.g. twitter_client").defaultValue("openapi_client"));
-
         cliOptions.add(new CliOption(MODULE_NAME, "module name (e.g. TwitterClient").defaultValue("OpenAPIClient"));
-
         cliOptions.add(new CliOption(SHARD_VERSION, "shard version.").defaultValue("1.0.0"));
-
         cliOptions.add(new CliOption(SHARD_LICENSE, "shard license.").defaultValue("unlicense"));
-
         cliOptions.add(new CliOption(SHARD_HOMEPAGE, "shard homepage.").defaultValue("http://org.openapitools"));
-
-        cliOptions.add(
-                new CliOption(SHARD_DESCRIPTION, "shard description.").defaultValue("This shard maps to a REST API"));
-
+        cliOptions.add(new CliOption(SHARD_DESCRIPTION, "shard description.").defaultValue("This shard maps to a REST API"));
         cliOptions.add(new CliOption(SHARD_AUTHOR, "shard author (only one is supported)."));
-
         cliOptions.add(new CliOption(SHARD_AUTHOR_EMAIL, "shard author email (only one is supported)."));
-
-        cliOptions.add(new CliOption(CodegenConstants.HIDE_GENERATION_TIMESTAMP,
-                CodegenConstants.HIDE_GENERATION_TIMESTAMP_DESC).defaultValue(Boolean.TRUE.toString()));
+        cliOptions.add(new CliOption(CodegenConstants.HIDE_GENERATION_TIMESTAMP, CodegenConstants.HIDE_GENERATION_TIMESTAMP_DESC).defaultValue(Boolean.TRUE.toString()));
+        cliOptions.add(new CliOption(PARAMS_ENCODER, "params_encoder setting (e.g. Crest::NestedParamsEncoder, Crest::EnumeratedFlatParamsEncoder, Crest::ZeroEnumeratedFlatParamsEncoder").defaultValue("Crest::NestedParamsEncoder"));
     }
 
     @Override
@@ -217,49 +215,69 @@ public class CrystalClientCodegen extends DefaultCodegen {
         super.processOpts();
 
         if (StringUtils.isEmpty(System.getenv("CRYSTAL_POST_PROCESS_FILE"))) {
-            LOGGER.info(
-                    "Hint: Environment variable 'CRYSTAL_POST_PROCESS_FILE' (optional) not defined. E.g. to format the source code, please try 'export CRYSTAL_POST_PROCESS_FILE=\"/usr/local/bin/crystal tool format\"' (Linux/Mac)");
+            LOGGER.info("Hint: Environment variable 'CRYSTAL_POST_PROCESS_FILE' (optional) not defined. E.g. to format the source code, please try 'export CRYSTAL_POST_PROCESS_FILE=\"/usr/local/bin/crystal tool format\"' (Linux/Mac)");
+        } else if (!this.isEnablePostProcessFile()) {
+            LOGGER.info("Warning: Environment variable 'CRYSTAL_POST_PROCESS_FILE' is set but file post-processing is not enabled. To enable file post-processing, 'enablePostProcessFile' must be set to `true` (--enable-post-process-file for CLI).");
         }
 
         if (additionalProperties.containsKey(SHARD_NAME)) {
             setShardName((String) additionalProperties.get(SHARD_NAME));
+        } else {
+            additionalProperties.put(SHARD_NAME, shardName);
         }
-        additionalProperties.put(SHARD_NAME, shardName);
 
         if (additionalProperties.containsKey(MODULE_NAME)) {
             setModuleName((String) additionalProperties.get(MODULE_NAME));
+        } else {
+            additionalProperties.put(MODULE_NAME, moduleName);
         }
-        additionalProperties.put(MODULE_NAME, moduleName);
 
         if (additionalProperties.containsKey(SHARD_VERSION)) {
             setShardVersion((String) additionalProperties.get(SHARD_VERSION));
         } else {
-            // not set, pass the default value to template
             additionalProperties.put(SHARD_VERSION, shardVersion);
         }
 
         if (additionalProperties.containsKey(SHARD_LICENSE)) {
             setShardLicense((String) additionalProperties.get(SHARD_LICENSE));
+        } else {
+            additionalProperties.put(SHARD_LICENSE, shardLicense);
         }
 
         if (additionalProperties.containsKey(SHARD_HOMEPAGE)) {
             setShardHomepage((String) additionalProperties.get(SHARD_HOMEPAGE));
+        } else {
+            additionalProperties.put(SHARD_HOMEPAGE, shardHomepage);
         }
 
         if (additionalProperties.containsKey(SHARD_SUMMARY)) {
             setShardSummary((String) additionalProperties.get(SHARD_SUMMARY));
+        } else {
+            additionalProperties.put(SHARD_SUMMARY, shardSummary);
         }
 
         if (additionalProperties.containsKey(SHARD_DESCRIPTION)) {
             setShardDescription((String) additionalProperties.get(SHARD_DESCRIPTION));
+        } else {
+            additionalProperties.put(SHARD_DESCRIPTION, shardDescription);
         }
 
         if (additionalProperties.containsKey(SHARD_AUTHOR)) {
             setShardAuthor((String) additionalProperties.get(SHARD_AUTHOR));
+        } else {
+            additionalProperties.put(SHARD_AUTHOR, shardAuthor);
         }
 
         if (additionalProperties.containsKey(SHARD_AUTHOR_EMAIL)) {
             setShardAuthorEmail((String) additionalProperties.get(SHARD_AUTHOR_EMAIL));
+        } else {
+            additionalProperties.put(SHARD_AUTHOR_EMAIL, shardAuthorEmail);
+        }
+
+        if (additionalProperties.containsKey(PARAMS_ENCODER)) {
+            setParamsEncoder((String) additionalProperties.get(PARAMS_ENCODER));
+        } else {
+            additionalProperties.put(PARAMS_ENCODER, paramsEncoder);
         }
 
         // make api and model doc path available in mustache template
@@ -275,19 +293,18 @@ public class CrystalClientCodegen extends DefaultCodegen {
         supportingFiles.add(new SupportingFile("api_error.mustache", shardFolder, "api_error.cr"));
         supportingFiles.add(new SupportingFile("configuration.mustache", shardFolder, "configuration.cr"));
         supportingFiles.add(new SupportingFile("api_client.mustache", shardFolder, "api_client.cr"));
+        supportingFiles.add(new SupportingFile("recursive_hash.mustache", shardFolder, "recursive_hash.cr"));
         supportingFiles.add(new SupportingFile("README.mustache", "", "README.md"));
         supportingFiles.add(new SupportingFile("git_push.sh.mustache", "", "git_push.sh"));
         supportingFiles.add(new SupportingFile("gitignore.mustache", "", ".gitignore"));
-        supportingFiles.add(new SupportingFile("travis.mustache", "", ".travis.yml"));
         supportingFiles.add(new SupportingFile("shard.mustache", "", "shard.yml"));
 
         // crystal spec files
-        supportingFiles.add(new SupportingFile("spec_helper.mustache", specFolder, "spec_helper.cr")
-                .doNotOverwrite());
+        supportingFiles.add(new SupportingFile("spec_helper.mustache", specFolder, "spec_helper.cr").doNotOverwrite());
 
         // add lambda for mustache templates
         additionalProperties.put("lambdaPrefixWithHash", new PrefixWithHashLambda());
-
+        additionalProperties.put("lambdaPascalcase", new PascalCaseLambda());
     }
 
     @Override
@@ -307,14 +324,12 @@ public class CrystalClientCodegen extends DefaultCodegen {
 
     @Override
     public String apiFileFolder() {
-        return outputFolder + File.separator + srcFolder + File.separator + shardName + File.separator
-                + apiPackage.replace("/", File.separator);
+        return outputFolder + File.separator + srcFolder + File.separator + shardName + File.separator + apiPackage.replace("/", File.separator);
     }
 
     @Override
     public String modelFileFolder() {
-        return outputFolder + File.separator + srcFolder + File.separator + shardName + File.separator
-                + modelPackage.replace("/", File.separator);
+        return outputFolder + File.separator + srcFolder + File.separator + shardName + File.separator + modelPackage.replace("/", File.separator);
     }
 
     @Override
@@ -393,9 +408,9 @@ public class CrystalClientCodegen extends DefaultCodegen {
 
         // model name starts with number
         if (modelName.matches("^\\d.*")) {
-            LOGGER.warn("{} (model name starts with number) cannot be used as model name. Renamed to {}", modelName,
-                    camelize("model_" + modelName));
-            modelName = "model_" + modelName; // e.g. 200Response => Model200Response (after camelize)
+            LOGGER.warn("{} (model name starts with number) cannot be used as model name. Renamed to {}", modelName, camelize("model_" + modelName));
+            // e.g. 200Response => Model200Response (after camelize)
+            modelName = "model_" + modelName;
         }
 
         // camelize the model name
@@ -407,7 +422,7 @@ public class CrystalClientCodegen extends DefaultCodegen {
         String[] parts = modelName.split("::");
         ArrayList<String> new_parts = new ArrayList<String>();
         for (String part : parts) {
-            new_parts.add(sanitizeName(part));
+            new_parts.add(sanitizeName(part, "\\W", new ArrayList<>(List.of(":"))));
         }
         return String.join("::", new_parts);
     }
@@ -534,8 +549,7 @@ public class CrystalClientCodegen extends DefaultCodegen {
 
         // operationId starts with a number
         if (operationId.matches("^\\d.*")) {
-            LOGGER.warn("{} (starting with a number) cannot be used as method name. Renamed to {}", operationId,
-                    underscore(sanitizeName("call_" + operationId)));
+            LOGGER.warn("{} (starting with a number) cannot be used as method name. Renamed to {}", operationId, underscore(sanitizeName("call_" + operationId)));
             operationId = "call_" + operationId;
         }
 
@@ -545,42 +559,6 @@ public class CrystalClientCodegen extends DefaultCodegen {
     @Override
     public String toApiImport(String name) {
         return shardName + "/" + apiPackage() + "/" + toApiFilename(name);
-    }
-
-    public void setShardName(String shardName) {
-        this.shardName = shardName;
-    }
-
-    public void setModuleName(String moduleName) {
-        this.moduleName = moduleName;
-    }
-
-    public void setShardVersion(String shardVersion) {
-        this.shardVersion = shardVersion;
-    }
-
-    public void setShardDescription(String shardDescription) {
-        this.shardDescription = shardDescription;
-    }
-
-    public void setShardSummary(String shardSummary) {
-        this.shardSummary = shardSummary;
-    }
-
-    public void setShardLicense(String shardLicense) {
-        this.shardLicense = shardLicense;
-    }
-
-    public void setShardHomepage(String shardHomepage) {
-        this.shardHomepage = shardHomepage;
-    }
-
-    public void setShardAuthor(String shardAuthor) {
-        this.shardAuthor = shardAuthor;
-    }
-
-    public void setShardAuthorEmail(String shardAuthorEmail) {
-        this.shardAuthorEmail = shardAuthorEmail;
     }
 
     @Override
@@ -598,6 +576,7 @@ public class CrystalClientCodegen extends DefaultCodegen {
         if (isSkipOperationExample()) {
             return objs;
         }
+
         OperationMap operations = objs.getOperations();
         HashMap<String, CodegenModel> modelMaps = ModelMap.toCodegenModelMap(allModels);
         HashMap<String, Integer> processedModelMaps = new HashMap<>();
@@ -629,8 +608,7 @@ public class CrystalClientCodegen extends DefaultCodegen {
         return objs;
     }
 
-    private String constructExampleCode(CodegenParameter codegenParameter, HashMap<String, CodegenModel> modelMaps,
-            HashMap<String, Integer> processedModelMap) {
+    private String constructExampleCode(CodegenParameter codegenParameter, HashMap<String, CodegenModel> modelMaps, HashMap<String, Integer> processedModelMap) {
         if (codegenParameter.isArray) { // array
             if (codegenParameter.items == null) {
                 return "[]";
@@ -697,8 +675,7 @@ public class CrystalClientCodegen extends DefaultCodegen {
         }
     }
 
-    private String constructExampleCode(CodegenProperty codegenProperty, HashMap<String, CodegenModel> modelMaps,
-            HashMap<String, Integer> processedModelMap) {
+    private String constructExampleCode(CodegenProperty codegenProperty, HashMap<String, CodegenModel> modelMaps, HashMap<String, Integer> processedModelMap) {
         if (codegenProperty.isArray) { // array
             return "[" + constructExampleCode(codegenProperty.items, modelMaps, processedModelMap) + "]";
         } else if (codegenProperty.isMap) {
@@ -765,8 +742,7 @@ public class CrystalClientCodegen extends DefaultCodegen {
         }
     }
 
-    private String constructExampleCode(CodegenModel codegenModel, HashMap<String, CodegenModel> modelMaps,
-            HashMap<String, Integer> processedModelMap) {
+    private String constructExampleCode(CodegenModel codegenModel, HashMap<String, CodegenModel> modelMaps, HashMap<String, Integer> processedModelMap) {
         // break infinite recursion. Return, in case a model is already processed in the
         // current context.
         String model = codegenModel.name;
@@ -780,13 +756,27 @@ public class CrystalClientCodegen extends DefaultCodegen {
                 throw new RuntimeException("Invalid count when constructing example: " + count);
             }
         } else if (codegenModel.isEnum) {
-            List<Map<String, String>> enumVars = (List<Map<String, String>>) codegenModel.allowableValues
-                    .get("enumVars");
+            List<Map<String, String>> enumVars = (List<Map<String, String>>) codegenModel.allowableValues.get("enumVars");
             return moduleName + "::" + codegenModel.classname + "::" + enumVars.get(0).get("name");
         } else if (codegenModel.oneOf != null && !codegenModel.oneOf.isEmpty()) {
             String subModel = (String) codegenModel.oneOf.toArray()[0];
-            String oneOf = constructExampleCode(modelMaps.get(subModel), modelMaps, processedModelMap);
-            return oneOf;
+            if (modelMaps.get(subModel) == null) {
+                if (subModel.startsWith("Array(")) {
+                    subModel = StringUtils.removeEnd(subModel.substring(6), ")");
+                    if (modelMaps.get(subModel) == null) {
+                        LOGGER.warn("Cannot find codegen for SubModel: {} (model: {})", subModel, model);
+                        return "";
+                    } else {
+                        LOGGER.info("Found Array codegen for SubModel: {} (model: {})", subModel, model);
+                        String oneOf = "[" + constructExampleCode(modelMaps.get(subModel), modelMaps, processedModelMap) + "]";
+                        return oneOf;
+                    }
+                }
+            } else {
+                LOGGER.info("Found codegen for SubModel: {} (model: {})", subModel, model);
+                String oneOf = constructExampleCode(modelMaps.get(subModel), modelMaps, processedModelMap);
+                return oneOf;
+            }
         } else {
             processedModelMap.put(model, 1);
         }
@@ -798,7 +788,7 @@ public class CrystalClientCodegen extends DefaultCodegen {
         }
         String example = moduleName + "::" + toModelName(model) + ".new";
         if (!propertyExamples.isEmpty()) {
-            example += "({" + StringUtils.join(propertyExamples, ", ") + "})";
+            example += "(" + StringUtils.join(propertyExamples, ", ") + ")";
         }
         return example;
     }
@@ -926,6 +916,7 @@ public class CrystalClientCodegen extends DefaultCodegen {
 
     @Override
     public void postProcessFile(File file, String fileType) {
+        super.postProcessFile(file, fileType);
         if (file == null) {
             return;
         }
@@ -935,30 +926,7 @@ public class CrystalClientCodegen extends DefaultCodegen {
         }
         // only process files with cr extension
         if ("cr".equals(FilenameUtils.getExtension(file.toString()))) {
-            String command = crystalPostProcessFile + " " + file;
-            try {
-                Process p = Runtime.getRuntime().exec(command);
-                int exitValue = p.waitFor();
-                if (exitValue != 0) {
-                    try (InputStreamReader inputStreamReader = new InputStreamReader(p.getErrorStream(),
-                            StandardCharsets.UTF_8);
-                            BufferedReader br = new BufferedReader(inputStreamReader)) {
-                        StringBuilder sb = new StringBuilder();
-                        String line;
-                        while ((line = br.readLine()) != null) {
-                            sb.append(line);
-                        }
-                        LOGGER.error("Error running the command ({}). Exit value: {}, Error output: {}", command,
-                                exitValue, sb);
-                    }
-                } else {
-                    LOGGER.info("Successfully executed: {}", command);
-                }
-            } catch (InterruptedException | IOException e) {
-                LOGGER.error("Error running the command ({}). Exception: {}", command, e.getMessage());
-                // Restore interrupted state
-                Thread.currentThread().interrupt();
-            }
+            this.executePostProcessor(new String[]{crystalPostProcessFile, file.toString()});
         }
     }
 

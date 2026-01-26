@@ -34,29 +34,31 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
   FileSchemaTestClass.JSON_PROPERTY_FILE,
   FileSchemaTestClass.JSON_PROPERTY_FILES
 })
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.6.0-SNAPSHOT")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.20.0-SNAPSHOT")
 public class FileSchemaTestClass {
   public static final String JSON_PROPERTY_FILE = "file";
+  @javax.annotation.Nullable
   private File file;
 
   public static final String JSON_PROPERTY_FILES = "files";
+  @javax.annotation.Nullable
   private List<File> files = new ArrayList<>();
 
   public FileSchemaTestClass() {
   }
 
-  public FileSchemaTestClass file(File file) {
+  public FileSchemaTestClass file(@javax.annotation.Nullable File file) {
     
     this.file = file;
     return this;
   }
 
-   /**
+  /**
    * Get file
    * @return file
-  **/
+   */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_FILE)
+  @JsonProperty(value = JSON_PROPERTY_FILE, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public File getFile() {
@@ -64,14 +66,14 @@ public class FileSchemaTestClass {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_FILE)
+  @JsonProperty(value = JSON_PROPERTY_FILE, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setFile(File file) {
+  public void setFile(@javax.annotation.Nullable File file) {
     this.file = file;
   }
 
 
-  public FileSchemaTestClass files(List<File> files) {
+  public FileSchemaTestClass files(@javax.annotation.Nullable List<File> files) {
     
     this.files = files;
     return this;
@@ -85,12 +87,12 @@ public class FileSchemaTestClass {
     return this;
   }
 
-   /**
+  /**
    * Get files
    * @return files
-  **/
+   */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_FILES)
+  @JsonProperty(value = JSON_PROPERTY_FILES, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public List<File> getFiles() {
@@ -98,9 +100,9 @@ public class FileSchemaTestClass {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_FILES)
+  @JsonProperty(value = JSON_PROPERTY_FILES, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setFiles(List<File> files) {
+  public void setFiles(@javax.annotation.Nullable List<File> files) {
     this.files = files;
   }
 

@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.springframework.lang.Nullable;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import javax.validation.Valid;
@@ -25,7 +26,7 @@ import javax.annotation.Generated;
  */
 
 @JsonTypeName("TypeHolderExample")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.6.0-SNAPSHOT")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.20.0-SNAPSHOT")
 public class TypeHolderExampleDto {
 
   private String stringItem;
@@ -65,7 +66,7 @@ public class TypeHolderExampleDto {
   /**
    * Get stringItem
    * @return stringItem
-  */
+   */
   @NotNull 
   @ApiModelProperty(example = "what", required = true, value = "")
   @JsonProperty("string_item")
@@ -85,7 +86,7 @@ public class TypeHolderExampleDto {
   /**
    * Get numberItem
    * @return numberItem
-  */
+   */
   @NotNull @Valid 
   @ApiModelProperty(example = "1.234", required = true, value = "")
   @JsonProperty("number_item")
@@ -105,7 +106,7 @@ public class TypeHolderExampleDto {
   /**
    * Get floatItem
    * @return floatItem
-  */
+   */
   @NotNull 
   @ApiModelProperty(example = "1.234", required = true, value = "")
   @JsonProperty("float_item")
@@ -125,7 +126,7 @@ public class TypeHolderExampleDto {
   /**
    * Get integerItem
    * @return integerItem
-  */
+   */
   @NotNull 
   @ApiModelProperty(example = "-2", required = true, value = "")
   @JsonProperty("integer_item")
@@ -145,7 +146,7 @@ public class TypeHolderExampleDto {
   /**
    * Get boolItem
    * @return boolItem
-  */
+   */
   @NotNull 
   @ApiModelProperty(example = "true", required = true, value = "")
   @JsonProperty("bool_item")
@@ -173,7 +174,7 @@ public class TypeHolderExampleDto {
   /**
    * Get arrayItem
    * @return arrayItem
-  */
+   */
   @NotNull 
   @ApiModelProperty(example = "[0,1,2,3]", required = true, value = "")
   @JsonProperty("array_item")
@@ -225,7 +226,7 @@ public class TypeHolderExampleDto {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(@Nullable Object o) {
     if (o == null) {
       return "null";
     }

@@ -38,7 +38,7 @@ namespace Org.OpenAPITools.Model
         /// </summary>
         /// <param name="specialPropertyName">specialPropertyName.</param>
         /// <param name="varSpecialModelName">varSpecialModelName.</param>
-        public SpecialModelName(long specialPropertyName = default(long), string varSpecialModelName = default(string))
+        public SpecialModelName(long specialPropertyName = default, string varSpecialModelName = default)
         {
             this.SpecialPropertyName = specialPropertyName;
             this.VarSpecialModelName = varSpecialModelName;
@@ -134,7 +134,7 @@ namespace Org.OpenAPITools.Model
         /// </summary>
         /// <param name="validationContext">Validation context</param>
         /// <returns>Validation Result</returns>
-        IEnumerable<System.ComponentModel.DataAnnotations.ValidationResult> IValidatableObject.Validate(ValidationContext validationContext)
+        IEnumerable<ValidationResult> IValidatableObject.Validate(ValidationContext validationContext)
         {
             yield break;
         }

@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.springframework.lang.Nullable;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import javax.validation.Valid;
@@ -21,12 +22,12 @@ import javax.annotation.Generated;
  */
 
 @JsonTypeName("Client")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.6.0-SNAPSHOT")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.20.0-SNAPSHOT")
 public class ClientDto {
 
-  private String client;
+  private @Nullable String client;
 
-  public ClientDto client(String client) {
+  public ClientDto client(@Nullable String client) {
     this.client = client;
     return this;
   }
@@ -34,15 +35,15 @@ public class ClientDto {
   /**
    * Get client
    * @return client
-  */
+   */
   
   @ApiModelProperty(value = "")
   @JsonProperty("client")
-  public String getClient() {
+  public @Nullable String getClient() {
     return client;
   }
 
-  public void setClient(String client) {
+  public void setClient(@Nullable String client) {
     this.client = client;
   }
 
@@ -76,7 +77,7 @@ public class ClientDto {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(@Nullable Object o) {
     if (o == null) {
       return "null";
     }

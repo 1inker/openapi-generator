@@ -39,37 +39,24 @@ Declare the class with extends and implements
         {{#isEnum}}
             {{^isContainer}}
 {{>common/model/modelInnerEnum}}
+
             {{/isContainer}}
             {{#isContainer}}
                 {{#mostInnerItems}}
 {{>common/model/modelInnerEnum}}
+
                 {{/mostInnerItems}}
             {{/isContainer}}
         {{/isEnum}}
     public static final String JSON_PROPERTY_{{nameInSnakeCase}} = "{{baseName}}";
         {{#withXml}}
-            {{#isXmlAttribute}}
-    @XmlAttribute(name = "{{#xmlName}}{{xmlName}}{{/xmlName}}{{^xmlName}}{{baseName}}{{/xmlName}}"
-            {{/isXmlAttribute}}
-            {{^isXmlAttribute}}
-                {{^isContainer}}
-    @XmlElement({{#xmlNamespace}}namespace="{{xmlNamespace}}", {{/xmlNamespace}}name = "{{#xmlName}}{{xmlName}}{{/xmlName}}{{^xmlName}}{{baseName}}{{/xmlName}}")
-                {{/isContainer}}
-                {{#isContainer}}
-    // Is a container wrapped={{isXmlWrapped}}
-                    {{#items}}
-    // items.name={{name}} items.baseName={{baseName}} items.xmlName={{xmlName}} items.xmlNamespace={{xmlNamespace}}
-    // items.example={{example}} items.type={{dataType}}
-    @XmlElement({{#xmlNamespace}}namespace="{{xmlNamespace}}", {{/xmlNamespace}}name = "{{#xmlName}}{{xmlName}}{{/xmlName}}{{^xmlName}}{{baseName}}{{/xmlName}}")
-                    {{/items}}
-                    {{#isXmlWrapped}}
-    @XmlElementWrapper({{#xmlNamespace}}namespace="{{xmlNamespace}}", {{/xmlNamespace}}name = "{{#xmlName}}{{xmlName}}{{/xmlName}}{{^xmlName}}{{baseName}}{{/xmlName}}")
-                    {{/isXmlWrapped}}
-                {{/isContainer}}
-            {{/isXmlAttribute}}
+    @Xml{{#isXmlAttribute}}Attribute{{/isXmlAttribute}}{{^isXmlAttribute}}Element{{/isXmlAttribute}}(name = "{{items.xmlName}}{{^items.xmlName}}{{xmlName}}{{^xmlName}}{{baseName}}{{/xmlName}}{{/items.xmlName}}"{{#xmlNamespace}}, namespace = "{{.}}"{{/xmlNamespace}})
+          {{#isXmlWrapped}}
+    @XmlElementWrapper(name = "{{xmlName}}{{^xmlName}}{{baseName}}{{/xmlName}}"{{#xmlNamespace}}, namespace = "{{.}}"{{/xmlNamespace}})
+          {{/isXmlWrapped}}
         {{/withXml}}
         {{#vendorExtensions.x-field-extra-annotation}}
-        {{{vendorExtensions.x-field-extra-annotation}}}
+        {{{.}}}
         {{/vendorExtensions.x-field-extra-annotation}}
         {{#vendorExtensions.x-is-jackson-optional-nullable}}
             {{#isContainer}}
@@ -184,7 +171,7 @@ Declare the class with extends and implements
      * maximum: {{maximum}}
         {{/maximum}}
      * @return {{name}}
-     **/
+     */
 {{>common/model/beanValidation}}{{!
         }}{{#generateSwagger1Annotations}}
     @ApiModelProperty({{#example}}example = "{{{example}}}", {{/example}}{{#required}}required = {{required}}, {{/required}}value = "{{{description}}}")
@@ -226,6 +213,7 @@ Declare the class with extends and implements
 
         {{#vendorExtensions.x-is-jackson-optional-nullable}}
 {{>common/model/jackson_annotations}}
+
     public JsonNullable<{{{datatypeWithEnum}}}> {{getter}}_JsonNullable() {
         return {{name}};
     }

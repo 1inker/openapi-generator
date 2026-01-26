@@ -19,9 +19,6 @@ package org.openapitools.codegen.swift5;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
-import org.openapitools.codegen.CodegenOperation;
-import org.openapitools.codegen.DefaultCodegen;
-import org.openapitools.codegen.TestUtils;
 import org.openapitools.codegen.*;
 import org.openapitools.codegen.config.CodegenConfigurator;
 import org.openapitools.codegen.languages.Swift5ClientCodegen;
@@ -255,7 +252,7 @@ public class Swift5ClientCodegenTest {
             List<File> files = generator.opts(clientOptInput).generate();
             Assert.assertTrue(files.size() > 0, "No files generated");
         } finally {
-           output.deleteOnExit();
+            output.deleteOnExit();
         }
     }
 
@@ -318,6 +315,44 @@ public class Swift5ClientCodegenTest {
         Assert.assertEquals(op.formParams.get(4).required, false);
         Assert.assertEquals(op.formParams.get(5).required, false);
 
+    }
+
+    @Test(description = "test oneOf with discriminator generates discriminator-first decoding", enabled = true)
+    public void oneOfDiscriminatorFirstDecodingTest() throws IOException {
+        Path target = Files.createTempDirectory("test");
+        File output = target.toFile();
+        try {
+            final CodegenConfigurator configurator = new CodegenConfigurator()
+                    .setGeneratorName("swift5")
+                    .setInputSpec("src/test/resources/3_0/oneOfDiscriminator.yaml")
+                    .setOutputDir(target.toAbsolutePath().toString());
+
+            final ClientOptInput clientOptInput = configurator.toClientOptInput();
+            DefaultGenerator generator = new DefaultGenerator(false);
+            generator.setGeneratorPropertyDefault(CodegenConstants.MODELS, "true");
+            generator.setGeneratorPropertyDefault(CodegenConstants.APIS, "false");
+            generator.setGeneratorPropertyDefault(CodegenConstants.SUPPORTING_FILES, "false");
+
+            List<File> files = generator.opts(clientOptInput).generate();
+
+            File modelFile = files.stream()
+                    .filter(f -> f.getName().equals("FruitOneOfEnumMappingDisc.swift"))
+                    .findFirst()
+                    .orElseThrow(() -> new RuntimeException("FruitOneOfEnumMappingDisc.swift not found"));
+
+            String content = Files.readString(modelFile.toPath());
+
+            // Verify discriminator-first decoding pattern
+            Assert.assertTrue(content.contains("private enum DiscriminatorCodingKey: String, CodingKey"));
+            Assert.assertTrue(content.contains("let keyedContainer = try decoder.container(keyedBy: DiscriminatorCodingKey.self)"));
+            Assert.assertTrue(content.contains("switch discriminatorValue"));
+            Assert.assertTrue(content.contains("case \"APPLE\":"));
+            Assert.assertTrue(content.contains("self = .typeAppleOneOfEnumMappingDisc(try AppleOneOfEnumMappingDisc(from: decoder))"));
+            Assert.assertFalse(content.contains("if let value = try? container.decode(AppleOneOfEnumMappingDisc.self)"));
+
+        } finally {
+            output.deleteOnExit();
+        }
     }
 
 }

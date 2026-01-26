@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.openapitools.model.ReadOnlyFirst;
+import org.springframework.lang.Nullable;
 import java.time.OffsetDateTime;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -22,7 +23,7 @@ import javax.annotation.Generated;
  * ArrayTest
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.6.0-SNAPSHOT")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.20.0-SNAPSHOT")
 public class ArrayTest {
 
   @Valid
@@ -50,7 +51,7 @@ public class ArrayTest {
   /**
    * Get arrayOfString
    * @return arrayOfString
-  */
+   */
   
   @ApiModelProperty(value = "")
   @JsonProperty("array_of_string")
@@ -78,7 +79,7 @@ public class ArrayTest {
   /**
    * Get arrayArrayOfInteger
    * @return arrayArrayOfInteger
-  */
+   */
   @Valid 
   @ApiModelProperty(value = "")
   @JsonProperty("array_array_of_integer")
@@ -106,7 +107,7 @@ public class ArrayTest {
   /**
    * Get arrayArrayOfModel
    * @return arrayArrayOfModel
-  */
+   */
   @Valid 
   @ApiModelProperty(value = "")
   @JsonProperty("array_array_of_model")
@@ -152,7 +153,7 @@ public class ArrayTest {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(@Nullable Object o) {
     if (o == null) {
       return "null";
     }

@@ -24,16 +24,14 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.IOException;
 import java.io.Writer;
 
-import static org.openapitools.codegen.utils.StringUtils.camelize;
-
 /**
  * Converts text in a fragment from camelCase or PascalCase to a space separated string
- *
+ * <p>
  * Register:
  * <pre>
  * additionalProperties.put("uncamelize", new UncamelizeLambda());
  * </pre>
- *
+ * <p>
  * Use:
  * <pre>
  * {{#uncamelize}}{{name}}{{/uncamelize}}
@@ -41,7 +39,9 @@ import static org.openapitools.codegen.utils.StringUtils.camelize;
  */
 public class UncamelizeLambda implements Mustache.Lambda {
 
-    public UncamelizeLambda() {}
+    public UncamelizeLambda() {
+    }
+
     @Override
     public void execute(Template.Fragment fragment, Writer writer) throws IOException {
         String input = fragment.execute();

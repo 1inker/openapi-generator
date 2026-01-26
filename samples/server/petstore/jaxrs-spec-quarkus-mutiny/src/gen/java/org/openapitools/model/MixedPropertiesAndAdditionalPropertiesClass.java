@@ -14,12 +14,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import org.openapitools.jackson.nullable.JsonNullable;
 
 
 
 @org.eclipse.microprofile.openapi.annotations.media.Schema(description="")
 @JsonTypeName("MixedPropertiesAndAdditionalPropertiesClass")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen", comments = "Generator version: 7.6.0-SNAPSHOT")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen", comments = "Generator version: 7.20.0-SNAPSHOT")
 public class MixedPropertiesAndAdditionalPropertiesClass  implements Serializable {
   private UUID uuid;
   private LocalDateTime dateTime;
@@ -44,7 +45,7 @@ public class MixedPropertiesAndAdditionalPropertiesClass  implements Serializabl
   
   @org.eclipse.microprofile.openapi.annotations.media.Schema(description = "")
   @JsonProperty("uuid")
-  @Valid public UUID getUuid() {
+  public UUID getUuid() {
     return uuid;
   }
 
@@ -63,7 +64,7 @@ public class MixedPropertiesAndAdditionalPropertiesClass  implements Serializabl
   
   @org.eclipse.microprofile.openapi.annotations.media.Schema(description = "")
   @JsonProperty("dateTime")
-  @Valid public LocalDateTime getDateTime() {
+  public LocalDateTime getDateTime() {
     return dateTime;
   }
 
@@ -100,9 +101,9 @@ public class MixedPropertiesAndAdditionalPropertiesClass  implements Serializabl
     return this;
   }
 
-  public MixedPropertiesAndAdditionalPropertiesClass removeMapItem(Animal mapItem) {
-    if (mapItem != null && this.map != null) {
-      this.map.remove(mapItem);
+  public MixedPropertiesAndAdditionalPropertiesClass removeMapItem(String key) {
+    if (this.map != null) {
+      this.map.remove(key);
     }
 
     return this;

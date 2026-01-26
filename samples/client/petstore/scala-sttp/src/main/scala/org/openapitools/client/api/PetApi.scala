@@ -19,8 +19,7 @@ import sttp.client3._
 import sttp.model.Method
 
 object PetApi {
-
-def apply(baseUrl: String = "http://petstore.swagger.io/v2") = new PetApi(baseUrl)
+  def apply(baseUrl: String = "http://petstore.swagger.io/v2") = new PetApi(baseUrl)
 }
 
 class PetApi(baseUrl: String) {
@@ -56,8 +55,8 @@ class PetApi(baseUrl: String) {
     basicRequest
       .method(Method.DELETE, uri"$baseUrl/pet/${petId}")
       .contentType("application/json")
-      .header("api_key", apiKey.toString)
-      .response(asJson[Unit])
+      .header("api_key", apiKey.map(_.toString()))
+      .response(asString.mapWithMetadata(ResponseAs.deserializeRightWithError(_ => Right(()))))
 
   /**
    * Multiple status values can be provided with comma separated strings
@@ -104,12 +103,12 @@ class PetApi(baseUrl: String) {
    * 
    * @param petId ID of pet to return
    */
-  def getPetById(apiKey: String)(petId: Long
+  def getPetById(apiKeyHeader: String)(petId: Long
 ): Request[Either[ResponseException[String, Exception], Pet], Any] =
     basicRequest
       .method(Method.GET, uri"$baseUrl/pet/${petId}")
       .contentType("application/json")
-      .header("api_key", apiKey)
+      .header("api_key", apiKeyHeader)
       .response(asJson[Pet])
 
   /**
@@ -150,7 +149,7 @@ class PetApi(baseUrl: String) {
         "name" -> name,
         "status" -> status
       ))
-      .response(asJson[Unit])
+      .response(asString.mapWithMetadata(ResponseAs.deserializeRightWithError(_ => Right(()))))
 
   /**
    * 

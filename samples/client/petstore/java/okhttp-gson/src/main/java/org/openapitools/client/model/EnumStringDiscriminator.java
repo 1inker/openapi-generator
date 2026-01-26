@@ -37,7 +37,6 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
 
-import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -49,7 +48,7 @@ import org.openapitools.client.JSON;
 /**
  * An object to test discriminator of enum string
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.6.0-SNAPSHOT")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.20.0-SNAPSHOT")
 public class EnumStringDiscriminator {
   /**
    * enum string type
@@ -105,26 +104,28 @@ public class EnumStringDiscriminator {
 
   public static final String SERIALIZED_NAME_ENUM_STR_TYPE = "enum_str_type";
   @SerializedName(SERIALIZED_NAME_ENUM_STR_TYPE)
+  @javax.annotation.Nonnull
   protected EnumStrTypeEnum enumStrType;
 
   public EnumStringDiscriminator() {
+
   }
 
-  public EnumStringDiscriminator enumStrType(EnumStrTypeEnum enumStrType) {
+  public EnumStringDiscriminator enumStrType(@javax.annotation.Nonnull EnumStrTypeEnum enumStrType) {
     this.enumStrType = enumStrType;
     return this;
   }
 
-   /**
+  /**
    * enum string type
    * @return enumStrType
-  **/
+   */
   @javax.annotation.Nonnull
   public EnumStrTypeEnum getEnumStrType() {
     return enumStrType;
   }
 
-  public void setEnumStrType(EnumStrTypeEnum enumStrType) {
+  public void setEnumStrType(@javax.annotation.Nonnull EnumStrTypeEnum enumStrType) {
     this.enumStrType = enumStrType;
   }
 
@@ -219,31 +220,29 @@ public class EnumStringDiscriminator {
 
   static {
     // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>();
-    openapiFields.add("enum_str_type");
+    openapiFields = new HashSet<String>(Arrays.asList("enum_str_type"));
 
     // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>();
-    openapiRequiredFields.add("enum_str_type");
+    openapiRequiredFields = new HashSet<String>(Arrays.asList("enum_str_type"));
   }
 
- /**
-  * Validates the JSON Element and throws an exception if issues found
-  *
-  * @param jsonElement JSON Element
-  * @throws IOException if the JSON Element is invalid with respect to EnumStringDiscriminator
-  */
+  /**
+   * Validates the JSON Element and throws an exception if issues found
+   *
+   * @param jsonElement JSON Element
+   * @throws IOException if the JSON Element is invalid with respect to EnumStringDiscriminator
+   */
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
         if (!EnumStringDiscriminator.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in EnumStringDiscriminator is not found in the empty JSON string", EnumStringDiscriminator.openapiRequiredFields.toString()));
+          throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in EnumStringDiscriminator is not found in the empty JSON string", EnumStringDiscriminator.openapiRequiredFields.toString()));
         }
       }
 
       // check to make sure all required properties/fields are present in the JSON string
       for (String requiredField : EnumStringDiscriminator.openapiRequiredFields) {
         if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-          throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
+          throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
         }
       }
   }
@@ -305,7 +304,7 @@ public class EnumStringDiscriminator {
                    else if (entry.getValue().getAsJsonPrimitive().isBoolean())
                      instance.putAdditionalProperty(entry.getKey(), entry.getValue().getAsBoolean());
                    else
-                     throw new IllegalArgumentException(String.format("The field `%s` has unknown primitive type. Value: %s", entry.getKey(), entry.getValue().toString()));
+                     throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` has unknown primitive type. Value: %s", entry.getKey(), entry.getValue().toString()));
                  } else if (entry.getValue().isJsonArray()) {
                      instance.putAdditionalProperty(entry.getKey(), gson.fromJson(entry.getValue(), List.class));
                  } else { // JSON object
@@ -320,22 +319,22 @@ public class EnumStringDiscriminator {
     }
   }
 
- /**
-  * Create an instance of EnumStringDiscriminator given an JSON string
-  *
-  * @param jsonString JSON string
-  * @return An instance of EnumStringDiscriminator
-  * @throws IOException if the JSON string is invalid with respect to EnumStringDiscriminator
-  */
+  /**
+   * Create an instance of EnumStringDiscriminator given an JSON string
+   *
+   * @param jsonString JSON string
+   * @return An instance of EnumStringDiscriminator
+   * @throws IOException if the JSON string is invalid with respect to EnumStringDiscriminator
+   */
   public static EnumStringDiscriminator fromJson(String jsonString) throws IOException {
     return JSON.getGson().fromJson(jsonString, EnumStringDiscriminator.class);
   }
 
- /**
-  * Convert an instance of EnumStringDiscriminator to an JSON string
-  *
-  * @return JSON string
-  */
+  /**
+   * Convert an instance of EnumStringDiscriminator to an JSON string
+   *
+   * @return JSON string
+   */
   public String toJson() {
     return JSON.getGson().toJson(this);
   }

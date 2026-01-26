@@ -13,11 +13,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import org.openapitools.jackson.nullable.JsonNullable;
 
 
 
 @JsonTypeName("Order")
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen", comments = "Generator version: 7.6.0-SNAPSHOT")
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen", comments = "Generator version: 7.20.0-SNAPSHOT")
 public class Order  implements Serializable {
   private Long id;
   private Long petId;
@@ -152,7 +153,7 @@ public class Order  implements Serializable {
   
   @ApiModelProperty(value = "")
   @JsonProperty("shipDate")
-  @Valid public Date getShipDate() {
+  public Date getShipDate() {
     return shipDate;
   }
 

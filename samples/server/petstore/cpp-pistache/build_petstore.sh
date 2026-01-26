@@ -2,7 +2,7 @@
 # build C++ pistache petstore
 #
 
-mkdir build
+mkdir -p build
 cd build
 cmake ..
-make
+make -j

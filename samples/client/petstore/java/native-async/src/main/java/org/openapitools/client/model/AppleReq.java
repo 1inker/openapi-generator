@@ -28,6 +28,7 @@ import java.util.Arrays;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 
+import org.openapitools.client.ApiClient;
 /**
  * AppleReq
  */
@@ -35,63 +36,63 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
   AppleReq.JSON_PROPERTY_CULTIVAR,
   AppleReq.JSON_PROPERTY_MEALY
 })
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.6.0-SNAPSHOT")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.20.0-SNAPSHOT")
 public class AppleReq {
   public static final String JSON_PROPERTY_CULTIVAR = "cultivar";
+  @javax.annotation.Nonnull
   private String cultivar;
 
   public static final String JSON_PROPERTY_MEALY = "mealy";
+  @javax.annotation.Nullable
   private Boolean mealy;
 
   public AppleReq() { 
   }
 
-  public AppleReq cultivar(String cultivar) {
+  public AppleReq cultivar(@javax.annotation.Nonnull String cultivar) {
     this.cultivar = cultivar;
     return this;
   }
 
-   /**
+  /**
    * Get cultivar
    * @return cultivar
-  **/
+   */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_CULTIVAR)
+  @JsonProperty(value = JSON_PROPERTY_CULTIVAR, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-
   public String getCultivar() {
     return cultivar;
   }
 
 
-  @JsonProperty(JSON_PROPERTY_CULTIVAR)
+  @JsonProperty(value = JSON_PROPERTY_CULTIVAR, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setCultivar(String cultivar) {
+  public void setCultivar(@javax.annotation.Nonnull String cultivar) {
     this.cultivar = cultivar;
   }
 
 
-  public AppleReq mealy(Boolean mealy) {
+  public AppleReq mealy(@javax.annotation.Nullable Boolean mealy) {
     this.mealy = mealy;
     return this;
   }
 
-   /**
+  /**
    * Get mealy
    * @return mealy
-  **/
+   */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_MEALY)
+  @JsonProperty(value = JSON_PROPERTY_MEALY, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-
   public Boolean getMealy() {
     return mealy;
   }
 
 
-  @JsonProperty(JSON_PROPERTY_MEALY)
+  @JsonProperty(value = JSON_PROPERTY_MEALY, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setMealy(Boolean mealy) {
+  public void setMealy(@javax.annotation.Nullable Boolean mealy) {
     this.mealy = mealy;
   }
 
@@ -172,12 +173,12 @@ public class AppleReq {
 
     // add `cultivar` to the URL query string
     if (getCultivar() != null) {
-      joiner.add(String.format("%scultivar%s=%s", prefix, suffix, URLEncoder.encode(String.valueOf(getCultivar()), StandardCharsets.UTF_8).replaceAll("\\+", "%20")));
+      joiner.add(String.format(java.util.Locale.ROOT, "%scultivar%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCultivar()))));
     }
 
     // add `mealy` to the URL query string
     if (getMealy() != null) {
-      joiner.add(String.format("%smealy%s=%s", prefix, suffix, URLEncoder.encode(String.valueOf(getMealy()), StandardCharsets.UTF_8).replaceAll("\\+", "%20")));
+      joiner.add(String.format(java.util.Locale.ROOT, "%smealy%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getMealy()))));
     }
 
     return joiner.toString();

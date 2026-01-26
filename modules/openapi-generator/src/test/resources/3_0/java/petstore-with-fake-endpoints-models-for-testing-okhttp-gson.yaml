@@ -258,6 +258,13 @@ paths:
           schema:
             type: integer
             format: int64
+        - name: Content-Type
+          in: header
+          style: simple
+          description: Content type header parameter
+          required: false
+          schema:
+            type: string
       responses:
         '200':
           description: successful operation
@@ -938,6 +945,38 @@ paths:
               $ref: '#/components/schemas/FreeFormObject'
         description: request body
         required: true
+  /fake/oneOfWIthSameErasure:
+    get:
+      description: Test route, this shouldn't cause a compiler error
+      responses:
+        200:
+          description: successful response
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: array
+                    items:
+                      type: string
+                  - type: array
+                    items:
+                      type: integer
+  /fake/anyOfWIthSameErasure:
+    get:
+      description: Test route, this shouldn't cause a compiler error
+      responses:
+        200:
+          description: successful response
+          content:
+            application/json:
+              schema:
+                anyOf:
+                  - type: array
+                    items:
+                      type: string
+                  - type: array
+                    items:
+                      type: integer
   /fake/stringMap-reference:
     post:
       tags:
@@ -1048,6 +1087,33 @@ paths:
             schema:
               $ref: '#/components/schemas/FileSchemaTestClass'
         required: true
+  /fake/get-free-form-object:
+    get:
+      tags:
+        - fake
+      description: Get a free form object or Json string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FreeFormObjectTestClass'
+  /fake/free-form-query-parameters:
+    get:
+      parameters:
+        - in: "query"
+          name: "fixed"
+          schema:
+            type: "string"
+        - in: "query"
+          name: "free-form"
+          schema:
+            type: "object"
+          style: "form"
+      responses:
+        200:
+          description: OK
   /fake/test-query-parameters:
     put:
       tags:
@@ -1173,7 +1239,7 @@ paths:
       operationId: getParameterNameMapping
       parameters:
         - name: _type
-          in: header 
+          in: header
           description: _type
           required: true
           schema:
@@ -1186,7 +1252,7 @@ paths:
           schema:
             type: string
         - name: type_
-          in: header 
+          in: header
           description: type_
           required: true
           schema:
@@ -1202,7 +1268,7 @@ paths:
       operationId: getParameterStringNumber
       parameters:
         - name: string_number
-          in: header 
+          in: header
           description: string number
           required: true
           schema:
@@ -1231,57 +1297,11 @@ paths:
       responses:
         200:
           description: OK
-  /fake/null-request-body:
-    get:
-      tags:
-        - another_fake
-      summary: null request body
-      operationId: null-request-body
-      parameters:
-        - name: Accept-Language
-          in: header
-          schema:
-            type: string
-            example: application/json
-      requestBody:
-        content:
-          text/plain:
-            examples:
-              Generar Orden por External ID:
-                value: |-
-                  {
-                      "external_reference": "{{external_order_ref}}",
-                      "notification_url": "www.yourserver.com/yourendpoint",
-                      "sponsor_id": 446566691,
-                      "items": [
-                          {
-                              "title": "Papas frita",
-                              "currency_id": "{{currency_id}}",
-                              "unit_price": 6000,
-                              "quantity": 1
-                          },
-                          {
-                              "title": "Gaseosa",
-                              "currency_id": "{{currency_id}}",
-                              "unit_price": 3000,
-                              "quantity": 1
-                          }
-                      ]/*,
-                      "taxes": [
-                          {
-                              "value": 0,
-                              "type": "IVA"
-                          }
-                      ]*/
-                  }
-      responses:
-        '200':
-          description: ''
   '/fake/pet/{petId}/uploadImage':
     post:
       tags:
         - fake
-      summary: fake uploads an image with ref request bodies
+      summary: fake reference parameter
       description: ''
       operationId: fake-upload-ref-request-bodies
       parameters:
@@ -1305,7 +1325,18 @@ paths:
             - 'read:pets'
       requestBody:
         $ref: '#/components/requestBodies/upload_body'
-
+  '/fake/pet/{petId}/reference/parameter':
+    post:
+      tags:
+        - fake
+      summary: fake reference parameter
+      description: ''
+      operationId: fake-ref-parameter
+      parameters:
+        - $ref: '#/components/parameters/pet_id'
+      responses:
+        '200':
+          description: successful operation
   /values:
     get:
       tags:
@@ -1364,6 +1395,16 @@ servers:
   - url: https://127.0.0.1/no_variable
     description: The local server without variables
 components:
+  parameters:
+    pet_id:
+      name: petId
+      in: path
+      description: to test oneOf in parameter $ref
+      required: true
+      schema:
+        oneOf:
+          - type: string
+          - type: integer
   requestBodies:
     upload_body:
       content:
@@ -1988,6 +2029,7 @@ components:
         - s
         - S
     OuterEnumInteger:
+      deprecated: true
       type: integer
       enum:
       - 0
@@ -2035,6 +2077,16 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/File'
+    FreeFormObjectTestClass:
+      type: object
+      properties:
+        name:
+          type: string
+        properties:
+          oneOf:
+            - type: string
+            - type: object
+              additionalProperties: true
     File:
       type: object
       description: Must be named `File` for test.
@@ -2143,6 +2195,13 @@ components:
           type: number
     mammal:
       oneOf:
+        - $ref: '#/components/schemas/whale'
+        - $ref: '#/components/schemas/zebra'
+        - $ref: '#/components/schemas/Pig'
+      discriminator:
+        propertyName: className
+    mammal_anyof:
+      anyOf:
         - $ref: '#/components/schemas/whale'
         - $ref: '#/components/schemas/zebra'
         - $ref: '#/components/schemas/Pig'
@@ -2497,12 +2556,16 @@ components:
       description: Values of scalar type
       oneOf:
         - type: string
+          format: uuid
+        - type: string
           maxLength: 1089
         - type: number
         - type: boolean
     ScalarAnyOf:
       description: Values of scalar type using anyOf
       anyOf:
+        - type: string
+          format: uuid
         - type: string
           maxLength: 1089
         - type: number
@@ -2544,6 +2607,17 @@ components:
                     name:
                       type: string
         category_allOf_ref:
+          allOf:
+            - $ref: '#/components/schemas/Category'
+        category_allOf_ref_description:
+          description: |
+            Adding description to property using allOf
+          allOf:
+            - $ref: '#/components/schemas/Category'
+        category_allOf_ref_description_readonly:
+          description: |
+            Adding description to readonly property using allOf
+          readOnly: true
           allOf:
             - $ref: '#/components/schemas/Category'
         name:
@@ -2694,3 +2768,56 @@ components:
           $ref: '#/components/schemas/ArrayOneOf'
         anyof_prop:
           $ref: '#/components/schemas/ArrayAnyOf'
+    NestedArrayWithDefaultValues:
+      type: object
+      properties:
+        nestedArray:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+            default: ["value1", "value2"]
+          default:
+            [
+              [ "h1", "Header 1" ],
+              [ "h2", "Header 2" ],
+              [ "h3", "Header 3" ],
+              [ "h4", "Header 4" ]
+            ]
+    LongId:
+      description: "Id as long"
+      type: integer
+      format: int64
+    Weight:
+      description: "Weight as float"
+      format: float
+      type: number
+    Height:
+      description: "Height as double"
+      format: double
+      type: number
+    AllOfRefToLong:
+      description: "Object with allOf ref to long"
+      type: object
+      properties:
+        id:
+          allOf:
+            - $ref: '#/components/schemas/LongId'
+          default: 10
+    AllOfRefToFloat:
+      description: "Object with allOf ref to float"
+      type: object
+      properties:
+        weight:
+          allOf:
+            - $ref: '#/components/schemas/Weight'
+          default: 7.89
+    AllOfRefToDouble:
+      description: "Object with allOf ref to double"
+      type: object
+      properties:
+        height:
+          allOf:
+            - $ref: '#/components/schemas/Height'
+          default: 32.1

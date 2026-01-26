@@ -2,7 +2,6 @@ package org.openapitools.codegen.languages;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Strings;
-import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.FileSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import org.openapitools.codegen.*;
@@ -21,6 +20,8 @@ import static org.openapitools.codegen.utils.StringUtils.*;
 public abstract class AbstractRustCodegen extends DefaultCodegen implements CodegenConfig {
 
     private final Logger LOGGER = LoggerFactory.getLogger(AbstractRustCodegen.class);
+
+    protected static final String VENDOR_EXTENSION_PARAM_IDENTIFIER = "x-rust-param-identifier";
 
     protected List<String> charactersToAllow = Collections.singletonList("_");
     protected Set<String> keywordsThatDoNotSupportRawIdentifiers = new HashSet<>(
@@ -148,8 +149,6 @@ public abstract class AbstractRustCodegen extends DefaultCodegen implements Code
 
     public enum CasingType {CAMEL_CASE, SNAKE_CASE}
 
-    ;
-
     /**
      * General purpose sanitizing function for Rust identifiers (fields, variables, structs, parameters, etc.).<br>
      * Rules for Rust are fairly simple:
@@ -184,8 +183,8 @@ public abstract class AbstractRustCodegen extends DefaultCodegen implements Code
                 throw new IllegalArgumentException("Unknown CasingType");
         }
 
-        // Replace hyphens with underscores
-        name = name.replaceAll("-", "_");
+        // Replace hyphens and periods with underscores
+        name = name.replaceAll("[\\.\\-]", "_");
 
         // Apply special character escapes, e.g. "@type" => "At_type"
         // Remove the trailing underscore if necessary
@@ -248,8 +247,7 @@ public abstract class AbstractRustCodegen extends DefaultCodegen implements Code
         } else if (!org.apache.commons.lang3.StringUtils.isEmpty(p.get$ref())) {
             String datatype;
             try {
-                datatype = toModelName(ModelUtils.getSimpleRef(p.get$ref()));
-                datatype = "models::" + toModelName(datatype);
+                datatype = "models::" + toModelName(ModelUtils.getSimpleRef(p.get$ref()));
             } catch (Exception e) {
                 LOGGER.warn("Error obtaining the datatype from schema (model):{}. Datatype default to Object", p);
                 datatype = "Object";
@@ -334,7 +332,7 @@ public abstract class AbstractRustCodegen extends DefaultCodegen implements Code
         return sanitizeIdentifier(operationId, CasingType.SNAKE_CASE, "call", "method", true);
     }
 
-    //// Model naming ////
+    /// / Model naming ////
 
     protected String addModelNamePrefixAndSuffix(String name) {
         if (!Strings.isNullOrEmpty(modelNamePrefix)) {
@@ -348,6 +346,10 @@ public abstract class AbstractRustCodegen extends DefaultCodegen implements Code
 
     @Override
     public String toModelName(String name) {
+        if (modelNameMapping.containsKey(name)) {
+            return modelNameMapping.get(name);
+        }
+
         return sanitizeIdentifier(addModelNamePrefixAndSuffix(name), CasingType.CAMEL_CASE, "model", "model", false);
     }
 
@@ -361,7 +363,7 @@ public abstract class AbstractRustCodegen extends DefaultCodegen implements Code
         return toModelName(name);
     }
 
-    //// Enum naming ////
+    /// / Enum naming ////
     @Override
     public String toEnumVarName(String name, String datatype) {
         if (enumNameMapping.containsKey(name)) {
@@ -401,7 +403,7 @@ public abstract class AbstractRustCodegen extends DefaultCodegen implements Code
         return toEnumVarName(value, datatype);
     }
 
-    //// API naming ////
+    /// / API naming ////
 
     protected String addApiNamePrefixAndSuffix(String name) {
         if (Strings.isNullOrEmpty(name)) {
@@ -441,6 +443,6 @@ public abstract class AbstractRustCodegen extends DefaultCodegen implements Code
         if (this.reservedWordsMappings().containsKey(name)) {
             return this.reservedWordsMappings().get(name);
         }
-        return "r#"+ name;
+        return "r#" + name;
     }
 }

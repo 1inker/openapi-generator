@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.UUID;
 import org.openapitools.model.Animal;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.lang.Nullable;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import jakarta.validation.constraints.NotNull;
@@ -22,18 +23,18 @@ import jakarta.annotation.Generated;
  * MixedPropertiesAndAdditionalPropertiesClass
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.6.0-SNAPSHOT")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.20.0-SNAPSHOT")
 public class MixedPropertiesAndAdditionalPropertiesClass {
 
-  private UUID uuid;
+  private @Nullable UUID uuid;
 
   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-  private OffsetDateTime dateTime;
+  private @Nullable OffsetDateTime dateTime;
 
   
   private Map<String, Animal> map = new HashMap<>();
 
-  public MixedPropertiesAndAdditionalPropertiesClass uuid(UUID uuid) {
+  public MixedPropertiesAndAdditionalPropertiesClass uuid(@Nullable UUID uuid) {
     this.uuid = uuid;
     return this;
   }
@@ -41,18 +42,18 @@ public class MixedPropertiesAndAdditionalPropertiesClass {
   /**
    * Get uuid
    * @return uuid
-  */
+   */
   
   @JsonProperty("uuid")
-  public UUID getUuid() {
+  public @Nullable UUID getUuid() {
     return uuid;
   }
 
-  public void setUuid(UUID uuid) {
+  public void setUuid(@Nullable UUID uuid) {
     this.uuid = uuid;
   }
 
-  public MixedPropertiesAndAdditionalPropertiesClass dateTime(OffsetDateTime dateTime) {
+  public MixedPropertiesAndAdditionalPropertiesClass dateTime(@Nullable OffsetDateTime dateTime) {
     this.dateTime = dateTime;
     return this;
   }
@@ -60,14 +61,14 @@ public class MixedPropertiesAndAdditionalPropertiesClass {
   /**
    * Get dateTime
    * @return dateTime
-  */
+   */
   
   @JsonProperty("dateTime")
-  public OffsetDateTime getDateTime() {
+  public @Nullable OffsetDateTime getDateTime() {
     return dateTime;
   }
 
-  public void setDateTime(OffsetDateTime dateTime) {
+  public void setDateTime(@Nullable OffsetDateTime dateTime) {
     this.dateTime = dateTime;
   }
 
@@ -87,7 +88,7 @@ public class MixedPropertiesAndAdditionalPropertiesClass {
   /**
    * Get map
    * @return map
-  */
+   */
   
   @JsonProperty("map")
   public Map<String, Animal> getMap() {
@@ -132,7 +133,7 @@ public class MixedPropertiesAndAdditionalPropertiesClass {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(@Nullable Object o) {
     if (o == null) {
       return "null";
     }

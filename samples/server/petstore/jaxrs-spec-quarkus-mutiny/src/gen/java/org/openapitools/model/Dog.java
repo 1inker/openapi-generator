@@ -10,12 +10,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import org.openapitools.jackson.nullable.JsonNullable;
 
 
 
 @org.eclipse.microprofile.openapi.annotations.media.Schema(description="")
 @JsonTypeName("Dog")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen", comments = "Generator version: 7.6.0-SNAPSHOT")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen", comments = "Generator version: 7.20.0-SNAPSHOT")
 public class Dog extends Animal implements Serializable {
   private String breed;
 
@@ -25,6 +26,15 @@ public class Dog extends Animal implements Serializable {
   }
 
   public Dog() {
+  }
+
+  @JsonCreator
+  public Dog(
+    @JsonProperty(required = true, value = "className") String className
+  ) {
+    super(
+      className
+    );
   }
 
   /**

@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.springframework.lang.Nullable;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import jakarta.validation.constraints.NotNull;
@@ -20,7 +21,7 @@ import jakarta.annotation.Generated;
  * TypeHolderDefault
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.6.0-SNAPSHOT")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.20.0-SNAPSHOT")
 public class TypeHolderDefault {
 
   private String stringItem = "what";
@@ -57,7 +58,7 @@ public class TypeHolderDefault {
   /**
    * Get stringItem
    * @return stringItem
-  */
+   */
   @NotNull
   @JsonProperty("string_item")
   public String getStringItem() {
@@ -76,7 +77,7 @@ public class TypeHolderDefault {
   /**
    * Get numberItem
    * @return numberItem
-  */
+   */
   @NotNull
   @JsonProperty("number_item")
   public BigDecimal getNumberItem() {
@@ -95,7 +96,7 @@ public class TypeHolderDefault {
   /**
    * Get integerItem
    * @return integerItem
-  */
+   */
   @NotNull
   @JsonProperty("integer_item")
   public Integer getIntegerItem() {
@@ -114,7 +115,7 @@ public class TypeHolderDefault {
   /**
    * Get boolItem
    * @return boolItem
-  */
+   */
   @NotNull
   @JsonProperty("bool_item")
   public Boolean getBoolItem() {
@@ -141,7 +142,7 @@ public class TypeHolderDefault {
   /**
    * Get arrayItem
    * @return arrayItem
-  */
+   */
   @NotNull
   @JsonProperty("array_item")
   public List<Integer> getArrayItem() {
@@ -190,7 +191,7 @@ public class TypeHolderDefault {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(@Nullable Object o) {
     if (o == null) {
       return "null";
     }

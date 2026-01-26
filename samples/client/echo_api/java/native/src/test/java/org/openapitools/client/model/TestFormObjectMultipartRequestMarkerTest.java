@@ -19,21 +19,21 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.Arrays;
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 /**
  * Model tests for TestFormObjectMultipartRequestMarker
  */
-public class TestFormObjectMultipartRequestMarkerTest {
+class TestFormObjectMultipartRequestMarkerTest {
     private final TestFormObjectMultipartRequestMarker model = new TestFormObjectMultipartRequestMarker();
 
     /**
      * Model tests for TestFormObjectMultipartRequestMarker
      */
     @Test
-    public void testTestFormObjectMultipartRequestMarker() {
+    void testTestFormObjectMultipartRequestMarker() {
         // TODO: test TestFormObjectMultipartRequestMarker
     }
 
@@ -41,7 +41,7 @@ public class TestFormObjectMultipartRequestMarkerTest {
      * Test the property 'name'
      */
     @Test
-    public void nameTest() {
+    void nameTest() {
         // TODO: test name
     }
 

@@ -19,23 +19,47 @@ package org.openapitools.codegen.go;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.media.ArraySchema;
-import io.swagger.v3.oas.models.media.IntegerSchema;
-import io.swagger.v3.oas.models.media.MapSchema;
-import io.swagger.v3.oas.models.media.ObjectSchema;
-import io.swagger.v3.oas.models.media.Schema;
+import io.swagger.v3.oas.models.Operation;
+import io.swagger.v3.oas.models.media.*;
+import io.swagger.v3.oas.models.parameters.Parameter;
+import io.swagger.v3.oas.models.parameters.RequestBody;
+import org.mockito.Answers;
+import org.openapitools.codegen.*;
 import org.openapitools.codegen.CodegenConstants;
-import org.openapitools.codegen.CodegenType;
 import org.openapitools.codegen.languages.AbstractGoCodegen;
+import org.openapitools.codegen.model.OperationMap;
+import org.openapitools.codegen.model.OperationsMap;
+import org.openapitools.codegen.model.WebhooksMap;
 import org.openapitools.codegen.utils.ModelUtils;
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.withSettings;
 
 public class AbstractGoCodegenTest {
 
+    private AbstractGoCodegen codegen;
+
+    /**
+     * In TEST-NG, test class (and its fields) is only constructed once (vs. for every test in Jupiter),
+     * using @BeforeMethod to have a fresh codegen mock for each test
+     */
+    @BeforeMethod
+    void mockAbstractCodegen() {
+        codegen = mock(
+                AbstractGoCodegen.class, withSettings().defaultAnswer(Answers.CALLS_REAL_METHODS).useConstructor()
+        );
+    }
+
     @Test
     public void testInitialConfigValues() throws Exception {
-        final AbstractGoCodegen codegen = new P_AbstractGoCodegen();
         codegen.processOpts();
 
         Assert.assertEquals(codegen.additionalProperties().get(CodegenConstants.HIDE_GENERATION_TIMESTAMP), Boolean.FALSE);
@@ -44,7 +68,6 @@ public class AbstractGoCodegenTest {
 
     @Test
     public void testSettersForConfigValues() throws Exception {
-        final AbstractGoCodegen codegen = new P_AbstractGoCodegen();
         codegen.setHideGenerationTimestamp(true);
         codegen.processOpts();
 
@@ -54,7 +77,6 @@ public class AbstractGoCodegenTest {
 
     @Test
     public void testAdditionalPropertiesPutForConfigValues() throws Exception {
-        final AbstractGoCodegen codegen = new P_AbstractGoCodegen();
         codegen.additionalProperties().put(CodegenConstants.HIDE_GENERATION_TIMESTAMP, true);
         codegen.processOpts();
 
@@ -64,7 +86,6 @@ public class AbstractGoCodegenTest {
 
     @Test
     public void getTypeDeclarationTest() {
-        final AbstractGoCodegen codegen = new P_AbstractGoCodegen();
 
         // Create an alias to an array schema
         Schema<?> nestedArraySchema = new ArraySchema().items(new IntegerSchema().format("int32"));
@@ -100,20 +121,90 @@ public class AbstractGoCodegenTest {
         Assert.assertEquals(defaultValue, "map[string]interface{}");
     }
 
-    private static class P_AbstractGoCodegen extends AbstractGoCodegen {
-        @Override
-        public CodegenType getTag() {
-            return null;
-        }
-
-        @Override
-        public String getName() {
-            return null;
-        }
-
-        @Override
-        public String getHelp() {
-            return null;
-        }
+    @Test(description = "test that os import is added for array of binary parameters in operations")
+    public void testOsImportForArrayOfBinaryParametersInOperations() {
+        // Create OpenAPI spec with array of binary files
+        OpenAPI openAPI = new OpenAPI();
+        openAPI.setComponents(new Components());
+        
+        // Create operation with array of binary parameter in request body
+        Operation operation = new Operation();
+        RequestBody requestBody = new RequestBody();
+        Content content = new Content();
+        MediaType mediaType = new MediaType();
+        
+        Schema<?> arraySchema = new ArraySchema().items(
+            new BinarySchema()
+        );
+        
+        ObjectSchema objectSchema = new ObjectSchema();
+        objectSchema.addProperty("files", arraySchema);
+        mediaType.setSchema(objectSchema);
+        content.addMediaType("multipart/form-data", mediaType);
+        requestBody.setContent(content);
+        operation.setRequestBody(requestBody);
+        
+        codegen.setOpenAPI(openAPI);
+        
+        // Convert to CodegenOperation
+        CodegenOperation codegenOperation = codegen.fromOperation("/upload", "post", operation, null);
+        
+        // Create OperationsMap structure
+        OperationMap operationMap = new OperationMap();
+        operationMap.setOperation(codegenOperation);
+        OperationsMap operationsMap = new OperationsMap();
+        operationsMap.setOperation(operationMap);
+        operationsMap.setImports(new ArrayList<>());
+        
+        // Post-process the operations
+        OperationsMap result = codegen.postProcessOperationsWithModels(operationsMap, Collections.emptyList());
+        
+        // Assert that "os" import was added
+        List<Map<String, String>> imports = result.getImports();
+        boolean hasOsImport = imports.stream()
+            .anyMatch(imp -> "os".equals(imp.get("import")));
+        
+        Assert.assertTrue(hasOsImport, "Expected 'os' import to be added for array of binary files");
+    }
+    
+    @Test(description = "test that time import is added for array of date-time parameters in operations")
+    public void testTimeImportForArrayOfDateTimeParametersInOperations() {
+        // Create OpenAPI spec with array of date-time parameter
+        OpenAPI openAPI = new OpenAPI();
+        openAPI.setComponents(new Components());
+        
+        Operation operation = new Operation();
+        Parameter parameter = new Parameter();
+        parameter.setName("timestamps");
+        parameter.setIn("query");
+        
+        ArraySchema arraySchema = new ArraySchema();
+        DateTimeSchema dateTimeSchema = new DateTimeSchema();
+        arraySchema.setItems(dateTimeSchema);
+        parameter.setSchema(arraySchema);
+        
+        operation.addParametersItem(parameter);
+        
+        codegen.setOpenAPI(openAPI);
+        
+        // Convert to CodegenOperation
+        CodegenOperation codegenOperation = codegen.fromOperation("/events", "get", operation, null);
+        
+        // Create OperationsMap structure
+        OperationMap operationMap = new OperationMap();
+        operationMap.setOperation(codegenOperation);
+        OperationsMap operationsMap = new OperationsMap();
+        operationsMap.setOperation(operationMap);
+        operationsMap.setImports(new ArrayList<>());
+        
+        // Post-process the operations
+        OperationsMap result = codegen.postProcessOperationsWithModels(operationsMap, Collections.emptyList());
+        
+        // Assert that "time" import was added
+        List<Map<String, String>> imports = result.getImports();
+        boolean hasTimeImport = imports.stream()
+            .anyMatch(imp -> "time".equals(imp.get("import")));
+        
+        Assert.assertTrue(hasTimeImport, "Expected 'time' import to be added for array of date-time parameters");
     }
 }

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.springframework.lang.Nullable;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import javax.validation.Valid;
@@ -19,14 +20,26 @@ import javax.annotation.Generated;
  * ReadOnlyFirst
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.6.0-SNAPSHOT")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.20.0-SNAPSHOT")
 public class ReadOnlyFirst {
 
-  private String bar;
+  private @Nullable String bar;
 
-  private String baz;
+  private @Nullable String baz;
 
-  public ReadOnlyFirst bar(String bar) {
+  public ReadOnlyFirst() {
+    super();
+  }
+
+  /**
+   * Constructor with all args parameters
+   */
+  public ReadOnlyFirst(@Nullable String bar, @Nullable String baz) {
+      this.bar = bar;
+      this.baz = baz;
+  }
+
+  public ReadOnlyFirst bar(@Nullable String bar) {
     this.bar = bar;
     return this;
   }
@@ -34,19 +47,19 @@ public class ReadOnlyFirst {
   /**
    * Get bar
    * @return bar
-  */
+   */
   
   @ApiModelProperty(readOnly = true, value = "")
   @JsonProperty("bar")
-  public String getBar() {
+  public @Nullable String getBar() {
     return bar;
   }
 
-  public void setBar(String bar) {
+  public void setBar(@Nullable String bar) {
     this.bar = bar;
   }
 
-  public ReadOnlyFirst baz(String baz) {
+  public ReadOnlyFirst baz(@Nullable String baz) {
     this.baz = baz;
     return this;
   }
@@ -54,15 +67,15 @@ public class ReadOnlyFirst {
   /**
    * Get baz
    * @return baz
-  */
+   */
   
   @ApiModelProperty(value = "")
   @JsonProperty("baz")
-  public String getBaz() {
+  public @Nullable String getBaz() {
     return baz;
   }
 
-  public void setBaz(String baz) {
+  public void setBaz(@Nullable String baz) {
     this.baz = baz;
   }
 
@@ -98,7 +111,7 @@ public class ReadOnlyFirst {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(@Nullable Object o) {
     if (o == null) {
       return "null";
     }

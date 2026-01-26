@@ -13,6 +13,8 @@
 
 package org.openapitools.client.model;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.StringJoiner;
@@ -28,41 +30,42 @@ import java.util.Arrays;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 
+import org.openapitools.client.ApiClient;
 /**
  * TriangleInterface
  */
 @JsonPropertyOrder({
   TriangleInterface.JSON_PROPERTY_TRIANGLE_TYPE
 })
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.6.0-SNAPSHOT")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.20.0-SNAPSHOT")
 public class TriangleInterface {
   public static final String JSON_PROPERTY_TRIANGLE_TYPE = "triangleType";
+  @javax.annotation.Nonnull
   private String triangleType;
 
   public TriangleInterface() { 
   }
 
-  public TriangleInterface triangleType(String triangleType) {
+  public TriangleInterface triangleType(@javax.annotation.Nonnull String triangleType) {
     this.triangleType = triangleType;
     return this;
   }
 
-   /**
+  /**
    * Get triangleType
    * @return triangleType
-  **/
+   */
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_TRIANGLE_TYPE)
+  @JsonProperty(value = JSON_PROPERTY_TRIANGLE_TYPE, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-
   public String getTriangleType() {
     return triangleType;
   }
 
 
-  @JsonProperty(JSON_PROPERTY_TRIANGLE_TYPE)
+  @JsonProperty(value = JSON_PROPERTY_TRIANGLE_TYPE, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setTriangleType(String triangleType) {
+  public void setTriangleType(@javax.annotation.Nonnull String triangleType) {
     this.triangleType = triangleType;
   }
 
@@ -72,19 +75,12 @@ public class TriangleInterface {
    */
   @Override
   public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    TriangleInterface triangleInterface = (TriangleInterface) o;
-    return Objects.equals(this.triangleType, triangleInterface.triangleType);
+    return EqualsBuilder.reflectionEquals(this, o, false, null, true);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(triangleType);
+    return HashCodeBuilder.reflectionHashCode(this);
   }
 
   @Override
@@ -141,10 +137,64 @@ public class TriangleInterface {
 
     // add `triangleType` to the URL query string
     if (getTriangleType() != null) {
-      joiner.add(String.format("%striangleType%s=%s", prefix, suffix, URLEncoder.encode(String.valueOf(getTriangleType()), StandardCharsets.UTF_8).replaceAll("\\+", "%20")));
+      joiner.add(String.format(java.util.Locale.ROOT, "%striangleType%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getTriangleType()))));
     }
 
     return joiner.toString();
   }
+
+    public static class Builder {
+
+    private TriangleInterface instance;
+
+    public Builder() {
+      this(new TriangleInterface());
+    }
+
+    protected Builder(TriangleInterface instance) {
+      this.instance = instance;
+    }
+
+    public TriangleInterface.Builder triangleType(String triangleType) {
+      this.instance.triangleType = triangleType;
+      return this;
+    }
+
+
+    /**
+    * returns a built TriangleInterface instance.
+    *
+    * The builder is not reusable.
+    */
+    public TriangleInterface build() {
+      try {
+        return this.instance;
+      } finally {
+        // ensure that this.instance is not reused
+        this.instance = null;
+      }
+    }
+
+    @Override
+    public String toString() {
+      return getClass() + "=(" + instance + ")";
+    }
+  }
+
+  /**
+  * Create a builder with no initialized field.
+  */
+  public static TriangleInterface.Builder builder() {
+    return new TriangleInterface.Builder();
+  }
+
+  /**
+  * Create a builder with a shallow copy of this instance.
+  */
+  public TriangleInterface.Builder toBuilder() {
+    return new TriangleInterface.Builder()
+      .triangleType(getTriangleType());
+  }
+
 }
 

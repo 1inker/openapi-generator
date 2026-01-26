@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import org.openapitools.model.AnimalDto;
+import org.springframework.lang.Nullable;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import jakarta.validation.constraints.NotNull;
@@ -30,12 +31,16 @@ import jakarta.annotation.Generated;
   @JsonSubTypes.Type(value = BigCatDto.class, name = "BigCat")
 })
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.6.0-SNAPSHOT")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.20.0-SNAPSHOT")
 public class CatDto extends AnimalDto {
 
-  private Boolean declawed;
+  private @Nullable Boolean declawed;
 
-  public CatDto declawed(Boolean declawed) {
+  public CatDto() {
+    super();
+  }
+
+  public CatDto declawed(@Nullable Boolean declawed) {
     this.declawed = declawed;
     return this;
   }
@@ -43,14 +48,14 @@ public class CatDto extends AnimalDto {
   /**
    * Get declawed
    * @return declawed
-  */
+   */
   
   @JsonProperty("declawed")
-  public Boolean getDeclawed() {
+  public @Nullable Boolean getDeclawed() {
     return declawed;
   }
 
-  public void setDeclawed(Boolean declawed) {
+  public void setDeclawed(@Nullable Boolean declawed) {
     this.declawed = declawed;
   }
 
@@ -96,7 +101,7 @@ public class CatDto extends AnimalDto {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(@Nullable Object o) {
     if (o == null) {
       return "null";
     }

@@ -20,7 +20,6 @@ package org.openapitools.codegen.languages;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import io.swagger.v3.oas.models.Operation;
-import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.servers.Server;
@@ -106,11 +105,14 @@ public class CppRestSdkClientCodegen extends AbstractCppCodegen {
                         GlobalFeature.MultiServer
                 )
                 .includeSchemaSupportFeatures(
-                        SchemaSupportFeature.Polymorphism
+                        SchemaSupportFeature.Polymorphism,
+                        SchemaSupportFeature.oneOf
                 )
                 .excludeParameterFeatures(
                         ParameterFeature.Cookie
                 )
+                .includeDataTypeFeatures(
+                        DataTypeFeature.AnyType)
         );
 
         apiPackage = "org.openapitools.client.api";
@@ -159,6 +161,7 @@ public class CppRestSdkClientCodegen extends AbstractCppCodegen {
         typeMapping.put("long", "int64_t");
         typeMapping.put("boolean", "bool");
         typeMapping.put("array", "std::vector");
+        typeMapping.put("set", "std::set");
         typeMapping.put("map", "std::map");
         typeMapping.put("file", "HttpContent");
         typeMapping.put("object", "Object");
@@ -171,9 +174,11 @@ public class CppRestSdkClientCodegen extends AbstractCppCodegen {
         super.importMapping = new HashMap<>();
         importMapping.put("std::vector", "#include <vector>");
         importMapping.put("std::map", "#include <map>");
+        importMapping.put("std::set", "#include <set>");
         importMapping.put("std::string", "#include <string>");
         importMapping.put("HttpContent", "#include \"HttpContent.h\"");
         importMapping.put("Object", "#include \"Object.h\"");
+        importMapping.put("AnyType", "#include \"AnyType.h\"");
         importMapping.put("utility::string_t", "#include <cpprest/details/basic_types.h>");
         importMapping.put("utility::datetime", "#include <cpprest/details/basic_types.h>");
     }
@@ -214,11 +219,14 @@ public class CppRestSdkClientCodegen extends AbstractCppCodegen {
 
         importMapping.put("HttpContent", "#include \"" + packageName + "/" + "HttpContent.h\"");
         importMapping.put("Object", "#include \"" + packageName + "/" + "Object.h\"");
+        importMapping.put("AnyType", "#include \"" + packageName + "/" + "AnyType.h\"");
 
         supportingFiles.add(new SupportingFile("modelbase-header.mustache", getHeaderFolder(), "ModelBase.h"));
         supportingFiles.add(new SupportingFile("modelbase-source.mustache", getSourceFolder(), "ModelBase.cpp"));
         supportingFiles.add(new SupportingFile("object-header.mustache", getHeaderFolder(), "Object.h"));
         supportingFiles.add(new SupportingFile("object-source.mustache", getSourceFolder(), "Object.cpp"));
+        supportingFiles.add(new SupportingFile("anytype-header.mustache", getHeaderFolder(), "AnyType.h"));
+        supportingFiles.add(new SupportingFile("anytype-source.mustache", getSourceFolder(), "AnyType.cpp"));
         supportingFiles.add(new SupportingFile("apiclient-header.mustache", getHeaderFolder(), "ApiClient.h"));
         supportingFiles.add(new SupportingFile("apiclient-source.mustache", getSourceFolder(), "ApiClient.cpp"));
         supportingFiles.add(new SupportingFile("apiconfiguration-header.mustache", getHeaderFolder(), "ApiConfiguration.h"));
@@ -281,6 +289,15 @@ public class CppRestSdkClientCodegen extends AbstractCppCodegen {
             if (!newImp.isEmpty()) {
                 codegenModel.imports.add(newImp);
             }
+        }
+
+        // Handle additionalProperties for models that have both properties and additionalProperties
+        Schema addlProps = ModelUtils.getAdditionalProperties(model);
+        if (addlProps != null && model.getProperties() != null && !model.getProperties().isEmpty()) {
+            // This model has both defined properties AND additionalProperties
+            codegenModel.additionalPropertiesType = getTypeDeclaration(addlProps);
+            // Add import for web::json::value which is used to store additional properties
+            codegenModel.imports.add("#include <cpprest/json.h>");
         }
 
         return codegenModel;
@@ -355,6 +372,34 @@ public class CppRestSdkClientCodegen extends AbstractCppCodegen {
     }
 
     /**
+     * Resolve a schema reference. If the schema has a $ref, return the referenced schema.
+     * This is for nested maps.
+     */
+    private Schema resolveSchema(Schema schema) {
+        if (schema == null) {
+            return null;
+        }
+        if (StringUtils.isNotEmpty(schema.get$ref())) {
+            String ref = ModelUtils.getSimpleRef(schema.get$ref());
+            Schema resolved = ModelUtils.getSchema(openAPI, ref);
+            return resolved != null ? resolved : schema;
+        }
+        return schema;
+    }
+
+    /**
+     * Check if a schema is a pure map (has additionalProperties but no defined properties).
+     * Schemas with both properties and additionalProperties should be treated as models, not maps.
+     */
+    private boolean isPureMapSchema(Schema schema) {
+        if (!ModelUtils.isMapSchema(schema)) {
+            return false;
+        }
+        // If the schema has defined properties, it's not a pure map
+        return schema.getProperties() == null || schema.getProperties().isEmpty();
+    }
+
+    /**
      * Optional - type declaration. This is a String which is used by the
      * templates to instantiate your types. There is typically special handling
      * for different property types
@@ -364,21 +409,33 @@ public class CppRestSdkClientCodegen extends AbstractCppCodegen {
      */
     @Override
     public String getTypeDeclaration(Schema p) {
-        String openAPIType = getSchemaType(p);
+        // Resolve the schema to check for nested maps/arrays - refs that point to map schemas
+        Schema resolved = resolveSchema(p);
 
-        if (ModelUtils.isArraySchema(p)) {
-            Schema inner = ModelUtils.getSchemaItems(p);
+        if (ModelUtils.isArraySchema(resolved)) {
+            Schema inner = ModelUtils.getSchemaItems(resolved);
             return getSchemaType(p) + "<" + getTypeDeclaration(inner) + ">";
-        } else if (ModelUtils.isMapSchema(p)) {
-            Schema inner = ModelUtils.getAdditionalProperties(p);
-            return getSchemaType(p) + "<utility::string_t, " + getTypeDeclaration(inner) + ">";
-        } else if (ModelUtils.isFileSchema(p) || ModelUtils.isBinarySchema(p)) {
+        } else if (isPureMapSchema(resolved)) {
+            // Only treat as map if it has additionalProperties but NO defined properties
+            Schema inner = ModelUtils.getAdditionalProperties(resolved);
+            // inner can be null if additionalProperties is a boolean or not present
+            String innerType = inner != null ? getTypeDeclaration(inner) : "std::shared_ptr<Object>";
+            return getSchemaType(p) + "<utility::string_t, " + innerType + ">";
+        }
+
+        // For non-containers, use the original schema to preserve model names
+        String openAPIType = getSchemaType(p);
+        if (ModelUtils.isFileSchema(p) || ModelUtils.isBinarySchema(p)) {
             return "std::shared_ptr<" + openAPIType + ">";
         } else if (ModelUtils.isStringSchema(p)
                 || ModelUtils.isDateSchema(p) || ModelUtils.isDateTimeSchema(p)
                 || ModelUtils.isFileSchema(p) || ModelUtils.isUUIDSchema(p)
                 || languageSpecificPrimitives.contains(openAPIType)) {
             return toModelName(openAPIType);
+        } else if (ModelUtils.isObjectSchema(p)) {
+            return "std::shared_ptr<Object>";
+        } else if(typeMapping.containsKey(super.getSchemaType(p))) {
+            return openAPIType;
         }
 
         return "std::shared_ptr<" + openAPIType + ">";
@@ -402,8 +459,10 @@ public class CppRestSdkClientCodegen extends AbstractCppCodegen {
                 return "0L";
             }
             return "0";
-        } else if (ModelUtils.isMapSchema(p)) {
-            String inner = getSchemaType(ModelUtils.getAdditionalProperties(p));
+        } else if (isPureMapSchema(p)) {
+            Schema innerSchema = ModelUtils.getAdditionalProperties(p);
+            // innerSchema can be null if additionalProperties is a boolean or not present
+            String inner = innerSchema != null ? getSchemaType(innerSchema) : "std::shared_ptr<Object>";
             return "std::map<utility::string_t, " + inner + ">()";
         } else if (ModelUtils.isArraySchema(p)) {
             String inner = getSchemaType(ModelUtils.getSchemaItems(p));
@@ -415,7 +474,7 @@ public class CppRestSdkClientCodegen extends AbstractCppCodegen {
             return "new " + toModelName(ModelUtils.getSimpleRef(p.get$ref())) + "()";
         } else if (ModelUtils.isStringSchema(p)) {
             return "utility::conversions::to_string_t(\"\")";
-        } else if (ModelUtils.isFreeFormObject(p)) {
+        } else if (ModelUtils.isFreeFormObject(p, openAPI)) {
             return "new Object()";
         }
 

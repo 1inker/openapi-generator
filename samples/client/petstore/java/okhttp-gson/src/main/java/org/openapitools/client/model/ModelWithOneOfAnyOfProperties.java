@@ -39,7 +39,6 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
 
-import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -51,53 +50,55 @@ import org.openapitools.client.JSON;
 /**
  * ModelWithOneOfAnyOfProperties
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.6.0-SNAPSHOT")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.20.0-SNAPSHOT")
 public class ModelWithOneOfAnyOfProperties {
   public static final String SERIALIZED_NAME_ONEOF_PROP = "oneof_prop";
   @SerializedName(SERIALIZED_NAME_ONEOF_PROP)
+  @javax.annotation.Nullable
   private ArrayOneOf oneofProp;
 
   public static final String SERIALIZED_NAME_ANYOF_PROP = "anyof_prop";
   @SerializedName(SERIALIZED_NAME_ANYOF_PROP)
+  @javax.annotation.Nullable
   private ArrayAnyOf anyofProp;
 
   public ModelWithOneOfAnyOfProperties() {
   }
 
-  public ModelWithOneOfAnyOfProperties oneofProp(ArrayOneOf oneofProp) {
+  public ModelWithOneOfAnyOfProperties oneofProp(@javax.annotation.Nullable ArrayOneOf oneofProp) {
     this.oneofProp = oneofProp;
     return this;
   }
 
-   /**
+  /**
    * Get oneofProp
    * @return oneofProp
-  **/
+   */
   @javax.annotation.Nullable
   public ArrayOneOf getOneofProp() {
     return oneofProp;
   }
 
-  public void setOneofProp(ArrayOneOf oneofProp) {
+  public void setOneofProp(@javax.annotation.Nullable ArrayOneOf oneofProp) {
     this.oneofProp = oneofProp;
   }
 
 
-  public ModelWithOneOfAnyOfProperties anyofProp(ArrayAnyOf anyofProp) {
+  public ModelWithOneOfAnyOfProperties anyofProp(@javax.annotation.Nullable ArrayAnyOf anyofProp) {
     this.anyofProp = anyofProp;
     return this;
   }
 
-   /**
+  /**
    * Get anyofProp
    * @return anyofProp
-  **/
+   */
   @javax.annotation.Nullable
   public ArrayAnyOf getAnyofProp() {
     return anyofProp;
   }
 
-  public void setAnyofProp(ArrayAnyOf anyofProp) {
+  public void setAnyofProp(@javax.annotation.Nullable ArrayAnyOf anyofProp) {
     this.anyofProp = anyofProp;
   }
 
@@ -194,24 +195,22 @@ public class ModelWithOneOfAnyOfProperties {
 
   static {
     // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>();
-    openapiFields.add("oneof_prop");
-    openapiFields.add("anyof_prop");
+    openapiFields = new HashSet<String>(Arrays.asList("oneof_prop", "anyof_prop"));
 
     // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>();
+    openapiRequiredFields = new HashSet<String>(0);
   }
 
- /**
-  * Validates the JSON Element and throws an exception if issues found
-  *
-  * @param jsonElement JSON Element
-  * @throws IOException if the JSON Element is invalid with respect to ModelWithOneOfAnyOfProperties
-  */
+  /**
+   * Validates the JSON Element and throws an exception if issues found
+   *
+   * @param jsonElement JSON Element
+   * @throws IOException if the JSON Element is invalid with respect to ModelWithOneOfAnyOfProperties
+   */
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
         if (!ModelWithOneOfAnyOfProperties.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in ModelWithOneOfAnyOfProperties is not found in the empty JSON string", ModelWithOneOfAnyOfProperties.openapiRequiredFields.toString()));
+          throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in ModelWithOneOfAnyOfProperties is not found in the empty JSON string", ModelWithOneOfAnyOfProperties.openapiRequiredFields.toString()));
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
@@ -282,7 +281,7 @@ public class ModelWithOneOfAnyOfProperties {
                    else if (entry.getValue().getAsJsonPrimitive().isBoolean())
                      instance.putAdditionalProperty(entry.getKey(), entry.getValue().getAsBoolean());
                    else
-                     throw new IllegalArgumentException(String.format("The field `%s` has unknown primitive type. Value: %s", entry.getKey(), entry.getValue().toString()));
+                     throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` has unknown primitive type. Value: %s", entry.getKey(), entry.getValue().toString()));
                  } else if (entry.getValue().isJsonArray()) {
                      instance.putAdditionalProperty(entry.getKey(), gson.fromJson(entry.getValue(), List.class));
                  } else { // JSON object
@@ -297,22 +296,22 @@ public class ModelWithOneOfAnyOfProperties {
     }
   }
 
- /**
-  * Create an instance of ModelWithOneOfAnyOfProperties given an JSON string
-  *
-  * @param jsonString JSON string
-  * @return An instance of ModelWithOneOfAnyOfProperties
-  * @throws IOException if the JSON string is invalid with respect to ModelWithOneOfAnyOfProperties
-  */
+  /**
+   * Create an instance of ModelWithOneOfAnyOfProperties given an JSON string
+   *
+   * @param jsonString JSON string
+   * @return An instance of ModelWithOneOfAnyOfProperties
+   * @throws IOException if the JSON string is invalid with respect to ModelWithOneOfAnyOfProperties
+   */
   public static ModelWithOneOfAnyOfProperties fromJson(String jsonString) throws IOException {
     return JSON.getGson().fromJson(jsonString, ModelWithOneOfAnyOfProperties.class);
   }
 
- /**
-  * Convert an instance of ModelWithOneOfAnyOfProperties to an JSON string
-  *
-  * @return JSON string
-  */
+  /**
+   * Convert an instance of ModelWithOneOfAnyOfProperties to an JSON string
+   *
+   * @return JSON string
+   */
   public String toJson() {
     return JSON.getGson().toJson(this);
   }

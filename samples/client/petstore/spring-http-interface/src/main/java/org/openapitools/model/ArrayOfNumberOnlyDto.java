@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.springframework.lang.Nullable;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import jakarta.validation.constraints.NotNull;
@@ -22,7 +23,7 @@ import jakarta.annotation.Generated;
  */
 
 @JsonTypeName("ArrayOfNumberOnly")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.6.0-SNAPSHOT")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.20.0-SNAPSHOT")
 public class ArrayOfNumberOnlyDto {
 
   
@@ -44,7 +45,7 @@ public class ArrayOfNumberOnlyDto {
   /**
    * Get arrayNumber
    * @return arrayNumber
-  */
+   */
   
   @JsonProperty("ArrayNumber")
   public List<BigDecimal> getArrayNumber() {
@@ -85,7 +86,7 @@ public class ArrayOfNumberOnlyDto {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(@Nullable Object o) {
     if (o == null) {
       return "null";
     }

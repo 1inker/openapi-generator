@@ -17,7 +17,6 @@
 
 package org.openapitools.codegen.ruby;
 
-import com.google.common.collect.ImmutableMap;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.media.Schema;
@@ -369,6 +368,7 @@ public class RubyClientCodegenTest {
         Set<String> oneOf = new TreeSet<String>();
         oneOf.add("Apple");
         oneOf.add("Banana");
+        oneOf.add("Orange");
         Assert.assertEquals(fruit.oneOf, oneOf);
     }
 
@@ -451,7 +451,7 @@ public class RubyClientCodegenTest {
         Assert.assertNotNull(child);
 
         // to test allVars (without parent's properties)
-        List<String> allVars  =
+        List<String> allVars =
                 child.getAllVars().stream()
                         .map(CodegenProperty::getName)
                         .collect(Collectors.toList());
@@ -468,7 +468,7 @@ public class RubyClientCodegenTest {
         Assert.assertTrue(allVars.containsAll(allVarsExpected));
 
         // to test vars (without parent's properties)
-        List<String> vars  =
+        List<String> vars =
                 child.getVars().stream()
                         .map(CodegenProperty::getName)
                         .collect(Collectors.toList());
@@ -480,14 +480,14 @@ public class RubyClientCodegenTest {
         Assert.assertTrue(vars.containsAll(varsExpected));
 
         // to test requiredVars
-        List<String> requiredVars  =
+        List<String> requiredVars =
                 child.getRequiredVars().stream()
                         .map(CodegenProperty::getName)
                         .collect(Collectors.toList());
         List<String> requiredVarsExpected = Arrays.asList(
                 "duplicated_required",
                 "person_required"
-                );
+        );
         Assert.assertEquals(vars.size(), requiredVarsExpected.size());
         Assert.assertTrue(requiredVars.containsAll(requiredVarsExpected));
     }
@@ -564,8 +564,8 @@ public class RubyClientCodegenTest {
         Assert.assertNotNull(superMan);
 
         // to test all properties
-        Assert.assertEquals(superMan.getVars().size(), 6);
-        Assert.assertEquals(superMan.getAllVars().size(), 6);
+        Assert.assertEquals(superMan.getVars().size(), 7);
+        Assert.assertEquals(superMan.getAllVars().size(), 7);
         Assert.assertEquals(superMan.getMandatory().size(), 3);
         Assert.assertEquals(superMan.getAllMandatory().size(), 3);
 
@@ -578,44 +578,54 @@ public class RubyClientCodegenTest {
         Assert.assertFalse(cp1.required);
 
         CodegenProperty cp2 = superMan.getVars().get(2);
-        Assert.assertEquals(cp2.name, "reward");
+        Assert.assertEquals(cp2.name, "nickname");
         Assert.assertFalse(cp2.required);
+        Assert.assertTrue(cp2.deprecated);
 
         CodegenProperty cp3 = superMan.getVars().get(3);
-        Assert.assertEquals(cp3.name, "origin");
-        Assert.assertTrue(cp3.required);
+        Assert.assertEquals(cp3.name, "reward");
+        Assert.assertFalse(cp3.required);
 
         CodegenProperty cp4 = superMan.getVars().get(4);
-        Assert.assertEquals(cp4.name, "category");
-        Assert.assertFalse(cp4.required);
+        Assert.assertEquals(cp4.name, "origin");
+        Assert.assertTrue(cp4.required);
 
         CodegenProperty cp5 = superMan.getVars().get(5);
-        Assert.assertEquals(cp5.name, "level");
-        Assert.assertTrue(cp5.required);
+        Assert.assertEquals(cp5.name, "category");
+        Assert.assertFalse(cp5.required);
 
-        CodegenProperty cp6 = superMan.getAllVars().get(0);
-        Assert.assertEquals(cp6.name, "id");
+        CodegenProperty cp6 = superMan.getVars().get(6);
+        Assert.assertEquals(cp6.name, "level");
         Assert.assertTrue(cp6.required);
 
-        CodegenProperty cp7 = superMan.getAllVars().get(1);
-        Assert.assertEquals(cp7.name, "name");
-        Assert.assertFalse(cp7.required);
+        CodegenProperty cp7 = superMan.getAllVars().get(0);
+        Assert.assertEquals(cp7.name, "id");
+        Assert.assertTrue(cp7.required);
 
-        CodegenProperty cp8 = superMan.getAllVars().get(2);
-        Assert.assertEquals(cp8.name, "reward");
+        CodegenProperty cp8 = superMan.getAllVars().get(1);
+        Assert.assertEquals(cp8.name, "name");
         Assert.assertFalse(cp8.required);
 
-        CodegenProperty cp9 = superMan.getAllVars().get(3);
-        Assert.assertEquals(cp9.name, "origin");
-        Assert.assertTrue(cp9.required);
+        CodegenProperty cp9 = superMan.getAllVars().get(2);
+        Assert.assertEquals(cp9.name, "nickname");
+        Assert.assertFalse(cp9.required);
+        Assert.assertTrue(cp9.deprecated);
 
-        CodegenProperty cp10 = superMan.getAllVars().get(4);
-        Assert.assertEquals(cp10.name, "category");
+        CodegenProperty cp10 = superMan.getAllVars().get(3);
+        Assert.assertEquals(cp10.name, "reward");
         Assert.assertFalse(cp10.required);
 
-        CodegenProperty cp11 = superMan.getAllVars().get(5);
-        Assert.assertEquals(cp11.name, "level");
+        CodegenProperty cp11 = superMan.getAllVars().get(4);
+        Assert.assertEquals(cp11.name, "origin");
         Assert.assertTrue(cp11.required);
+
+        CodegenProperty cp12 = superMan.getAllVars().get(5);
+        Assert.assertEquals(cp12.name, "category");
+        Assert.assertFalse(cp12.required);
+
+        CodegenProperty cp13 = superMan.getAllVars().get(6);
+        Assert.assertEquals(cp13.name, "level");
+        Assert.assertTrue(cp13.required);
 
     }
 

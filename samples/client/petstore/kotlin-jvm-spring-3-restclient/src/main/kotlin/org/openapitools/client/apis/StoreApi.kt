@@ -28,7 +28,7 @@ import org.springframework.http.MediaType
 import org.openapitools.client.models.Order
 import org.openapitools.client.infrastructure.*
 
-class StoreApi(client: RestClient) : ApiClient(client) {
+open class StoreApi(client: RestClient) : ApiClient(client) {
 
     constructor(baseUrl: String) : this(RestClient.builder()
         .baseUrl(baseUrl)
@@ -39,7 +39,7 @@ class StoreApi(client: RestClient) : ApiClient(client) {
 
     @Throws(RestClientResponseException::class)
     fun deleteOrder(orderId: kotlin.String): Unit {
-        val result = deleteOrderWithHttpInfo(orderId = orderId)
+        deleteOrderWithHttpInfo(orderId = orderId)
     }
 
     @Throws(RestClientResponseException::class)

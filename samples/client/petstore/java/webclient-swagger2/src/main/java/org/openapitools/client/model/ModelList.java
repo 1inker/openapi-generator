@@ -31,27 +31,28 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
   ModelList.JSON_PROPERTY_123LIST
 })
 @JsonTypeName("List")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.6.0-SNAPSHOT")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.20.0-SNAPSHOT")
 public class ModelList {
   public static final String JSON_PROPERTY_123LIST = "123-list";
+  @javax.annotation.Nullable
   private String _123list;
 
   public ModelList() {
   }
 
-  public ModelList _123list(String _123list) {
+  public ModelList _123list(@javax.annotation.Nullable String _123list) {
     
     this._123list = _123list;
     return this;
   }
 
-   /**
+  /**
    * Get _123list
    * @return _123list
-  **/
+   */
   @javax.annotation.Nullable
   @Schema(requiredMode = Schema.RequiredMode.NOT_REQUIRED, description = "")
-  @JsonProperty(JSON_PROPERTY_123LIST)
+  @JsonProperty(value = JSON_PROPERTY_123LIST, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public String get123list() {
@@ -59,11 +60,12 @@ public class ModelList {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_123LIST)
+  @JsonProperty(value = JSON_PROPERTY_123LIST, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void set123list(String _123list) {
+  public void set123list(@javax.annotation.Nullable String _123list) {
     this._123list = _123list;
   }
+
 
   @Override
   public boolean equals(Object o) {

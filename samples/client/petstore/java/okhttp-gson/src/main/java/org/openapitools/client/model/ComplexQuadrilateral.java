@@ -37,7 +37,6 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
 
-import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -49,53 +48,55 @@ import org.openapitools.client.JSON;
 /**
  * ComplexQuadrilateral
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.6.0-SNAPSHOT")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.20.0-SNAPSHOT")
 public class ComplexQuadrilateral {
   public static final String SERIALIZED_NAME_SHAPE_TYPE = "shapeType";
   @SerializedName(SERIALIZED_NAME_SHAPE_TYPE)
+  @javax.annotation.Nonnull
   private String shapeType;
 
   public static final String SERIALIZED_NAME_QUADRILATERAL_TYPE = "quadrilateralType";
   @SerializedName(SERIALIZED_NAME_QUADRILATERAL_TYPE)
+  @javax.annotation.Nonnull
   private String quadrilateralType;
 
   public ComplexQuadrilateral() {
   }
 
-  public ComplexQuadrilateral shapeType(String shapeType) {
+  public ComplexQuadrilateral shapeType(@javax.annotation.Nonnull String shapeType) {
     this.shapeType = shapeType;
     return this;
   }
 
-   /**
+  /**
    * Get shapeType
    * @return shapeType
-  **/
+   */
   @javax.annotation.Nonnull
   public String getShapeType() {
     return shapeType;
   }
 
-  public void setShapeType(String shapeType) {
+  public void setShapeType(@javax.annotation.Nonnull String shapeType) {
     this.shapeType = shapeType;
   }
 
 
-  public ComplexQuadrilateral quadrilateralType(String quadrilateralType) {
+  public ComplexQuadrilateral quadrilateralType(@javax.annotation.Nonnull String quadrilateralType) {
     this.quadrilateralType = quadrilateralType;
     return this;
   }
 
-   /**
+  /**
    * Get quadrilateralType
    * @return quadrilateralType
-  **/
+   */
   @javax.annotation.Nonnull
   public String getQuadrilateralType() {
     return quadrilateralType;
   }
 
-  public void setQuadrilateralType(String quadrilateralType) {
+  public void setQuadrilateralType(@javax.annotation.Nonnull String quadrilateralType) {
     this.quadrilateralType = quadrilateralType;
   }
 
@@ -192,41 +193,37 @@ public class ComplexQuadrilateral {
 
   static {
     // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>();
-    openapiFields.add("shapeType");
-    openapiFields.add("quadrilateralType");
+    openapiFields = new HashSet<String>(Arrays.asList("shapeType", "quadrilateralType"));
 
     // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>();
-    openapiRequiredFields.add("shapeType");
-    openapiRequiredFields.add("quadrilateralType");
+    openapiRequiredFields = new HashSet<String>(Arrays.asList("shapeType", "quadrilateralType"));
   }
 
- /**
-  * Validates the JSON Element and throws an exception if issues found
-  *
-  * @param jsonElement JSON Element
-  * @throws IOException if the JSON Element is invalid with respect to ComplexQuadrilateral
-  */
+  /**
+   * Validates the JSON Element and throws an exception if issues found
+   *
+   * @param jsonElement JSON Element
+   * @throws IOException if the JSON Element is invalid with respect to ComplexQuadrilateral
+   */
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
         if (!ComplexQuadrilateral.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in ComplexQuadrilateral is not found in the empty JSON string", ComplexQuadrilateral.openapiRequiredFields.toString()));
+          throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in ComplexQuadrilateral is not found in the empty JSON string", ComplexQuadrilateral.openapiRequiredFields.toString()));
         }
       }
 
       // check to make sure all required properties/fields are present in the JSON string
       for (String requiredField : ComplexQuadrilateral.openapiRequiredFields) {
         if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-          throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
+          throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
       if (!jsonObj.get("shapeType").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `shapeType` to be a primitive type in the JSON string but got `%s`", jsonObj.get("shapeType").toString()));
+        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `shapeType` to be a primitive type in the JSON string but got `%s`", jsonObj.get("shapeType").toString()));
       }
       if (!jsonObj.get("quadrilateralType").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `quadrilateralType` to be a primitive type in the JSON string but got `%s`", jsonObj.get("quadrilateralType").toString()));
+        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `quadrilateralType` to be a primitive type in the JSON string but got `%s`", jsonObj.get("quadrilateralType").toString()));
       }
   }
 
@@ -287,7 +284,7 @@ public class ComplexQuadrilateral {
                    else if (entry.getValue().getAsJsonPrimitive().isBoolean())
                      instance.putAdditionalProperty(entry.getKey(), entry.getValue().getAsBoolean());
                    else
-                     throw new IllegalArgumentException(String.format("The field `%s` has unknown primitive type. Value: %s", entry.getKey(), entry.getValue().toString()));
+                     throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` has unknown primitive type. Value: %s", entry.getKey(), entry.getValue().toString()));
                  } else if (entry.getValue().isJsonArray()) {
                      instance.putAdditionalProperty(entry.getKey(), gson.fromJson(entry.getValue(), List.class));
                  } else { // JSON object
@@ -302,22 +299,22 @@ public class ComplexQuadrilateral {
     }
   }
 
- /**
-  * Create an instance of ComplexQuadrilateral given an JSON string
-  *
-  * @param jsonString JSON string
-  * @return An instance of ComplexQuadrilateral
-  * @throws IOException if the JSON string is invalid with respect to ComplexQuadrilateral
-  */
+  /**
+   * Create an instance of ComplexQuadrilateral given an JSON string
+   *
+   * @param jsonString JSON string
+   * @return An instance of ComplexQuadrilateral
+   * @throws IOException if the JSON string is invalid with respect to ComplexQuadrilateral
+   */
   public static ComplexQuadrilateral fromJson(String jsonString) throws IOException {
     return JSON.getGson().fromJson(jsonString, ComplexQuadrilateral.class);
   }
 
- /**
-  * Convert an instance of ComplexQuadrilateral to an JSON string
-  *
-  * @return JSON string
-  */
+  /**
+   * Convert an instance of ComplexQuadrilateral to an JSON string
+   *
+   * @return JSON string
+   */
   public String toJson() {
     return JSON.getGson().toJson(this);
   }

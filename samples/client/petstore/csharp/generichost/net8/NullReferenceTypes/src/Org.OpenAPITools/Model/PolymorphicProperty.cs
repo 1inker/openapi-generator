@@ -117,7 +117,7 @@ namespace Org.OpenAPITools.Model
         /// </summary>
         /// <param name="validationContext">Validation context</param>
         /// <returns>Validation Result</returns>
-        IEnumerable<System.ComponentModel.DataAnnotations.ValidationResult> IValidatableObject.Validate(ValidationContext validationContext)
+        IEnumerable<ValidationResult> IValidatableObject.Validate(ValidationContext validationContext)
         {
             yield break;
         }
@@ -197,7 +197,7 @@ namespace Org.OpenAPITools.Model
             }
 
             if (varBool != null)
-                return new PolymorphicProperty(varBool);
+                return new PolymorphicProperty(varBool.Value);
 
             if (varString != null)
                 return new PolymorphicProperty(varString);
@@ -222,7 +222,7 @@ namespace Org.OpenAPITools.Model
         {
             writer.WriteStartObject();
 
-            WriteProperties(ref writer, polymorphicProperty, jsonSerializerOptions);
+            WriteProperties(writer, polymorphicProperty, jsonSerializerOptions);
             writer.WriteEndObject();
         }
 
@@ -233,7 +233,7 @@ namespace Org.OpenAPITools.Model
         /// <param name="polymorphicProperty"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public void WriteProperties(ref Utf8JsonWriter writer, PolymorphicProperty polymorphicProperty, JsonSerializerOptions jsonSerializerOptions)
+        public void WriteProperties(Utf8JsonWriter writer, PolymorphicProperty polymorphicProperty, JsonSerializerOptions jsonSerializerOptions)
         {
 
         }

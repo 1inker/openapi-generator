@@ -10,12 +10,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import org.openapitools.jackson.nullable.JsonNullable;
 
 
 
 @org.eclipse.microprofile.openapi.annotations.media.Schema(description="")
 @JsonTypeName("BigCat")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen", comments = "Generator version: 7.6.0-SNAPSHOT")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen", comments = "Generator version: 7.20.0-SNAPSHOT")
 public class BigCat extends Cat implements Serializable {
   public enum KindEnum {
 
@@ -72,6 +73,15 @@ public class BigCat extends Cat implements Serializable {
   }
 
   public BigCat() {
+  }
+
+  @JsonCreator
+  public BigCat(
+    @JsonProperty(required = true, value = "className") String className
+  ) {
+    super(
+      className
+    );
   }
 
   /**

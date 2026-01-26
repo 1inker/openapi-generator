@@ -17,11 +17,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import org.openapitools.jackson.nullable.JsonNullable;
 
 
 
 @JsonTypeName("MixedPropertiesAndAdditionalPropertiesClass")
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen", comments = "Generator version: 7.6.0-SNAPSHOT")
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen", comments = "Generator version: 7.20.0-SNAPSHOT")
 public class MixedPropertiesAndAdditionalPropertiesClass  implements Serializable {
   private UUID uuid;
   private Date dateTime;
@@ -46,7 +47,7 @@ public class MixedPropertiesAndAdditionalPropertiesClass  implements Serializabl
   
   @ApiModelProperty(value = "")
   @JsonProperty("uuid")
-  @Valid public UUID getUuid() {
+  public UUID getUuid() {
     return uuid;
   }
 
@@ -65,7 +66,7 @@ public class MixedPropertiesAndAdditionalPropertiesClass  implements Serializabl
   
   @ApiModelProperty(value = "")
   @JsonProperty("dateTime")
-  @Valid public Date getDateTime() {
+  public Date getDateTime() {
     return dateTime;
   }
 
@@ -102,9 +103,9 @@ public class MixedPropertiesAndAdditionalPropertiesClass  implements Serializabl
     return this;
   }
 
-  public MixedPropertiesAndAdditionalPropertiesClass removeMapItem(Animal mapItem) {
-    if (mapItem != null && this.map != null) {
-      this.map.remove(mapItem);
+  public MixedPropertiesAndAdditionalPropertiesClass removeMapItem(String key) {
+    if (this.map != null) {
+      this.map.remove(key);
     }
 
     return this;

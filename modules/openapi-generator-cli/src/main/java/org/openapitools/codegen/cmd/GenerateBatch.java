@@ -18,23 +18,18 @@ package org.openapitools.codegen.cmd;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.LoggerContext;
-
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.core.TreeNode;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.deser.BeanDeserializerModifier;
 import com.fasterxml.jackson.databind.deser.std.DelegatingDeserializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.util.TokenBuffer;
-
 import io.airlift.airline.Arguments;
 import io.airlift.airline.Command;
 import io.airlift.airline.Option;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.Strings;
 import org.apache.commons.lang3.StringUtils;
 import org.openapitools.codegen.ClientOptInput;
 import org.openapitools.codegen.CodegenConfig;
@@ -215,7 +210,7 @@ public class GenerateBatch extends OpenApiGeneratorCommand {
                 ClientOptInput opts = configurator.toClientOptInput();
                 CodegenConfig config = opts.getConfig();
                 name = config.getName();
-                
+
                 Path target = Paths.get(config.getOutputDir());
                 Path updated = rootDir.resolve(target);
                 config.setOutputDir(updated.toString());
@@ -254,7 +249,7 @@ public class GenerateBatch extends OpenApiGeneratorCommand {
             Path filesMeta = Paths.get(outDir.toAbsolutePath().toString(), ".openapi-generator", "FILES");
             if (filesMeta.toFile().exists()) {
                 FileUtils.readLines(filesMeta.toFile(), StandardCharsets.UTF_8).forEach(relativePath -> {
-                    if (!StringUtils.startsWith(relativePath, ".")) {
+                    if (!Strings.CS.startsWith(relativePath, ".")) {
                         Path file = outDir.resolve(relativePath).toAbsolutePath();
                         // hack: disallow directory traversal outside of output directory. we don't want to delete wrong files.
                         if (file.toString().startsWith(outDir.toAbsolutePath().toString())) {
@@ -312,34 +307,34 @@ public class GenerateBatch extends OpenApiGeneratorCommand {
         public Object deserialize(JsonParser p, DeserializationContext ctx) throws IOException {
             ObjectMapper codec = (ObjectMapper) ctx.getParser().getCodec();
             TokenBuffer buffer = new TokenBuffer(p);
-            
+
             recurse(buffer, p, codec, false);
-            
+
             JsonParser newParser = buffer.asParser(codec);
             newParser.nextToken();
-            
+
             return super.deserialize(newParser, ctx);
         }
-        
+
         private void recurse(TokenBuffer buffer, JsonParser p, ObjectMapper codec, boolean skipOuterbraces) throws IOException {
             boolean firstToken = true;
-            JsonToken token; 
-            
+            JsonToken token;
+
             while ((token = p.nextToken()) != null) {
                 String name = p.currentName();
-                
+
                 if (skipOuterbraces && firstToken && JsonToken.START_OBJECT.equals(token)) {
                     continue;
                 }
-                
+
                 if (skipOuterbraces && p.getParsingContext().inRoot() && JsonToken.END_OBJECT.equals(token)) {
                     continue;
                 }
-                
+
                 if (JsonToken.VALUE_NULL.equals(token)) {
                     continue;
                 }
-                
+
                 if (name != null && JsonToken.FIELD_NAME.equals(token) && name.startsWith(INCLUDE)) {
                     p.nextToken();
                     String fileName = p.getText();
@@ -352,7 +347,7 @@ public class GenerateBatch extends OpenApiGeneratorCommand {
                 } else {
                     buffer.copyCurrentEvent(p);
                 }
-                
+
                 firstToken = false;
             }
         }

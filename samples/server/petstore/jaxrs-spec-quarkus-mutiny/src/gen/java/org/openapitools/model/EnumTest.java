@@ -15,12 +15,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import org.openapitools.jackson.nullable.JsonNullable;
 
 
 
 @org.eclipse.microprofile.openapi.annotations.media.Schema(description="")
 @JsonTypeName("Enum_Test")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen", comments = "Generator version: 7.6.0-SNAPSHOT")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen", comments = "Generator version: 7.20.0-SNAPSHOT")
 public class EnumTest  implements Serializable {
   public enum EnumStringEnum {
 
@@ -233,6 +234,13 @@ public class EnumTest  implements Serializable {
   public EnumTest() {
   }
 
+  @JsonCreator
+  public EnumTest(
+    @JsonProperty(required = true, value = "enum_string_required") EnumStringRequiredEnum enumStringRequired
+  ) {
+    this.enumStringRequired = enumStringRequired;
+  }
+
   /**
    **/
   public EnumTest enumString(EnumStringEnum enumString) {
@@ -261,12 +269,12 @@ public class EnumTest  implements Serializable {
 
   
   @org.eclipse.microprofile.openapi.annotations.media.Schema(required = true, description = "")
-  @JsonProperty("enum_string_required")
+  @JsonProperty(required = true, value = "enum_string_required")
   @NotNull public EnumStringRequiredEnum getEnumStringRequired() {
     return enumStringRequired;
   }
 
-  @JsonProperty("enum_string_required")
+  @JsonProperty(required = true, value = "enum_string_required")
   public void setEnumStringRequired(EnumStringRequiredEnum enumStringRequired) {
     this.enumStringRequired = enumStringRequired;
   }
@@ -319,7 +327,7 @@ public class EnumTest  implements Serializable {
   
   @org.eclipse.microprofile.openapi.annotations.media.Schema(description = "")
   @JsonProperty("outerEnum")
-  @Valid public OuterEnum getOuterEnum() {
+  public OuterEnum getOuterEnum() {
     return outerEnum;
   }
 
@@ -338,7 +346,7 @@ public class EnumTest  implements Serializable {
   
   @org.eclipse.microprofile.openapi.annotations.media.Schema(description = "")
   @JsonProperty("outerEnumInteger")
-  @Valid public OuterEnumInteger getOuterEnumInteger() {
+  public OuterEnumInteger getOuterEnumInteger() {
     return outerEnumInteger;
   }
 
@@ -357,7 +365,7 @@ public class EnumTest  implements Serializable {
   
   @org.eclipse.microprofile.openapi.annotations.media.Schema(description = "")
   @JsonProperty("outerEnumDefaultValue")
-  @Valid public OuterEnumDefaultValue getOuterEnumDefaultValue() {
+  public OuterEnumDefaultValue getOuterEnumDefaultValue() {
     return outerEnumDefaultValue;
   }
 
@@ -376,7 +384,7 @@ public class EnumTest  implements Serializable {
   
   @org.eclipse.microprofile.openapi.annotations.media.Schema(description = "")
   @JsonProperty("outerEnumIntegerDefaultValue")
-  @Valid public OuterEnumIntegerDefaultValue getOuterEnumIntegerDefaultValue() {
+  public OuterEnumIntegerDefaultValue getOuterEnumIntegerDefaultValue() {
     return outerEnumIntegerDefaultValue;
   }
 

@@ -15,17 +15,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import org.openapitools.jackson.nullable.JsonNullable;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "className", visible = true)
 @JsonSubTypes({
-  @JsonSubTypes.Type(value = BigCat.class, name = "BigCat"),
-  @JsonSubTypes.Type(value = Cat.class, name = "Cat"),
-  @JsonSubTypes.Type(value = Dog.class, name = "Dog"),
+  @JsonSubTypes.Type(value = Cat.class, name = "CAT"),
+  @JsonSubTypes.Type(value = Dog.class, name = "DOG"),
 })
 
 
 @JsonTypeName("Animal")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen", comments = "Generator version: 7.6.0-SNAPSHOT")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen", comments = "Generator version: 7.20.0-SNAPSHOT")
 public class Animal  implements Serializable {
   private String className;
   private String color = "red";
@@ -38,6 +38,13 @@ public class Animal  implements Serializable {
   public Animal() {
   }
 
+  @JsonCreator
+  public Animal(
+    @JsonProperty(required = true, value = "className") String className
+  ) {
+    this.className = className;
+  }
+
   /**
    **/
   public Animal className(String className) {
@@ -47,12 +54,12 @@ public class Animal  implements Serializable {
 
   
   @ApiModelProperty(required = true, value = "")
-  @JsonProperty("className")
+  @JsonProperty(required = true, value = "className")
   @NotNull public String getClassName() {
     return className;
   }
 
-  @JsonProperty("className")
+  @JsonProperty(required = true, value = "className")
   public void setClassName(String className) {
     this.className = className;
   }

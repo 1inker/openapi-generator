@@ -51,13 +51,27 @@ open class OpenApiGeneratorGenerateExtension(project: Project) {
 
     /**
      * The Open API 2.0/3.x specification location.
+     *
+     * Be default, Gradle will treat the openApiGenerate task as up-to-date based only on this file, regardless of
+     * changes to any $ref referenced files. Use the `inputSpecRootDirectory` property to have Gradle track changes to
+     * an entire directory of spec files.
      */
     val inputSpec = project.objects.property<String>()
 
     /**
-     * Local root folder with spec files
+     * Local root folder with spec files.
+     *
+     * By default, a merged spec file will be generated based on the contents of the directory. To disable this, set the
+     * `inputSpecRootDirectorySkipMerge` property.
      */
     val inputSpecRootDirectory = project.objects.property<String>()
+
+    /**
+     * Skip bundling all spec files into a merged spec file, if true.
+     *
+     * Default false.
+     */
+    val inputSpecRootDirectorySkipMerge = project.objects.property<Boolean>()
 
     /**
      * The remote Open API 2.0/3.x specification URL location.
@@ -67,7 +81,12 @@ open class OpenApiGeneratorGenerateExtension(project: Project) {
     /**
      * The template directory holding a custom template.
      */
-    val templateDir = project.objects.property<String?>()
+    val templateDir = project.objects.property<String>()
+
+    /**
+     * The template location (which may be a directory or a classpath location) holding custom templates.
+     */
+    val templateResourcePath = project.objects.property<String>()
 
     /**
      * Adds authorization headers when fetching the OpenAPI definitions remotely.
@@ -90,7 +109,7 @@ open class OpenApiGeneratorGenerateExtension(project: Project) {
     /**
      * Specifies if the existing files should be overwritten during the generation.
      */
-    val skipOverwrite = project.objects.property<Boolean?>()
+    val skipOverwrite = project.objects.property<Boolean>()
 
     /**
      * Package for generated classes (where supported)
@@ -225,32 +244,32 @@ open class OpenApiGeneratorGenerateExtension(project: Project) {
     /**
      * Reference the library template (sub-template) of a generator.
      */
-    val library = project.objects.property<String?>()
+    val library = project.objects.property<String>()
 
     /**
      * Git host, e.g. gitlab.com.
      */
-    val gitHost = project.objects.property<String?>()
+    val gitHost = project.objects.property<String>()
 
     /**
      * Git user ID, e.g. openapitools.
      */
-    val gitUserId = project.objects.property<String?>()
+    val gitUserId = project.objects.property<String>()
 
     /**
      * Git repo ID, e.g. openapi-generator.
      */
-    val gitRepoId = project.objects.property<String?>()
+    val gitRepoId = project.objects.property<String>()
 
     /**
      * Release note, default to 'Minor update'.
      */
-    val releaseNote = project.objects.property<String?>()
+    val releaseNote = project.objects.property<String>()
 
     /**
      * HTTP user agent, e.g. codegen_csharp_api_client, default to 'OpenAPI-Generator/{packageVersion}/{language}'
      */
-    val httpUserAgent = project.objects.property<String?>()
+    val httpUserAgent = project.objects.property<String>()
 
     /**
      * Specifies how a reserved name should be escaped to. Otherwise, the default _<name> is used.
@@ -260,17 +279,17 @@ open class OpenApiGeneratorGenerateExtension(project: Project) {
     /**
      * Specifies an override location for the .openapi-generator-ignore file. Most useful on initial generation.
      */
-    val ignoreFileOverride = project.objects.property<String?>()
+    val ignoreFileOverride = project.objects.property<String>()
 
     /**
      * Remove prefix of operationId, e.g. config_getId => getId
      */
-    val removeOperationIdPrefix = project.objects.property<Boolean?>()
+    val removeOperationIdPrefix = project.objects.property<Boolean>()
 
     /**
      * Skip examples defined in the operation
      */
-    val skipOperationExample = project.objects.property<Boolean?>()
+    val skipOperationExample = project.objects.property<Boolean>()
 
     /**
      * Defines which API-related files should be generated. This allows you to create a subset of generated files (or none at all).
@@ -343,12 +362,6 @@ open class OpenApiGeneratorGenerateExtension(project: Project) {
     val generateApiDocumentation = project.objects.property<Boolean>()
 
     /**
-     * A special-case setting which configures some generators with XML support. In some cases,
-     * this forces json OR xml, so the default here is false.
-     */
-    val withXml = project.objects.property<Boolean>()
-
-    /**
      * To write all log messages (not just errors) to STDOUT
      */
     val logToStderr = project.objects.property<Boolean>()
@@ -381,7 +394,7 @@ open class OpenApiGeneratorGenerateExtension(project: Project) {
     /**
      * Templating engine: "mustache" (default) or "handlebars" (beta)
      */
-    val engine = project.objects.property<String?>()
+    val engine = project.objects.property<String>()
 
     /**
      * Defines whether the output dir should be cleaned up before generating the output.
@@ -401,6 +414,7 @@ open class OpenApiGeneratorGenerateExtension(project: Project) {
     @Suppress("MemberVisibilityCanBePrivate")
     fun applyDefaults() {
         releaseNote.set("Minor update")
+        inputSpecRootDirectorySkipMerge.set(false)
         modelNamePrefix.set("")
         modelNameSuffix.set("")
         apiNameSuffix.set("")
@@ -408,7 +422,6 @@ open class OpenApiGeneratorGenerateExtension(project: Project) {
         generateModelDocumentation.set(true)
         generateApiTests.set(true)
         generateApiDocumentation.set(true)
-        withXml.set(false)
         configOptions.set(mapOf())
         validateSpec.set(true)
         logToStderr.set(false)

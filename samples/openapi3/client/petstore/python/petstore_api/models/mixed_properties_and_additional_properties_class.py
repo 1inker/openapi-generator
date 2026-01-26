@@ -18,8 +18,9 @@ import re  # noqa: F401
 import json
 
 from datetime import datetime
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic import BaseModel, ConfigDict, Field
 from typing import Any, ClassVar, Dict, List, Optional
+from uuid import UUID
 from petstore_api.models.animal import Animal
 from typing import Optional, Set
 from typing_extensions import Self
@@ -28,7 +29,7 @@ class MixedPropertiesAndAdditionalPropertiesClass(BaseModel):
     """
     MixedPropertiesAndAdditionalPropertiesClass
     """ # noqa: E501
-    uuid: Optional[StrictStr] = None
+    uuid: Optional[UUID] = None
     date_time: Optional[datetime] = Field(default=None, alias="dateTime")
     map: Optional[Dict[str, Animal]] = None
     additional_properties: Dict[str, Any] = {}
@@ -78,9 +79,9 @@ class MixedPropertiesAndAdditionalPropertiesClass(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of each value in map (dict)
         _field_dict = {}
         if self.map:
-            for _key in self.map:
-                if self.map[_key]:
-                    _field_dict[_key] = self.map[_key].to_dict()
+            for _key_map in self.map:
+                if self.map[_key_map]:
+                    _field_dict[_key_map] = self.map[_key_map].to_dict()
             _dict['map'] = _field_dict
         # puts key-value pairs in additional_properties in the top level
         if self.additional_properties is not None:

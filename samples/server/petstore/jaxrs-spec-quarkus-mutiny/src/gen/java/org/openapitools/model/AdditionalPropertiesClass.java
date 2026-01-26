@@ -11,12 +11,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import org.openapitools.jackson.nullable.JsonNullable;
 
 
 
 @org.eclipse.microprofile.openapi.annotations.media.Schema(description="")
 @JsonTypeName("AdditionalPropertiesClass")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen", comments = "Generator version: 7.6.0-SNAPSHOT")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen", comments = "Generator version: 7.20.0-SNAPSHOT")
 public class AdditionalPropertiesClass  implements Serializable {
   private @Valid Map<String, String> mapProperty = new HashMap<>();
   private @Valid Map<String, Map<String, String>> mapOfMapProperty = new HashMap<>();
@@ -57,9 +58,9 @@ public class AdditionalPropertiesClass  implements Serializable {
     return this;
   }
 
-  public AdditionalPropertiesClass removeMapPropertyItem(String mapPropertyItem) {
-    if (mapPropertyItem != null && this.mapProperty != null) {
-      this.mapProperty.remove(mapPropertyItem);
+  public AdditionalPropertiesClass removeMapPropertyItem(String key) {
+    if (this.mapProperty != null) {
+      this.mapProperty.remove(key);
     }
 
     return this;
@@ -74,7 +75,7 @@ public class AdditionalPropertiesClass  implements Serializable {
   
   @org.eclipse.microprofile.openapi.annotations.media.Schema(description = "")
   @JsonProperty("map_of_map_property")
-  @Valid public Map<String, Map<String, String>> getMapOfMapProperty() {
+  public Map<String, Map<String, String>> getMapOfMapProperty() {
     return mapOfMapProperty;
   }
 
@@ -92,9 +93,9 @@ public class AdditionalPropertiesClass  implements Serializable {
     return this;
   }
 
-  public AdditionalPropertiesClass removeMapOfMapPropertyItem(Map<String, String> mapOfMapPropertyItem) {
-    if (mapOfMapPropertyItem != null && this.mapOfMapProperty != null) {
-      this.mapOfMapProperty.remove(mapOfMapPropertyItem);
+  public AdditionalPropertiesClass removeMapOfMapPropertyItem(String key) {
+    if (this.mapOfMapProperty != null) {
+      this.mapOfMapProperty.remove(key);
     }
 
     return this;

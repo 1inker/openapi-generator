@@ -121,7 +121,7 @@ namespace Org.OpenAPITools.Model
         /// Used to track the state of DirectMap
         /// </summary>
         [JsonIgnore]
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
         public Option<Dictionary<string, bool>?> DirectMapOption { get; private set; }
 
         /// <summary>
@@ -134,7 +134,7 @@ namespace Org.OpenAPITools.Model
         /// Used to track the state of IndirectMap
         /// </summary>
         [JsonIgnore]
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
         public Option<Dictionary<string, bool>?> IndirectMapOption { get; private set; }
 
         /// <summary>
@@ -147,7 +147,7 @@ namespace Org.OpenAPITools.Model
         /// Used to track the state of MapMapOfString
         /// </summary>
         [JsonIgnore]
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
         public Option<Dictionary<string, Dictionary<string, string>>?> MapMapOfStringOption { get; private set; }
 
         /// <summary>
@@ -160,7 +160,7 @@ namespace Org.OpenAPITools.Model
         /// Used to track the state of MapOfEnumString
         /// </summary>
         [JsonIgnore]
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
         public Option<Dictionary<string, MapTest.InnerEnum>?> MapOfEnumStringOption { get; private set; }
 
         /// <summary>
@@ -197,7 +197,7 @@ namespace Org.OpenAPITools.Model
         /// </summary>
         /// <param name="validationContext">Validation context</param>
         /// <returns>Validation Result</returns>
-        IEnumerable<System.ComponentModel.DataAnnotations.ValidationResult> IValidatableObject.Validate(ValidationContext validationContext)
+        IEnumerable<ValidationResult> IValidatableObject.Validate(ValidationContext validationContext)
         {
             yield break;
         }
@@ -246,20 +246,16 @@ namespace Org.OpenAPITools.Model
                     switch (localVarJsonPropertyName)
                     {
                         case "direct_map":
-                            if (utf8JsonReader.TokenType != JsonTokenType.Null)
-                                directMap = new Option<Dictionary<string, bool>?>(JsonSerializer.Deserialize<Dictionary<string, bool>>(ref utf8JsonReader, jsonSerializerOptions)!);
+                            directMap = new Option<Dictionary<string, bool>?>(JsonSerializer.Deserialize<Dictionary<string, bool>>(ref utf8JsonReader, jsonSerializerOptions)!);
                             break;
                         case "indirect_map":
-                            if (utf8JsonReader.TokenType != JsonTokenType.Null)
-                                indirectMap = new Option<Dictionary<string, bool>?>(JsonSerializer.Deserialize<Dictionary<string, bool>>(ref utf8JsonReader, jsonSerializerOptions)!);
+                            indirectMap = new Option<Dictionary<string, bool>?>(JsonSerializer.Deserialize<Dictionary<string, bool>>(ref utf8JsonReader, jsonSerializerOptions)!);
                             break;
                         case "map_map_of_string":
-                            if (utf8JsonReader.TokenType != JsonTokenType.Null)
-                                mapMapOfString = new Option<Dictionary<string, Dictionary<string, string>>?>(JsonSerializer.Deserialize<Dictionary<string, Dictionary<string, string>>>(ref utf8JsonReader, jsonSerializerOptions)!);
+                            mapMapOfString = new Option<Dictionary<string, Dictionary<string, string>>?>(JsonSerializer.Deserialize<Dictionary<string, Dictionary<string, string>>>(ref utf8JsonReader, jsonSerializerOptions)!);
                             break;
                         case "map_of_enum_string":
-                            if (utf8JsonReader.TokenType != JsonTokenType.Null)
-                                mapOfEnumString = new Option<Dictionary<string, MapTest.InnerEnum>?>(JsonSerializer.Deserialize<Dictionary<string, MapTest.InnerEnum>>(ref utf8JsonReader, jsonSerializerOptions)!);
+                            mapOfEnumString = new Option<Dictionary<string, MapTest.InnerEnum>?>(JsonSerializer.Deserialize<Dictionary<string, MapTest.InnerEnum>>(ref utf8JsonReader, jsonSerializerOptions)!);
                             break;
                         default:
                             break;
@@ -293,7 +289,7 @@ namespace Org.OpenAPITools.Model
         {
             writer.WriteStartObject();
 
-            WriteProperties(ref writer, mapTest, jsonSerializerOptions);
+            WriteProperties(writer, mapTest, jsonSerializerOptions);
             writer.WriteEndObject();
         }
 
@@ -304,7 +300,7 @@ namespace Org.OpenAPITools.Model
         /// <param name="mapTest"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public void WriteProperties(ref Utf8JsonWriter writer, MapTest mapTest, JsonSerializerOptions jsonSerializerOptions)
+        public void WriteProperties(Utf8JsonWriter writer, MapTest mapTest, JsonSerializerOptions jsonSerializerOptions)
         {
             if (mapTest.DirectMapOption.IsSet && mapTest.DirectMap == null)
                 throw new ArgumentNullException(nameof(mapTest.DirectMap), "Property is required for class MapTest.");

@@ -37,7 +37,6 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
 
-import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -49,31 +48,32 @@ import org.openapitools.client.JSON;
 /**
  * GrandparentAnimal
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.6.0-SNAPSHOT")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.20.0-SNAPSHOT")
 public class GrandparentAnimal {
   public static final String SERIALIZED_NAME_PET_TYPE = "pet_type";
   @SerializedName(SERIALIZED_NAME_PET_TYPE)
+  @javax.annotation.Nonnull
   protected String petType;
 
   public GrandparentAnimal() {
     this.petType = this.getClass().getSimpleName();
   }
 
-  public GrandparentAnimal petType(String petType) {
+  public GrandparentAnimal petType(@javax.annotation.Nonnull String petType) {
     this.petType = petType;
     return this;
   }
 
-   /**
+  /**
    * Get petType
    * @return petType
-  **/
+   */
   @javax.annotation.Nonnull
   public String getPetType() {
     return petType;
   }
 
-  public void setPetType(String petType) {
+  public void setPetType(@javax.annotation.Nonnull String petType) {
     this.petType = petType;
   }
 
@@ -168,24 +168,22 @@ public class GrandparentAnimal {
 
   static {
     // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>();
-    openapiFields.add("pet_type");
+    openapiFields = new HashSet<String>(Arrays.asList("pet_type"));
 
     // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>();
-    openapiRequiredFields.add("pet_type");
+    openapiRequiredFields = new HashSet<String>(Arrays.asList("pet_type"));
   }
 
- /**
-  * Validates the JSON Element and throws an exception if issues found
-  *
-  * @param jsonElement JSON Element
-  * @throws IOException if the JSON Element is invalid with respect to GrandparentAnimal
-  */
+  /**
+   * Validates the JSON Element and throws an exception if issues found
+   *
+   * @param jsonElement JSON Element
+   * @throws IOException if the JSON Element is invalid with respect to GrandparentAnimal
+   */
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
         if (!GrandparentAnimal.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in GrandparentAnimal is not found in the empty JSON string", GrandparentAnimal.openapiRequiredFields.toString()));
+          throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in GrandparentAnimal is not found in the empty JSON string", GrandparentAnimal.openapiRequiredFields.toString()));
         }
       }
 
@@ -195,27 +193,27 @@ public class GrandparentAnimal {
           ParentPet.validateJsonElement(jsonElement);
           break;
         default:
-          throw new IllegalArgumentException(String.format("The value of the `pet_type` field `%s` does not match any key defined in the discriminator's mapping.", discriminatorValue));
+          throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The value of the `pet_type` field `%s` does not match any key defined in the discriminator's mapping.", discriminatorValue));
       }
   }
 
 
- /**
-  * Create an instance of GrandparentAnimal given an JSON string
-  *
-  * @param jsonString JSON string
-  * @return An instance of GrandparentAnimal
-  * @throws IOException if the JSON string is invalid with respect to GrandparentAnimal
-  */
+  /**
+   * Create an instance of GrandparentAnimal given an JSON string
+   *
+   * @param jsonString JSON string
+   * @return An instance of GrandparentAnimal
+   * @throws IOException if the JSON string is invalid with respect to GrandparentAnimal
+   */
   public static GrandparentAnimal fromJson(String jsonString) throws IOException {
     return JSON.getGson().fromJson(jsonString, GrandparentAnimal.class);
   }
 
- /**
-  * Convert an instance of GrandparentAnimal to an JSON string
-  *
-  * @return JSON string
-  */
+  /**
+   * Convert an instance of GrandparentAnimal to an JSON string
+   *
+   * @return JSON string
+   */
   public String toJson() {
     return JSON.getGson().toJson(this);
   }

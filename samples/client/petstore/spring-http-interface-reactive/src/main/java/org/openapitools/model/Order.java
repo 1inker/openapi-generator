@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import java.time.OffsetDateTime;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.lang.Nullable;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import jakarta.validation.constraints.NotNull;
@@ -19,17 +20,17 @@ import jakarta.annotation.Generated;
  * Order
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.6.0-SNAPSHOT")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.20.0-SNAPSHOT")
 public class Order {
 
-  private Long id;
+  private @Nullable Long id;
 
-  private Long petId;
+  private @Nullable Long petId;
 
-  private Integer quantity;
+  private @Nullable Integer quantity;
 
   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-  private OffsetDateTime shipDate;
+  private @Nullable OffsetDateTime shipDate;
 
   /**
    * Order Status
@@ -41,7 +42,7 @@ public class Order {
     
     DELIVERED("delivered");
 
-    private String value;
+    private final String value;
 
     StatusEnum(String value) {
       this.value = value;
@@ -68,11 +69,11 @@ public class Order {
     }
   }
 
-  private StatusEnum status;
+  private @Nullable StatusEnum status;
 
   private Boolean complete = false;
 
-  public Order id(Long id) {
+  public Order id(@Nullable Long id) {
     this.id = id;
     return this;
   }
@@ -80,18 +81,18 @@ public class Order {
   /**
    * Get id
    * @return id
-  */
+   */
   
   @JsonProperty("id")
-  public Long getId() {
+  public @Nullable Long getId() {
     return id;
   }
 
-  public void setId(Long id) {
+  public void setId(@Nullable Long id) {
     this.id = id;
   }
 
-  public Order petId(Long petId) {
+  public Order petId(@Nullable Long petId) {
     this.petId = petId;
     return this;
   }
@@ -99,18 +100,18 @@ public class Order {
   /**
    * Get petId
    * @return petId
-  */
+   */
   
   @JsonProperty("petId")
-  public Long getPetId() {
+  public @Nullable Long getPetId() {
     return petId;
   }
 
-  public void setPetId(Long petId) {
+  public void setPetId(@Nullable Long petId) {
     this.petId = petId;
   }
 
-  public Order quantity(Integer quantity) {
+  public Order quantity(@Nullable Integer quantity) {
     this.quantity = quantity;
     return this;
   }
@@ -118,18 +119,18 @@ public class Order {
   /**
    * Get quantity
    * @return quantity
-  */
+   */
   
   @JsonProperty("quantity")
-  public Integer getQuantity() {
+  public @Nullable Integer getQuantity() {
     return quantity;
   }
 
-  public void setQuantity(Integer quantity) {
+  public void setQuantity(@Nullable Integer quantity) {
     this.quantity = quantity;
   }
 
-  public Order shipDate(OffsetDateTime shipDate) {
+  public Order shipDate(@Nullable OffsetDateTime shipDate) {
     this.shipDate = shipDate;
     return this;
   }
@@ -137,18 +138,18 @@ public class Order {
   /**
    * Get shipDate
    * @return shipDate
-  */
+   */
   
   @JsonProperty("shipDate")
-  public OffsetDateTime getShipDate() {
+  public @Nullable OffsetDateTime getShipDate() {
     return shipDate;
   }
 
-  public void setShipDate(OffsetDateTime shipDate) {
+  public void setShipDate(@Nullable OffsetDateTime shipDate) {
     this.shipDate = shipDate;
   }
 
-  public Order status(StatusEnum status) {
+  public Order status(@Nullable StatusEnum status) {
     this.status = status;
     return this;
   }
@@ -156,14 +157,14 @@ public class Order {
   /**
    * Order Status
    * @return status
-  */
+   */
   
   @JsonProperty("status")
-  public StatusEnum getStatus() {
+  public @Nullable StatusEnum getStatus() {
     return status;
   }
 
-  public void setStatus(StatusEnum status) {
+  public void setStatus(@Nullable StatusEnum status) {
     this.status = status;
   }
 
@@ -175,7 +176,7 @@ public class Order {
   /**
    * Get complete
    * @return complete
-  */
+   */
   
   @JsonProperty("complete")
   public Boolean getComplete() {
@@ -226,7 +227,7 @@ public class Order {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(@Nullable Object o) {
     if (o == null) {
       return "null";
     }

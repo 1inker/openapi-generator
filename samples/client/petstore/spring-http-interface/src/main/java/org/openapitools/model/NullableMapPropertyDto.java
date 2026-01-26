@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.openapitools.jackson.nullable.JsonNullable;
+import org.springframework.lang.Nullable;
 import java.util.NoSuchElementException;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
@@ -23,7 +24,7 @@ import jakarta.annotation.Generated;
  */
 
 @JsonTypeName("NullableMapProperty")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.6.0-SNAPSHOT")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.20.0-SNAPSHOT")
 public class NullableMapPropertyDto {
 
   
@@ -45,7 +46,7 @@ public class NullableMapPropertyDto {
   /**
    * Get languageValues
    * @return languageValues
-  */
+   */
   
   @JsonProperty("languageValues")
   public JsonNullable<Map<String, String>> getLanguageValues() {
@@ -97,7 +98,7 @@ public class NullableMapPropertyDto {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(@Nullable Object o) {
     if (o == null) {
       return "null";
     }

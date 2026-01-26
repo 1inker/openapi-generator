@@ -49,7 +49,7 @@ namespace Org.OpenAPITools.Model
         /// Used to track the state of ArrayArrayNumber
         /// </summary>
         [JsonIgnore]
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
         public Option<List<List<decimal>>?> ArrayArrayNumberOption { get; private set; }
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace Org.OpenAPITools.Model
         /// </summary>
         /// <param name="validationContext">Validation context</param>
         /// <returns>Validation Result</returns>
-        IEnumerable<System.ComponentModel.DataAnnotations.ValidationResult> IValidatableObject.Validate(ValidationContext validationContext)
+        IEnumerable<ValidationResult> IValidatableObject.Validate(ValidationContext validationContext)
         {
             yield break;
         }
@@ -129,8 +129,7 @@ namespace Org.OpenAPITools.Model
                     switch (localVarJsonPropertyName)
                     {
                         case "ArrayArrayNumber":
-                            if (utf8JsonReader.TokenType != JsonTokenType.Null)
-                                arrayArrayNumber = new Option<List<List<decimal>>?>(JsonSerializer.Deserialize<List<List<decimal>>>(ref utf8JsonReader, jsonSerializerOptions)!);
+                            arrayArrayNumber = new Option<List<List<decimal>>?>(JsonSerializer.Deserialize<List<List<decimal>>>(ref utf8JsonReader, jsonSerializerOptions)!);
                             break;
                         default:
                             break;
@@ -155,7 +154,7 @@ namespace Org.OpenAPITools.Model
         {
             writer.WriteStartObject();
 
-            WriteProperties(ref writer, arrayOfArrayOfNumberOnly, jsonSerializerOptions);
+            WriteProperties(writer, arrayOfArrayOfNumberOnly, jsonSerializerOptions);
             writer.WriteEndObject();
         }
 
@@ -166,7 +165,7 @@ namespace Org.OpenAPITools.Model
         /// <param name="arrayOfArrayOfNumberOnly"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public void WriteProperties(ref Utf8JsonWriter writer, ArrayOfArrayOfNumberOnly arrayOfArrayOfNumberOnly, JsonSerializerOptions jsonSerializerOptions)
+        public void WriteProperties(Utf8JsonWriter writer, ArrayOfArrayOfNumberOnly arrayOfArrayOfNumberOnly, JsonSerializerOptions jsonSerializerOptions)
         {
             if (arrayOfArrayOfNumberOnly.ArrayArrayNumberOption.IsSet && arrayOfArrayOfNumberOnly.ArrayArrayNumber == null)
                 throw new ArgumentNullException(nameof(arrayOfArrayOfNumberOnly.ArrayArrayNumber), "Property is required for class ArrayOfArrayOfNumberOnly.");

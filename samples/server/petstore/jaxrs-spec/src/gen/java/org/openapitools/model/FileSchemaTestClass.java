@@ -16,11 +16,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import org.openapitools.jackson.nullable.JsonNullable;
 
 
 
 @JsonTypeName("FileSchemaTestClass")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen", comments = "Generator version: 7.6.0-SNAPSHOT")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen", comments = "Generator version: 7.20.0-SNAPSHOT")
 public class FileSchemaTestClass  implements Serializable {
   private ModelFile _file;
   private @Valid List<@Valid ModelFile> files = new ArrayList<>();
@@ -148,7 +149,7 @@ public class FileSchemaTestClass  implements Serializable {
 
   public static abstract class FileSchemaTestClassBuilder<C extends FileSchemaTestClass, B extends FileSchemaTestClassBuilder<C, B>>  {
     private ModelFile _file;
-    private List<@Valid ModelFile> files = new ArrayList<>();
+    private List<ModelFile> files = new ArrayList<>();
     protected abstract B self();
 
     public abstract C build();
@@ -157,7 +158,7 @@ public class FileSchemaTestClass  implements Serializable {
       this._file = _file;
       return self();
     }
-    public B files(List<@Valid ModelFile> files) {
+    public B files(List<ModelFile> files) {
       this.files = files;
       return self();
     }

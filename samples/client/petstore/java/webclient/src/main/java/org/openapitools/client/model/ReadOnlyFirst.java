@@ -30,17 +30,21 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
   ReadOnlyFirst.JSON_PROPERTY_BAR,
   ReadOnlyFirst.JSON_PROPERTY_BAZ
 })
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.6.0-SNAPSHOT")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.20.0-SNAPSHOT")
 public class ReadOnlyFirst {
   public static final String JSON_PROPERTY_BAR = "bar";
+  @javax.annotation.Nullable
   private String bar;
 
   public static final String JSON_PROPERTY_BAZ = "baz";
+  @javax.annotation.Nullable
   private String baz;
 
   public ReadOnlyFirst() {
   }
-
+  /**
+   * Constructor with only readonly parameters
+   */
   @JsonCreator
   public ReadOnlyFirst(
     @JsonProperty(JSON_PROPERTY_BAR) String bar
@@ -49,12 +53,12 @@ public class ReadOnlyFirst {
     this.bar = bar;
   }
 
-   /**
+  /**
    * Get bar
    * @return bar
-  **/
+   */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_BAR)
+  @JsonProperty(value = JSON_PROPERTY_BAR, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public String getBar() {
@@ -63,19 +67,18 @@ public class ReadOnlyFirst {
 
 
 
-
-  public ReadOnlyFirst baz(String baz) {
+  public ReadOnlyFirst baz(@javax.annotation.Nullable String baz) {
     
     this.baz = baz;
     return this;
   }
 
-   /**
+  /**
    * Get baz
    * @return baz
-  **/
+   */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_BAZ)
+  @JsonProperty(value = JSON_PROPERTY_BAZ, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public String getBaz() {
@@ -83,11 +86,12 @@ public class ReadOnlyFirst {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_BAZ)
+  @JsonProperty(value = JSON_PROPERTY_BAZ, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setBaz(String baz) {
+  public void setBaz(@javax.annotation.Nullable String baz) {
     this.baz = baz;
   }
+
 
   @Override
   public boolean equals(Object o) {

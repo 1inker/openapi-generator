@@ -5,6 +5,7 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import org.springframework.lang.Nullable;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import jakarta.validation.constraints.NotNull;
@@ -18,22 +19,22 @@ import jakarta.annotation.Generated;
  */
 
 @JsonTypeName("Capitalization")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.6.0-SNAPSHOT")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.20.0-SNAPSHOT")
 public class CapitalizationDto {
 
-  private String smallCamel;
+  private @Nullable String smallCamel;
 
-  private String capitalCamel;
+  private @Nullable String capitalCamel;
 
-  private String smallSnake;
+  private @Nullable String smallSnake;
 
-  private String capitalSnake;
+  private @Nullable String capitalSnake;
 
-  private String scAETHFlowPoints;
+  private @Nullable String scAETHFlowPoints;
 
-  private String ATT_NAME;
+  private @Nullable String ATT_NAME;
 
-  public CapitalizationDto smallCamel(String smallCamel) {
+  public CapitalizationDto smallCamel(@Nullable String smallCamel) {
     this.smallCamel = smallCamel;
     return this;
   }
@@ -41,18 +42,18 @@ public class CapitalizationDto {
   /**
    * Get smallCamel
    * @return smallCamel
-  */
+   */
   
   @JsonProperty("smallCamel")
-  public String getSmallCamel() {
+  public @Nullable String getSmallCamel() {
     return smallCamel;
   }
 
-  public void setSmallCamel(String smallCamel) {
+  public void setSmallCamel(@Nullable String smallCamel) {
     this.smallCamel = smallCamel;
   }
 
-  public CapitalizationDto capitalCamel(String capitalCamel) {
+  public CapitalizationDto capitalCamel(@Nullable String capitalCamel) {
     this.capitalCamel = capitalCamel;
     return this;
   }
@@ -60,18 +61,18 @@ public class CapitalizationDto {
   /**
    * Get capitalCamel
    * @return capitalCamel
-  */
+   */
   
   @JsonProperty("CapitalCamel")
-  public String getCapitalCamel() {
+  public @Nullable String getCapitalCamel() {
     return capitalCamel;
   }
 
-  public void setCapitalCamel(String capitalCamel) {
+  public void setCapitalCamel(@Nullable String capitalCamel) {
     this.capitalCamel = capitalCamel;
   }
 
-  public CapitalizationDto smallSnake(String smallSnake) {
+  public CapitalizationDto smallSnake(@Nullable String smallSnake) {
     this.smallSnake = smallSnake;
     return this;
   }
@@ -79,18 +80,18 @@ public class CapitalizationDto {
   /**
    * Get smallSnake
    * @return smallSnake
-  */
+   */
   
   @JsonProperty("small_Snake")
-  public String getSmallSnake() {
+  public @Nullable String getSmallSnake() {
     return smallSnake;
   }
 
-  public void setSmallSnake(String smallSnake) {
+  public void setSmallSnake(@Nullable String smallSnake) {
     this.smallSnake = smallSnake;
   }
 
-  public CapitalizationDto capitalSnake(String capitalSnake) {
+  public CapitalizationDto capitalSnake(@Nullable String capitalSnake) {
     this.capitalSnake = capitalSnake;
     return this;
   }
@@ -98,18 +99,18 @@ public class CapitalizationDto {
   /**
    * Get capitalSnake
    * @return capitalSnake
-  */
+   */
   
   @JsonProperty("Capital_Snake")
-  public String getCapitalSnake() {
+  public @Nullable String getCapitalSnake() {
     return capitalSnake;
   }
 
-  public void setCapitalSnake(String capitalSnake) {
+  public void setCapitalSnake(@Nullable String capitalSnake) {
     this.capitalSnake = capitalSnake;
   }
 
-  public CapitalizationDto scAETHFlowPoints(String scAETHFlowPoints) {
+  public CapitalizationDto scAETHFlowPoints(@Nullable String scAETHFlowPoints) {
     this.scAETHFlowPoints = scAETHFlowPoints;
     return this;
   }
@@ -117,18 +118,18 @@ public class CapitalizationDto {
   /**
    * Get scAETHFlowPoints
    * @return scAETHFlowPoints
-  */
+   */
   
   @JsonProperty("SCA_ETH_Flow_Points")
-  public String getScAETHFlowPoints() {
+  public @Nullable String getScAETHFlowPoints() {
     return scAETHFlowPoints;
   }
 
-  public void setScAETHFlowPoints(String scAETHFlowPoints) {
+  public void setScAETHFlowPoints(@Nullable String scAETHFlowPoints) {
     this.scAETHFlowPoints = scAETHFlowPoints;
   }
 
-  public CapitalizationDto ATT_NAME(String ATT_NAME) {
+  public CapitalizationDto ATT_NAME(@Nullable String ATT_NAME) {
     this.ATT_NAME = ATT_NAME;
     return this;
   }
@@ -136,14 +137,14 @@ public class CapitalizationDto {
   /**
    * Name of the pet 
    * @return ATT_NAME
-  */
+   */
   
   @JsonProperty("ATT_NAME")
-  public String getATTNAME() {
+  public @Nullable String getATTNAME() {
     return ATT_NAME;
   }
 
-  public void setATTNAME(String ATT_NAME) {
+  public void setATTNAME(@Nullable String ATT_NAME) {
     this.ATT_NAME = ATT_NAME;
   }
 
@@ -187,7 +188,7 @@ public class CapitalizationDto {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(@Nullable Object o) {
     if (o == null) {
       return "null";
     }

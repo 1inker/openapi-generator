@@ -38,37 +38,36 @@ import io.github.threetenjaxb.core.*;
   FakeBigDecimalMap200Response.JSON_PROPERTY_SOME_MAP
 })
 @JsonTypeName("fakeBigDecimalMap_200_response")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.6.0-SNAPSHOT")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.20.0-SNAPSHOT")
 @XmlRootElement(name = "FakeBigDecimalMap200Response")
 @XmlAccessorType(XmlAccessType.FIELD)
 @JacksonXmlRootElement(localName = "FakeBigDecimalMap200Response")
 public class FakeBigDecimalMap200Response {
   public static final String JSON_PROPERTY_SOME_ID = "someId";
   @XmlElement(name = "someId")
+  @javax.annotation.Nullable
   private BigDecimal someId;
 
   public static final String JSON_PROPERTY_SOME_MAP = "someMap";
-  // Is a container wrapped=false
-  // items.name=inner items.baseName=inner items.xmlName= items.xmlNamespace=
-  // items.example= items.type=BigDecimal
-  @XmlElement(name = "inner")
+  @XmlElement(name = "someMap")
+  @javax.annotation.Nullable
   private Map<String, BigDecimal> someMap = new HashMap<>();
 
   public FakeBigDecimalMap200Response() {
   }
 
-  public FakeBigDecimalMap200Response someId(BigDecimal someId) {
+  public FakeBigDecimalMap200Response someId(@javax.annotation.Nullable BigDecimal someId) {
     
     this.someId = someId;
     return this;
   }
 
-   /**
+  /**
    * Get someId
    * @return someId
-  **/
+   */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_SOME_ID)
+  @JsonProperty(value = JSON_PROPERTY_SOME_ID, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   @JacksonXmlProperty(localName = "someId")
 
@@ -77,15 +76,14 @@ public class FakeBigDecimalMap200Response {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_SOME_ID)
+  @JsonProperty(value = JSON_PROPERTY_SOME_ID, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   @JacksonXmlProperty(localName = "someId")
-  public void setSomeId(BigDecimal someId) {
+  public void setSomeId(@javax.annotation.Nullable BigDecimal someId) {
     this.someId = someId;
   }
 
-
-  public FakeBigDecimalMap200Response someMap(Map<String, BigDecimal> someMap) {
+  public FakeBigDecimalMap200Response someMap(@javax.annotation.Nullable Map<String, BigDecimal> someMap) {
     
     this.someMap = someMap;
     return this;
@@ -99,12 +97,12 @@ public class FakeBigDecimalMap200Response {
     return this;
   }
 
-   /**
+  /**
    * Get someMap
    * @return someMap
-  **/
+   */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_SOME_MAP)
+  @JsonProperty(value = JSON_PROPERTY_SOME_MAP, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   @JacksonXmlProperty(localName = "someMap")
   @JacksonXmlElementWrapper(useWrapping = false)
@@ -114,13 +112,14 @@ public class FakeBigDecimalMap200Response {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_SOME_MAP)
+  @JsonProperty(value = JSON_PROPERTY_SOME_MAP, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   @JacksonXmlProperty(localName = "someMap")
   @JacksonXmlElementWrapper(useWrapping = false)
-  public void setSomeMap(Map<String, BigDecimal> someMap) {
+  public void setSomeMap(@javax.annotation.Nullable Map<String, BigDecimal> someMap) {
     this.someMap = someMap;
   }
+
 
   @Override
   public boolean equals(Object o) {

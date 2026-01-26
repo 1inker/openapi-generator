@@ -13,10 +13,7 @@
  */
 
 import { mapValues } from '../runtime';
-import {
-     ChildWithNullableFromJSONTyped
-} from './index';
-
+import { type ChildWithNullable, ChildWithNullableFromJSONTyped, ChildWithNullableToJSON, ChildWithNullableToJSONTyped } from './ChildWithNullable';
 /**
  * 
  * @export
@@ -34,7 +31,7 @@ export interface ParentWithNullable {
      * @type {string}
      * @memberof ParentWithNullable
      */
-    nullableProperty?: string;
+    nullableProperty?: string | null;
 }
 
 
@@ -50,7 +47,7 @@ export type ParentWithNullableTypeEnum = typeof ParentWithNullableTypeEnum[keyof
 /**
  * Check if a given object implements the ParentWithNullable interface.
  */
-export function instanceOfParentWithNullable(value: object): boolean {
+export function instanceOfParentWithNullable(value: object): value is ParentWithNullable {
     return true;
 }
 
@@ -64,8 +61,9 @@ export function ParentWithNullableFromJSONTyped(json: any, ignoreDiscriminator: 
     }
     if (!ignoreDiscriminator) {
         if (json['type'] === 'ChildWithNullable') {
-            return ChildWithNullableFromJSONTyped(json, true);
+            return ChildWithNullableFromJSONTyped(json, ignoreDiscriminator);
         }
+
     }
     return {
         
@@ -74,10 +72,24 @@ export function ParentWithNullableFromJSONTyped(json: any, ignoreDiscriminator: 
     };
 }
 
-export function ParentWithNullableToJSON(value?: ParentWithNullable | null): any {
+export function ParentWithNullableToJSON(json: any): ParentWithNullable {
+    return ParentWithNullableToJSONTyped(json, false);
+}
+
+export function ParentWithNullableToJSONTyped(value?: ParentWithNullable | null, ignoreDiscriminator: boolean = false): any {
     if (value == null) {
         return value;
     }
+
+    if (!ignoreDiscriminator) {
+        switch (value['type']) {
+            case 'ChildWithNullable':
+                return ChildWithNullableToJSONTyped(value as ChildWithNullable, ignoreDiscriminator);
+            default:
+                return value;
+        }
+    }
+
     return {
         
         'type': value['type'],

@@ -18,6 +18,7 @@ import {
     AnimalFromJSON,
     AnimalFromJSONTyped,
     AnimalToJSON,
+    AnimalToJSONTyped,
 } from './Animal';
 
 /**
@@ -49,7 +50,7 @@ export interface MixedPropertiesAndAdditionalPropertiesClass {
 /**
  * Check if a given object implements the MixedPropertiesAndAdditionalPropertiesClass interface.
  */
-export function instanceOfMixedPropertiesAndAdditionalPropertiesClass(value: object): boolean {
+export function instanceOfMixedPropertiesAndAdditionalPropertiesClass(value: object): value is MixedPropertiesAndAdditionalPropertiesClass {
     return true;
 }
 
@@ -69,14 +70,19 @@ export function MixedPropertiesAndAdditionalPropertiesClassFromJSONTyped(json: a
     };
 }
 
-export function MixedPropertiesAndAdditionalPropertiesClassToJSON(value?: MixedPropertiesAndAdditionalPropertiesClass | null): any {
+export function MixedPropertiesAndAdditionalPropertiesClassToJSON(json: any): MixedPropertiesAndAdditionalPropertiesClass {
+    return MixedPropertiesAndAdditionalPropertiesClassToJSONTyped(json, false);
+}
+
+export function MixedPropertiesAndAdditionalPropertiesClassToJSONTyped(value?: MixedPropertiesAndAdditionalPropertiesClass | null, ignoreDiscriminator: boolean = false): any {
     if (value == null) {
         return value;
     }
+
     return {
         
         'uuid': value['uuid'],
-        'dateTime': value['dateTime'] == null ? undefined : ((value['dateTime']).toISOString()),
+        'dateTime': value['dateTime'] == null ? value['dateTime'] : value['dateTime'].toISOString(),
         'map': value['map'] == null ? undefined : (mapValues(value['map'], AnimalToJSON)),
     };
 }

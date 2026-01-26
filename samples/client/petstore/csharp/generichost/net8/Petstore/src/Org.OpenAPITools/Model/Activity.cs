@@ -46,7 +46,7 @@ namespace Org.OpenAPITools.Model
         /// Used to track the state of ActivityOutputs
         /// </summary>
         [JsonIgnore]
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
         public Option<Dictionary<string, List<ActivityOutputElementRepresentation>>> ActivityOutputsOption { get; private set; }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace Org.OpenAPITools.Model
         /// </summary>
         /// <param name="validationContext">Validation context</param>
         /// <returns>Validation Result</returns>
-        IEnumerable<System.ComponentModel.DataAnnotations.ValidationResult> IValidatableObject.Validate(ValidationContext validationContext)
+        IEnumerable<ValidationResult> IValidatableObject.Validate(ValidationContext validationContext)
         {
             yield break;
         }
@@ -126,8 +126,7 @@ namespace Org.OpenAPITools.Model
                     switch (localVarJsonPropertyName)
                     {
                         case "activity_outputs":
-                            if (utf8JsonReader.TokenType != JsonTokenType.Null)
-                                activityOutputs = new Option<Dictionary<string, List<ActivityOutputElementRepresentation>>>(JsonSerializer.Deserialize<Dictionary<string, List<ActivityOutputElementRepresentation>>>(ref utf8JsonReader, jsonSerializerOptions));
+                            activityOutputs = new Option<Dictionary<string, List<ActivityOutputElementRepresentation>>>(JsonSerializer.Deserialize<Dictionary<string, List<ActivityOutputElementRepresentation>>>(ref utf8JsonReader, jsonSerializerOptions));
                             break;
                         default:
                             break;
@@ -152,7 +151,7 @@ namespace Org.OpenAPITools.Model
         {
             writer.WriteStartObject();
 
-            WriteProperties(ref writer, activity, jsonSerializerOptions);
+            WriteProperties(writer, activity, jsonSerializerOptions);
             writer.WriteEndObject();
         }
 
@@ -163,7 +162,7 @@ namespace Org.OpenAPITools.Model
         /// <param name="activity"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public void WriteProperties(ref Utf8JsonWriter writer, Activity activity, JsonSerializerOptions jsonSerializerOptions)
+        public void WriteProperties(Utf8JsonWriter writer, Activity activity, JsonSerializerOptions jsonSerializerOptions)
         {
             if (activity.ActivityOutputsOption.IsSet && activity.ActivityOutputs == null)
                 throw new ArgumentNullException(nameof(activity.ActivityOutputs), "Property is required for class Activity.");

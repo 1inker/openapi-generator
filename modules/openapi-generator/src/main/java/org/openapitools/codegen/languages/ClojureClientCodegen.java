@@ -21,11 +21,13 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
-import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.Schema;
 import org.apache.commons.lang3.StringUtils;
 import org.openapitools.codegen.*;
-import org.openapitools.codegen.meta.features.*;
+import org.openapitools.codegen.meta.features.DocumentationFeature;
+import org.openapitools.codegen.meta.features.ParameterFeature;
+import org.openapitools.codegen.meta.features.SchemaSupportFeature;
+import org.openapitools.codegen.meta.features.SecurityFeature;
 import org.openapitools.codegen.model.ModelMap;
 import org.openapitools.codegen.model.OperationMap;
 import org.openapitools.codegen.model.OperationsMap;
@@ -199,6 +201,10 @@ public class ClojureClientCodegen extends DefaultCodegen implements CodegenConfi
 
     @Override
     public String toModelName(String name) {
+        if (modelNameMapping.containsKey(name)) {
+            return modelNameMapping.get(name);
+        }
+
         return dashize(name);
     }
 
@@ -340,11 +346,19 @@ public class ClojureClientCodegen extends DefaultCodegen implements CodegenConfi
 
     @Override
     public String toParamName(String name) {
+        if (parameterNameMapping.containsKey(name)) {
+            return parameterNameMapping.get(name);
+        }
+
         return toVarName(name);
     }
 
     @Override
     public String toVarName(String name) {
+        if (nameMapping.containsKey(name)) {
+            return nameMapping.get(name);
+        }
+
         name = name.replaceAll("[^a-zA-Z0-9_-]+", ""); // FIXME: a parameter should not be assigned. Also declare the methods parameters as 'final'.
         return name;
     }
@@ -389,5 +403,7 @@ public class ClojureClientCodegen extends DefaultCodegen implements CodegenConfi
     }
 
     @Override
-    public GeneratorLanguage generatorLanguage() { return GeneratorLanguage.CLOJURE; }
+    public GeneratorLanguage generatorLanguage() {
+        return GeneratorLanguage.CLOJURE;
+    }
 }

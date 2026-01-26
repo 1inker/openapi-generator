@@ -16,11 +16,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import org.openapitools.jackson.nullable.JsonNullable;
 
 
 
 @JsonTypeName("ArrayTest")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen", comments = "Generator version: 7.6.0-SNAPSHOT")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen", comments = "Generator version: 7.20.0-SNAPSHOT")
 public class ArrayTest  implements Serializable {
   private @Valid List<String> arrayOfString = new ArrayList<>();
   private @Valid List<List<Long>> arrayArrayOfInteger = new ArrayList<>();
@@ -45,7 +46,7 @@ public class ArrayTest  implements Serializable {
   
   @ApiModelProperty(value = "")
   @JsonProperty("array_of_string")
-  public List<String> getArrayOfString() {
+   @Size(min=0,max=3)public List<String> getArrayOfString() {
     return arrayOfString;
   }
 
@@ -80,7 +81,7 @@ public class ArrayTest  implements Serializable {
   
   @ApiModelProperty(value = "")
   @JsonProperty("array_array_of_integer")
-  @Valid public List<List<Long>> getArrayArrayOfInteger() {
+  public List<List<Long>> getArrayArrayOfInteger() {
     return arrayArrayOfInteger;
   }
 
@@ -204,7 +205,7 @@ public class ArrayTest  implements Serializable {
   public static abstract class ArrayTestBuilder<C extends ArrayTest, B extends ArrayTestBuilder<C, B>>  {
     private List<String> arrayOfString = new ArrayList<>();
     private List<List<Long>> arrayArrayOfInteger = new ArrayList<>();
-    private List<List<@Valid ReadOnlyFirst>> arrayArrayOfModel = new ArrayList<>();
+    private List<List<ReadOnlyFirst>> arrayArrayOfModel = new ArrayList<>();
     protected abstract B self();
 
     public abstract C build();
@@ -217,7 +218,7 @@ public class ArrayTest  implements Serializable {
       this.arrayArrayOfInteger = arrayArrayOfInteger;
       return self();
     }
-    public B arrayArrayOfModel(List<List<@Valid ReadOnlyFirst>> arrayArrayOfModel) {
+    public B arrayArrayOfModel(List<List<ReadOnlyFirst>> arrayArrayOfModel) {
       this.arrayArrayOfModel = arrayArrayOfModel;
       return self();
     }

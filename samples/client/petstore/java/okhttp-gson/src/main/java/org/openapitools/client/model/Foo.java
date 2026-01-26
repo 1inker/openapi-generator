@@ -37,7 +37,6 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
 
-import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -49,30 +48,31 @@ import org.openapitools.client.JSON;
 /**
  * Foo
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.6.0-SNAPSHOT")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.20.0-SNAPSHOT")
 public class Foo {
   public static final String SERIALIZED_NAME_BAR = "bar";
   @SerializedName(SERIALIZED_NAME_BAR)
+  @javax.annotation.Nullable
   private String bar = "bar";
 
   public Foo() {
   }
 
-  public Foo bar(String bar) {
+  public Foo bar(@javax.annotation.Nullable String bar) {
     this.bar = bar;
     return this;
   }
 
-   /**
+  /**
    * Get bar
    * @return bar
-  **/
+   */
   @javax.annotation.Nullable
   public String getBar() {
     return bar;
   }
 
-  public void setBar(String bar) {
+  public void setBar(@javax.annotation.Nullable String bar) {
     this.bar = bar;
   }
 
@@ -167,28 +167,27 @@ public class Foo {
 
   static {
     // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>();
-    openapiFields.add("bar");
+    openapiFields = new HashSet<String>(Arrays.asList("bar"));
 
     // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>();
+    openapiRequiredFields = new HashSet<String>(0);
   }
 
- /**
-  * Validates the JSON Element and throws an exception if issues found
-  *
-  * @param jsonElement JSON Element
-  * @throws IOException if the JSON Element is invalid with respect to Foo
-  */
+  /**
+   * Validates the JSON Element and throws an exception if issues found
+   *
+   * @param jsonElement JSON Element
+   * @throws IOException if the JSON Element is invalid with respect to Foo
+   */
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
         if (!Foo.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in Foo is not found in the empty JSON string", Foo.openapiRequiredFields.toString()));
+          throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in Foo is not found in the empty JSON string", Foo.openapiRequiredFields.toString()));
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
       if ((jsonObj.get("bar") != null && !jsonObj.get("bar").isJsonNull()) && !jsonObj.get("bar").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `bar` to be a primitive type in the JSON string but got `%s`", jsonObj.get("bar").toString()));
+        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `bar` to be a primitive type in the JSON string but got `%s`", jsonObj.get("bar").toString()));
       }
   }
 
@@ -249,7 +248,7 @@ public class Foo {
                    else if (entry.getValue().getAsJsonPrimitive().isBoolean())
                      instance.putAdditionalProperty(entry.getKey(), entry.getValue().getAsBoolean());
                    else
-                     throw new IllegalArgumentException(String.format("The field `%s` has unknown primitive type. Value: %s", entry.getKey(), entry.getValue().toString()));
+                     throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` has unknown primitive type. Value: %s", entry.getKey(), entry.getValue().toString()));
                  } else if (entry.getValue().isJsonArray()) {
                      instance.putAdditionalProperty(entry.getKey(), gson.fromJson(entry.getValue(), List.class));
                  } else { // JSON object
@@ -264,22 +263,22 @@ public class Foo {
     }
   }
 
- /**
-  * Create an instance of Foo given an JSON string
-  *
-  * @param jsonString JSON string
-  * @return An instance of Foo
-  * @throws IOException if the JSON string is invalid with respect to Foo
-  */
+  /**
+   * Create an instance of Foo given an JSON string
+   *
+   * @param jsonString JSON string
+   * @return An instance of Foo
+   * @throws IOException if the JSON string is invalid with respect to Foo
+   */
   public static Foo fromJson(String jsonString) throws IOException {
     return JSON.getGson().fromJson(jsonString, Foo.class);
   }
 
- /**
-  * Convert an instance of Foo to an JSON string
-  *
-  * @return JSON string
-  */
+  /**
+   * Convert an instance of Foo to an JSON string
+   *
+   * @return JSON string
+   */
   public String toJson() {
     return JSON.getGson().toJson(this);
   }

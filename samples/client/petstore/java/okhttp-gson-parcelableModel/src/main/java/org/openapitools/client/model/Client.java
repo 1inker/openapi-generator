@@ -39,7 +39,6 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
 
-import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -51,30 +50,31 @@ import org.openapitools.client.JSON;
 /**
  * Client
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.6.0-SNAPSHOT")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.20.0-SNAPSHOT")
 public class Client implements Parcelable {
   public static final String SERIALIZED_NAME_CLIENT = "client";
   @SerializedName(SERIALIZED_NAME_CLIENT)
+  @javax.annotation.Nullable
   private String client;
 
   public Client() {
   }
 
-  public Client client(String client) {
+  public Client client(@javax.annotation.Nullable String client) {
     this.client = client;
     return this;
   }
 
-   /**
+  /**
    * Get client
    * @return client
-  **/
+   */
   @javax.annotation.Nullable
   public String getClient() {
     return client;
   }
 
-  public void setClient(String client) {
+  public void setClient(@javax.annotation.Nullable String client) {
     this.client = client;
   }
 
@@ -144,23 +144,22 @@ public class Client implements Parcelable {
 
   static {
     // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>();
-    openapiFields.add("client");
+    openapiFields = new HashSet<String>(Arrays.asList("client"));
 
     // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>();
+    openapiRequiredFields = new HashSet<String>(0);
   }
 
- /**
-  * Validates the JSON Element and throws an exception if issues found
-  *
-  * @param jsonElement JSON Element
-  * @throws IOException if the JSON Element is invalid with respect to Client
-  */
+  /**
+   * Validates the JSON Element and throws an exception if issues found
+   *
+   * @param jsonElement JSON Element
+   * @throws IOException if the JSON Element is invalid with respect to Client
+   */
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
         if (!Client.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in Client is not found in the empty JSON string", Client.openapiRequiredFields.toString()));
+          throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in Client is not found in the empty JSON string", Client.openapiRequiredFields.toString()));
         }
       }
 
@@ -168,12 +167,12 @@ public class Client implements Parcelable {
       // check to see if the JSON string contains additional fields
       for (Map.Entry<String, JsonElement> entry : entries) {
         if (!Client.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `Client` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+          throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `Client` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
       if ((jsonObj.get("client") != null && !jsonObj.get("client").isJsonNull()) && !jsonObj.get("client").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `client` to be a primitive type in the JSON string but got `%s`", jsonObj.get("client").toString()));
+        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `client` to be a primitive type in the JSON string but got `%s`", jsonObj.get("client").toString()));
       }
   }
 
@@ -206,22 +205,22 @@ public class Client implements Parcelable {
     }
   }
 
- /**
-  * Create an instance of Client given an JSON string
-  *
-  * @param jsonString JSON string
-  * @return An instance of Client
-  * @throws IOException if the JSON string is invalid with respect to Client
-  */
+  /**
+   * Create an instance of Client given an JSON string
+   *
+   * @param jsonString JSON string
+   * @return An instance of Client
+   * @throws IOException if the JSON string is invalid with respect to Client
+   */
   public static Client fromJson(String jsonString) throws IOException {
     return JSON.getGson().fromJson(jsonString, Client.class);
   }
 
- /**
-  * Convert an instance of Client to an JSON string
-  *
-  * @return JSON string
-  */
+  /**
+   * Convert an instance of Client to an JSON string
+   *
+   * @return JSON string
+   */
   public String toJson() {
     return JSON.getGson().toJson(this);
   }

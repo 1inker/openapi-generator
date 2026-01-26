@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.Arrays;
 import org.openapitools.jackson.nullable.JsonNullable;
+import org.springframework.lang.Nullable;
 import java.util.NoSuchElementException;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
@@ -33,16 +34,16 @@ import jakarta.annotation.Generated;
   @JsonSubTypes.Type(value = ChildWithNullableDto.class, name = "ChildWithNullable")
 })
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.6.0-SNAPSHOT")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.20.0-SNAPSHOT")
 public class ParentWithNullableDto {
 
   /**
    * Gets or Sets type
    */
   public enum TypeEnum {
-    CHILDWITHNULLABLE("ChildWithNullable");
+    CHILD_WITH_NULLABLE("ChildWithNullable");
 
-    private String value;
+    private final String value;
 
     TypeEnum(String value) {
       this.value = value;
@@ -69,11 +70,11 @@ public class ParentWithNullableDto {
     }
   }
 
-  private TypeEnum type;
+  private @Nullable TypeEnum type;
 
   private JsonNullable<String> nullableProperty = JsonNullable.<String>undefined();
 
-  public ParentWithNullableDto type(TypeEnum type) {
+  public ParentWithNullableDto type(@Nullable TypeEnum type) {
     this.type = type;
     return this;
   }
@@ -81,14 +82,14 @@ public class ParentWithNullableDto {
   /**
    * Get type
    * @return type
-  */
+   */
   
   @JsonProperty("type")
-  public TypeEnum getType() {
+  public @Nullable TypeEnum getType() {
     return type;
   }
 
-  public void setType(TypeEnum type) {
+  public void setType(@Nullable TypeEnum type) {
     this.type = type;
   }
 
@@ -100,7 +101,7 @@ public class ParentWithNullableDto {
   /**
    * Get nullableProperty
    * @return nullableProperty
-  */
+   */
   
   @JsonProperty("nullableProperty")
   public JsonNullable<String> getNullableProperty() {
@@ -154,7 +155,7 @@ public class ParentWithNullableDto {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(@Nullable Object o) {
     if (o == null) {
       return "null";
     }

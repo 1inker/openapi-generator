@@ -37,7 +37,7 @@ namespace Org.OpenAPITools.Model
         /// Initializes a new instance of the <see cref="ModelClient" /> class.
         /// </summary>
         /// <param name="varClient">varClient.</param>
-        public ModelClient(string varClient = default(string))
+        public ModelClient(string varClient = default)
         {
             this.VarClient = varClient;
             this.AdditionalProperties = new Dictionary<string, object>();
@@ -124,7 +124,7 @@ namespace Org.OpenAPITools.Model
         /// </summary>
         /// <param name="validationContext">Validation context</param>
         /// <returns>Validation Result</returns>
-        IEnumerable<System.ComponentModel.DataAnnotations.ValidationResult> IValidatableObject.Validate(ValidationContext validationContext)
+        IEnumerable<ValidationResult> IValidatableObject.Validate(ValidationContext validationContext)
         {
             yield break;
         }

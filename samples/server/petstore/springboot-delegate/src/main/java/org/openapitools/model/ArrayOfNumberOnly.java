@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.springframework.lang.Nullable;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import javax.validation.Valid;
@@ -23,11 +24,22 @@ import javax.annotation.Generated;
  * ArrayOfNumberOnly
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.6.0-SNAPSHOT")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.20.0-SNAPSHOT")
 public class ArrayOfNumberOnly {
 
   @Valid
   private List<BigDecimal> arrayNumber = new ArrayList<>();
+
+  public ArrayOfNumberOnly() {
+    super();
+  }
+
+  /**
+   * Constructor with all args parameters
+   */
+  public ArrayOfNumberOnly(List<BigDecimal> arrayNumber) {
+      this.arrayNumber = arrayNumber;
+  }
 
   public ArrayOfNumberOnly arrayNumber(List<BigDecimal> arrayNumber) {
     this.arrayNumber = arrayNumber;
@@ -45,7 +57,7 @@ public class ArrayOfNumberOnly {
   /**
    * Get arrayNumber
    * @return arrayNumber
-  */
+   */
   @Valid 
   @ApiModelProperty(value = "")
   @JsonProperty("ArrayNumber")
@@ -87,7 +99,7 @@ public class ArrayOfNumberOnly {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(@Nullable Object o) {
     if (o == null) {
       return "null";
     }

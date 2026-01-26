@@ -37,6 +37,7 @@ public:
     void initializeServerConfigs();
     int setDefaultServerValue(int serverIndex,const QString &operation, const QString &variable,const QString &val);
     void setServerIndex(const QString &operation, int serverIndex);
+    void setServerIndex(int serverIndex);
     void setApiKey(const QString &apiKeyName, const QString &apiKey);
     void setBearerToken(const QString &token);
     void setUsername(const QString &username);
@@ -58,12 +59,12 @@ public:
     /**
     * @param[in]  body qint32 [optional]
     */
-    void primitivesIntegerPost(const ::test_namespace::OptionalParam<qint32> &body = ::test_namespace::OptionalParam<qint32>());
+    virtual void primitivesIntegerPost(const ::test_namespace::OptionalParam<qint32> &body = ::test_namespace::OptionalParam<qint32>());
 
     /**
     * @param[in]  body double [optional]
     */
-    void primitivesNumberPut(const ::test_namespace::OptionalParam<double> &body = ::test_namespace::OptionalParam<double>());
+    virtual void primitivesNumberPut(const ::test_namespace::OptionalParam<double> &body = ::test_namespace::OptionalParam<double>());
 
 
 private:
@@ -95,6 +96,7 @@ Q_SIGNALS:
 
     void primitivesIntegerPostSignal();
     void primitivesNumberPutSignal();
+
 
     void primitivesIntegerPostSignalFull(PFXHttpRequestWorker *worker);
     void primitivesNumberPutSignalFull(PFXHttpRequestWorker *worker);

@@ -5,6 +5,7 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import org.springframework.lang.Nullable;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import jakarta.validation.constraints.NotNull;
@@ -18,14 +19,14 @@ import jakarta.annotation.Generated;
  */
 
 @JsonTypeName("hasOnlyReadOnly")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.6.0-SNAPSHOT")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.20.0-SNAPSHOT")
 public class HasOnlyReadOnly {
 
-  private String bar;
+  private @Nullable String bar;
 
-  private String foo;
+  private @Nullable String foo;
 
-  public HasOnlyReadOnly bar(String bar) {
+  public HasOnlyReadOnly bar(@Nullable String bar) {
     this.bar = bar;
     return this;
   }
@@ -33,18 +34,18 @@ public class HasOnlyReadOnly {
   /**
    * Get bar
    * @return bar
-  */
+   */
   
   @JsonProperty("bar")
-  public String getBar() {
+  public @Nullable String getBar() {
     return bar;
   }
 
-  public void setBar(String bar) {
+  public void setBar(@Nullable String bar) {
     this.bar = bar;
   }
 
-  public HasOnlyReadOnly foo(String foo) {
+  public HasOnlyReadOnly foo(@Nullable String foo) {
     this.foo = foo;
     return this;
   }
@@ -52,14 +53,14 @@ public class HasOnlyReadOnly {
   /**
    * Get foo
    * @return foo
-  */
+   */
   
   @JsonProperty("foo")
-  public String getFoo() {
+  public @Nullable String getFoo() {
     return foo;
   }
 
-  public void setFoo(String foo) {
+  public void setFoo(@Nullable String foo) {
     this.foo = foo;
   }
 
@@ -95,7 +96,7 @@ public class HasOnlyReadOnly {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(@Nullable Object o) {
     if (o == null) {
       return "null";
     }

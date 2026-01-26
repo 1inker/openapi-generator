@@ -50,7 +50,7 @@ namespace Org.OpenAPITools.Model
         /// Used to track the state of VarSpecialModelName
         /// </summary>
         [JsonIgnore]
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
         public Option<string?> VarSpecialModelNameOption { get; private set; }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace Org.OpenAPITools.Model
         /// Used to track the state of SpecialPropertyName
         /// </summary>
         [JsonIgnore]
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
         public Option<long?> SpecialPropertyNameOption { get; private set; }
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace Org.OpenAPITools.Model
         /// </summary>
         /// <param name="validationContext">Validation context</param>
         /// <returns>Validation Result</returns>
-        IEnumerable<System.ComponentModel.DataAnnotations.ValidationResult> IValidatableObject.Validate(ValidationContext validationContext)
+        IEnumerable<ValidationResult> IValidatableObject.Validate(ValidationContext validationContext)
         {
             yield break;
         }
@@ -148,8 +148,7 @@ namespace Org.OpenAPITools.Model
                             varSpecialModelName = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
                         case "$special[property.name]":
-                            if (utf8JsonReader.TokenType != JsonTokenType.Null)
-                                specialPropertyName = new Option<long?>(utf8JsonReader.GetInt64());
+                            specialPropertyName = new Option<long?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (long?)null : utf8JsonReader.GetInt64());
                             break;
                         default:
                             break;
@@ -177,7 +176,7 @@ namespace Org.OpenAPITools.Model
         {
             writer.WriteStartObject();
 
-            WriteProperties(ref writer, specialModelName, jsonSerializerOptions);
+            WriteProperties(writer, specialModelName, jsonSerializerOptions);
             writer.WriteEndObject();
         }
 
@@ -188,7 +187,7 @@ namespace Org.OpenAPITools.Model
         /// <param name="specialModelName"></param>
         /// <param name="jsonSerializerOptions"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public void WriteProperties(ref Utf8JsonWriter writer, SpecialModelName specialModelName, JsonSerializerOptions jsonSerializerOptions)
+        public void WriteProperties(Utf8JsonWriter writer, SpecialModelName specialModelName, JsonSerializerOptions jsonSerializerOptions)
         {
             if (specialModelName.VarSpecialModelNameOption.IsSet && specialModelName.VarSpecialModelName == null)
                 throw new ArgumentNullException(nameof(specialModelName.VarSpecialModelName), "Property is required for class SpecialModelName.");

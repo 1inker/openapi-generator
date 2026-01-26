@@ -17,8 +17,8 @@
 
 package org.openapitools.codegen.languages;
 
-import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.Schema;
+import lombok.Setter;
 import org.openapitools.codegen.*;
 import org.openapitools.codegen.meta.features.*;
 import org.openapitools.codegen.model.ModelMap;
@@ -38,7 +38,7 @@ public class ScalaFinchServerCodegen extends DefaultCodegen implements CodegenCo
     protected String artifactId = "finch-server";
     protected String artifactVersion = "1.0.0";
     protected String sourceFolder = "src/main/scala";
-    protected String packageName = "org.openapitools";
+    @Setter protected String packageName = "org.openapitools";
 
     public ScalaFinchServerCodegen() {
         super();
@@ -297,10 +297,6 @@ public class ScalaFinchServerCodegen extends DefaultCodegen implements CodegenCo
         return input.replace("*/", "*_/").replace("/*", "/_*");
     }
 
-    public void setPackageName(String packageName) {
-        this.packageName = packageName;
-    }
-
 
     /**
      * @param prim          primitive type
@@ -486,5 +482,7 @@ public class ScalaFinchServerCodegen extends DefaultCodegen implements CodegenCo
     }
 
     @Override
-    public GeneratorLanguage generatorLanguage() { return GeneratorLanguage.SCALA; }
+    public GeneratorLanguage generatorLanguage() {
+        return GeneratorLanguage.SCALA;
+    }
 }

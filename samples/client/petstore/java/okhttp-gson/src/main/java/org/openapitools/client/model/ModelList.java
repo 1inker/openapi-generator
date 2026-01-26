@@ -37,7 +37,6 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
 
-import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -49,30 +48,31 @@ import org.openapitools.client.JSON;
 /**
  * ModelList
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.6.0-SNAPSHOT")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.20.0-SNAPSHOT")
 public class ModelList {
   public static final String SERIALIZED_NAME_123LIST = "123-list";
   @SerializedName(SERIALIZED_NAME_123LIST)
+  @javax.annotation.Nullable
   private String _123list;
 
   public ModelList() {
   }
 
-  public ModelList _123list(String _123list) {
+  public ModelList _123list(@javax.annotation.Nullable String _123list) {
     this._123list = _123list;
     return this;
   }
 
-   /**
+  /**
    * Get _123list
    * @return _123list
-  **/
+   */
   @javax.annotation.Nullable
   public String get123list() {
     return _123list;
   }
 
-  public void set123list(String _123list) {
+  public void set123list(@javax.annotation.Nullable String _123list) {
     this._123list = _123list;
   }
 
@@ -167,28 +167,27 @@ public class ModelList {
 
   static {
     // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>();
-    openapiFields.add("123-list");
+    openapiFields = new HashSet<String>(Arrays.asList("123-list"));
 
     // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>();
+    openapiRequiredFields = new HashSet<String>(0);
   }
 
- /**
-  * Validates the JSON Element and throws an exception if issues found
-  *
-  * @param jsonElement JSON Element
-  * @throws IOException if the JSON Element is invalid with respect to ModelList
-  */
+  /**
+   * Validates the JSON Element and throws an exception if issues found
+   *
+   * @param jsonElement JSON Element
+   * @throws IOException if the JSON Element is invalid with respect to ModelList
+   */
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
         if (!ModelList.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in ModelList is not found in the empty JSON string", ModelList.openapiRequiredFields.toString()));
+          throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in ModelList is not found in the empty JSON string", ModelList.openapiRequiredFields.toString()));
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
       if ((jsonObj.get("123-list") != null && !jsonObj.get("123-list").isJsonNull()) && !jsonObj.get("123-list").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `123-list` to be a primitive type in the JSON string but got `%s`", jsonObj.get("123-list").toString()));
+        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `123-list` to be a primitive type in the JSON string but got `%s`", jsonObj.get("123-list").toString()));
       }
   }
 
@@ -249,7 +248,7 @@ public class ModelList {
                    else if (entry.getValue().getAsJsonPrimitive().isBoolean())
                      instance.putAdditionalProperty(entry.getKey(), entry.getValue().getAsBoolean());
                    else
-                     throw new IllegalArgumentException(String.format("The field `%s` has unknown primitive type. Value: %s", entry.getKey(), entry.getValue().toString()));
+                     throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` has unknown primitive type. Value: %s", entry.getKey(), entry.getValue().toString()));
                  } else if (entry.getValue().isJsonArray()) {
                      instance.putAdditionalProperty(entry.getKey(), gson.fromJson(entry.getValue(), List.class));
                  } else { // JSON object
@@ -264,22 +263,22 @@ public class ModelList {
     }
   }
 
- /**
-  * Create an instance of ModelList given an JSON string
-  *
-  * @param jsonString JSON string
-  * @return An instance of ModelList
-  * @throws IOException if the JSON string is invalid with respect to ModelList
-  */
+  /**
+   * Create an instance of ModelList given an JSON string
+   *
+   * @param jsonString JSON string
+   * @return An instance of ModelList
+   * @throws IOException if the JSON string is invalid with respect to ModelList
+   */
   public static ModelList fromJson(String jsonString) throws IOException {
     return JSON.getGson().fromJson(jsonString, ModelList.class);
   }
 
- /**
-  * Convert an instance of ModelList to an JSON string
-  *
-  * @return JSON string
-  */
+  /**
+   * Convert an instance of ModelList to an JSON string
+   *
+   * @return JSON string
+   */
   public String toJson() {
     return JSON.getGson().toJson(this);
   }

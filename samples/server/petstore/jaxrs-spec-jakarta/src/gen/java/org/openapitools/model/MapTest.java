@@ -14,11 +14,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import org.openapitools.jackson.nullable.JsonNullable;
 
 
 
 @JsonTypeName("MapTest")
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen", comments = "Generator version: 7.6.0-SNAPSHOT")
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen", comments = "Generator version: 7.20.0-SNAPSHOT")
 public class MapTest  implements Serializable {
   private @Valid Map<String, Map<String, String>> mapMapOfString = new HashMap<>();
   public enum InnerEnum {
@@ -92,7 +93,7 @@ public class MapTest  implements Serializable {
   
   @ApiModelProperty(value = "")
   @JsonProperty("map_map_of_string")
-  @Valid public Map<String, Map<String, String>> getMapMapOfString() {
+  public Map<String, Map<String, String>> getMapMapOfString() {
     return mapMapOfString;
   }
 
@@ -110,9 +111,9 @@ public class MapTest  implements Serializable {
     return this;
   }
 
-  public MapTest removeMapMapOfStringItem(Map<String, String> mapMapOfStringItem) {
-    if (mapMapOfStringItem != null && this.mapMapOfString != null) {
-      this.mapMapOfString.remove(mapMapOfStringItem);
+  public MapTest removeMapMapOfStringItem(String key) {
+    if (this.mapMapOfString != null) {
+      this.mapMapOfString.remove(key);
     }
 
     return this;
@@ -145,9 +146,9 @@ public class MapTest  implements Serializable {
     return this;
   }
 
-  public MapTest removeMapOfEnumStringItem(InnerEnum mapOfEnumStringItem) {
-    if (mapOfEnumStringItem != null && this.mapOfEnumString != null) {
-      this.mapOfEnumString.remove(mapOfEnumStringItem);
+  public MapTest removeMapOfEnumStringItem(String key) {
+    if (this.mapOfEnumString != null) {
+      this.mapOfEnumString.remove(key);
     }
 
     return this;
@@ -180,9 +181,9 @@ public class MapTest  implements Serializable {
     return this;
   }
 
-  public MapTest removeDirectMapItem(Boolean directMapItem) {
-    if (directMapItem != null && this.directMap != null) {
-      this.directMap.remove(directMapItem);
+  public MapTest removeDirectMapItem(String key) {
+    if (this.directMap != null) {
+      this.directMap.remove(key);
     }
 
     return this;
@@ -215,9 +216,9 @@ public class MapTest  implements Serializable {
     return this;
   }
 
-  public MapTest removeIndirectMapItem(Boolean indirectMapItem) {
-    if (indirectMapItem != null && this.indirectMap != null) {
-      this.indirectMap.remove(indirectMapItem);
+  public MapTest removeIndirectMapItem(String key) {
+    if (this.indirectMap != null) {
+      this.indirectMap.remove(key);
     }
 
     return this;

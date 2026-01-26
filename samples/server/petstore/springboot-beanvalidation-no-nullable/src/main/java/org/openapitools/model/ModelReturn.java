@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.springframework.lang.Nullable;
 import java.time.OffsetDateTime;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -21,12 +22,12 @@ import javax.annotation.Generated;
 
 @ApiModel(description = "Model for testing reserved words")
 @JsonTypeName("Return")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.6.0-SNAPSHOT")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.20.0-SNAPSHOT")
 public class ModelReturn {
 
-  private Integer _return;
+  private @Nullable Integer _return;
 
-  public ModelReturn _return(Integer _return) {
+  public ModelReturn _return(@Nullable Integer _return) {
     this._return = _return;
     return this;
   }
@@ -34,15 +35,15 @@ public class ModelReturn {
   /**
    * Get _return
    * @return _return
-  */
+   */
   
   @ApiModelProperty(value = "")
   @JsonProperty("return")
-  public Integer getReturn() {
+  public @Nullable Integer getReturn() {
     return _return;
   }
 
-  public void setReturn(Integer _return) {
+  public void setReturn(@Nullable Integer _return) {
     this._return = _return;
   }
 
@@ -76,7 +77,7 @@ public class ModelReturn {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(@Nullable Object o) {
     if (o == null) {
       return "null";
     }

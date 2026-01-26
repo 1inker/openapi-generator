@@ -18,8 +18,7 @@ import sttp.client3._
 import sttp.model.Method
 
 object UserApi {
-
-def apply(baseUrl: String = "http://petstore.swagger.io/v2") = new UserApi(baseUrl)
+  def apply(baseUrl: String = "http://petstore.swagger.io/v2") = new UserApi(baseUrl)
 }
 
 class UserApi(baseUrl: String) {
@@ -35,14 +34,14 @@ class UserApi(baseUrl: String) {
    * 
    * @param user Created user object
    */
-  def createUser(apiKey: String)(user: User
-): Request[Either[Either[String, String], Unit], Any] =
+  def createUser(apiKeyHeader: String)(user: User
+): Request[Either[ResponseException[String, Exception], Unit], Any] =
     basicRequest
       .method(Method.POST, uri"$baseUrl/user")
       .contentType("application/json")
-      .header("api_key", apiKey)
+      .header("api_key", apiKeyHeader)
       .body(user)
-      .response(asEither(asString, ignore))
+      .response(asString.mapWithMetadata(ResponseAs.deserializeRightWithError(_ => Right(()))))
 
   /**
    * 
@@ -55,14 +54,14 @@ class UserApi(baseUrl: String) {
    * 
    * @param user List of user object
    */
-  def createUsersWithArrayInput(apiKey: String)(user: Seq[User]
-): Request[Either[Either[String, String], Unit], Any] =
+  def createUsersWithArrayInput(apiKeyHeader: String)(user: Seq[User]
+): Request[Either[ResponseException[String, Exception], Unit], Any] =
     basicRequest
       .method(Method.POST, uri"$baseUrl/user/createWithArray")
       .contentType("application/json")
-      .header("api_key", apiKey)
+      .header("api_key", apiKeyHeader)
       .body(user)
-      .response(asEither(asString, ignore))
+      .response(asString.mapWithMetadata(ResponseAs.deserializeRightWithError(_ => Right(()))))
 
   /**
    * 
@@ -75,14 +74,14 @@ class UserApi(baseUrl: String) {
    * 
    * @param user List of user object
    */
-  def createUsersWithListInput(apiKey: String)(user: Seq[User]
-): Request[Either[Either[String, String], Unit], Any] =
+  def createUsersWithListInput(apiKeyHeader: String)(user: Seq[User]
+): Request[Either[ResponseException[String, Exception], Unit], Any] =
     basicRequest
       .method(Method.POST, uri"$baseUrl/user/createWithList")
       .contentType("application/json")
-      .header("api_key", apiKey)
+      .header("api_key", apiKeyHeader)
       .body(user)
-      .response(asEither(asString, ignore))
+      .response(asString.mapWithMetadata(ResponseAs.deserializeRightWithError(_ => Right(()))))
 
   /**
    * This can only be done by the logged in user.
@@ -96,13 +95,13 @@ class UserApi(baseUrl: String) {
    * 
    * @param username The name that needs to be deleted
    */
-  def deleteUser(apiKey: String)(username: String
+  def deleteUser(apiKeyHeader: String)(username: String
 ): Request[Either[ResponseException[String, Exception], Unit], Any] =
     basicRequest
       .method(Method.DELETE, uri"$baseUrl/user/${username}")
       .contentType("application/json")
-      .header("api_key", apiKey)
-      .response(asJson[Unit])
+      .header("api_key", apiKeyHeader)
+      .response(asString.mapWithMetadata(ResponseAs.deserializeRightWithError(_ => Right(()))))
 
   /**
    * 
@@ -151,13 +150,13 @@ class UserApi(baseUrl: String) {
    * Available security schemes:
    *   api_key (apiKey)
    */
-  def logoutUser(apiKey: String)(
-): Request[Either[Either[String, String], Unit], Any] =
+  def logoutUser(apiKeyHeader: String)(
+): Request[Either[ResponseException[String, Exception], Unit], Any] =
     basicRequest
       .method(Method.GET, uri"$baseUrl/user/logout")
       .contentType("application/json")
-      .header("api_key", apiKey)
-      .response(asEither(asString, ignore))
+      .header("api_key", apiKeyHeader)
+      .response(asString.mapWithMetadata(ResponseAs.deserializeRightWithError(_ => Right(()))))
 
   /**
    * This can only be done by the logged in user.
@@ -172,13 +171,13 @@ class UserApi(baseUrl: String) {
    * @param username name that need to be deleted
    * @param user Updated user object
    */
-  def updateUser(apiKey: String)(username: String, user: User
+  def updateUser(apiKeyHeader: String)(username: String, user: User
 ): Request[Either[ResponseException[String, Exception], Unit], Any] =
     basicRequest
       .method(Method.PUT, uri"$baseUrl/user/${username}")
       .contentType("application/json")
-      .header("api_key", apiKey)
+      .header("api_key", apiKeyHeader)
       .body(user)
-      .response(asJson[Unit])
+      .response(asString.mapWithMetadata(ResponseAs.deserializeRightWithError(_ => Right(()))))
 
 }

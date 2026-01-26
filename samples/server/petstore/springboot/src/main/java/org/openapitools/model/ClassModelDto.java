@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.springframework.lang.Nullable;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import javax.validation.Valid;
@@ -22,12 +23,12 @@ import javax.annotation.Generated;
 
 @ApiModel(description = "Model for testing model with \"_class\" property")
 @JsonTypeName("ClassModel")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.6.0-SNAPSHOT")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.20.0-SNAPSHOT")
 public class ClassModelDto {
 
-  private String propertyClass;
+  private @Nullable String propertyClass;
 
-  public ClassModelDto propertyClass(String propertyClass) {
+  public ClassModelDto propertyClass(@Nullable String propertyClass) {
     this.propertyClass = propertyClass;
     return this;
   }
@@ -35,15 +36,15 @@ public class ClassModelDto {
   /**
    * Get propertyClass
    * @return propertyClass
-  */
+   */
   
   @ApiModelProperty(value = "")
   @JsonProperty("_class")
-  public String getPropertyClass() {
+  public @Nullable String getPropertyClass() {
     return propertyClass;
   }
 
-  public void setPropertyClass(String propertyClass) {
+  public void setPropertyClass(@Nullable String propertyClass) {
     this.propertyClass = propertyClass;
   }
 
@@ -77,7 +78,7 @@ public class ClassModelDto {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(@Nullable Object o) {
     if (o == null) {
       return "null";
     }

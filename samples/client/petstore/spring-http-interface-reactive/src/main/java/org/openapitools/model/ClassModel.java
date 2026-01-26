@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import org.springframework.lang.Nullable;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import jakarta.validation.constraints.NotNull;
@@ -16,12 +17,12 @@ import jakarta.annotation.Generated;
  * Model for testing model with \&quot;_class\&quot; property
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.6.0-SNAPSHOT")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.20.0-SNAPSHOT")
 public class ClassModel {
 
-  private String propertyClass;
+  private @Nullable String propertyClass;
 
-  public ClassModel propertyClass(String propertyClass) {
+  public ClassModel propertyClass(@Nullable String propertyClass) {
     this.propertyClass = propertyClass;
     return this;
   }
@@ -29,14 +30,14 @@ public class ClassModel {
   /**
    * Get propertyClass
    * @return propertyClass
-  */
+   */
   
   @JsonProperty("_class")
-  public String getPropertyClass() {
+  public @Nullable String getPropertyClass() {
     return propertyClass;
   }
 
-  public void setPropertyClass(String propertyClass) {
+  public void setPropertyClass(@Nullable String propertyClass) {
     this.propertyClass = propertyClass;
   }
 
@@ -70,7 +71,7 @@ public class ClassModel {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(@Nullable Object o) {
     if (o == null) {
       return "null";
     }

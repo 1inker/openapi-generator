@@ -33,26 +33,27 @@ import java.util.StringJoiner;
   ModelFile.JSON_PROPERTY_SOURCE_U_R_I
 })
 @JsonTypeName("File")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.6.0-SNAPSHOT")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.20.0-SNAPSHOT")
 public class ModelFile {
   public static final String JSON_PROPERTY_SOURCE_U_R_I = "sourceURI";
+  @javax.annotation.Nullable
   private String sourceURI;
 
   public ModelFile() {
   }
 
-  public ModelFile sourceURI(String sourceURI) {
+  public ModelFile sourceURI(@javax.annotation.Nullable String sourceURI) {
     
     this.sourceURI = sourceURI;
     return this;
   }
 
-   /**
+  /**
    * Test capitalization
    * @return sourceURI
-  **/
+   */
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_SOURCE_U_R_I)
+  @JsonProperty(value = JSON_PROPERTY_SOURCE_U_R_I, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public String getSourceURI() {
@@ -60,9 +61,9 @@ public class ModelFile {
   }
 
 
-  @JsonProperty(JSON_PROPERTY_SOURCE_U_R_I)
+  @JsonProperty(value = JSON_PROPERTY_SOURCE_U_R_I, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setSourceURI(String sourceURI) {
+  public void setSourceURI(@javax.annotation.Nullable String sourceURI) {
     this.sourceURI = sourceURI;
   }
 
@@ -138,7 +139,7 @@ public class ModelFile {
     // add `sourceURI` to the URL query string
     if (getSourceURI() != null) {
       try {
-        joiner.add(String.format("%ssourceURI%s=%s", prefix, suffix, URLEncoder.encode(String.valueOf(getSourceURI()), "UTF-8").replaceAll("\\+", "%20")));
+        joiner.add(String.format(java.util.Locale.ROOT, "%ssourceURI%s=%s", prefix, suffix, URLEncoder.encode(String.valueOf(getSourceURI()), "UTF-8").replaceAll("\\+", "%20")));
       } catch (UnsupportedEncodingException e) {
         // Should never happen, UTF-8 is always supported
         throw new RuntimeException(e);

@@ -16,11 +16,14 @@
 
 package org.openapitools.codegen.languages;
 
-import io.swagger.v3.oas.models.media.ArraySchema;
+import com.google.common.collect.ImmutableMap;
+import com.samskivert.mustache.Escapers;
+import com.samskivert.mustache.Mustache;
 import io.swagger.v3.oas.models.media.Schema;
 import org.openapitools.codegen.*;
 import org.openapitools.codegen.meta.features.*;
 import org.openapitools.codegen.model.*;
+import org.openapitools.codegen.templating.mustache.EscapeKeywordLambda;
 import org.openapitools.codegen.utils.ModelUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +31,8 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static org.openapitools.codegen.CodegenConstants.X_IMPLEMENTS;
 
 public class ScalaHttp4sServerCodegen extends DefaultCodegen implements CodegenConfig {
     private final Logger LOGGER = LoggerFactory.getLogger(ScalaHttp4sServerCodegen.class);
@@ -141,7 +146,7 @@ public class ScalaHttp4sServerCodegen extends DefaultCodegen implements CodegenC
         additionalProperties.put("infoEmail", "team@openapitools.org");
         additionalProperties.put("licenseInfo", "Apache 2.0");
         additionalProperties.put("licenseUrl", "http://apache.org/licenses/LICENSE-2.0.html");
-
+        additionalProperties.put("fnEscapeBacktick", new EscapeBacktickLambda());
 
         languageSpecificPrimitives = new HashSet<>(
                 Arrays.asList(
@@ -351,7 +356,16 @@ public class ScalaHttp4sServerCodegen extends DefaultCodegen implements CodegenC
                 // model oneOf as sealed trait
 
                 CodegenModel cModel = model.getModel();
-                cModel.getVendorExtensions().put("x-isSealedTrait", !cModel.oneOf.isEmpty());
+
+                if (!cModel.oneOf.isEmpty()) {
+                    cModel.getVendorExtensions().put("x-isSealedTrait", true);
+                }
+                else if (cModel.isEnum) {
+                    cModel.getVendorExtensions().put("x-isEnum", true);
+
+                } else {
+                    cModel.getVendorExtensions().put("x-another", true);
+                }
 
                 if (cModel.discriminator != null) {
                     cModel.getVendorExtensions().put("x-use-discr", true);
@@ -362,7 +376,7 @@ public class ScalaHttp4sServerCodegen extends DefaultCodegen implements CodegenC
                 }
                 //
                 try {
-                    List<String> exts = (List<String>) cModel.getVendorExtensions().get("x-implements");
+                    List<String> exts = (List<String>) cModel.getVendorExtensions().get(X_IMPLEMENTS);
                     if (exts != null) {
                         cModel.getVendorExtensions().put("x-extends", exts.subList(0, 1));
                         cModel.getVendorExtensions().put("x-extendsWith", exts.subList(1, exts.size()));
@@ -384,7 +398,7 @@ public class ScalaHttp4sServerCodegen extends DefaultCodegen implements CodegenC
         return modelsMap;
     }
 
-    private Map<String, Object> makeRefiined(Set<String> imports, String dataType, ArrayList<String> refined) {
+    private Map<String, Object> makeRefined(Set<String> imports, String dataType, ArrayList<String> refined) {
         Map<String, Object> vendorExtensions = new HashMap<>();
         if (!refined.isEmpty()) {
             imports.add("And");
@@ -427,7 +441,7 @@ public class ScalaHttp4sServerCodegen extends DefaultCodegen implements CodegenC
                 } catch (IndexOutOfBoundsException ignored) {
                 }
             }
-            vendorExtensions.putAll(makeRefiined(imports, prop.getDataType(), refined));
+            vendorExtensions.putAll(makeRefined(imports, prop.getDataType(), refined));
         }
 
         if ("Int".equals(prop.getDataType())
@@ -456,7 +470,7 @@ public class ScalaHttp4sServerCodegen extends DefaultCodegen implements CodegenC
                     imports.add("LessEqual");
                 }
             }
-            vendorExtensions.putAll(makeRefiined(imports, prop.getDataType(), refined));
+            vendorExtensions.putAll(makeRefined(imports, prop.getDataType(), refined));
         }
 
         if (prop.getIsUuid() || "Uuid".equals(prop.getDataType())) {
@@ -477,7 +491,7 @@ public class ScalaHttp4sServerCodegen extends DefaultCodegen implements CodegenC
                 imports.add("MaxSize");
             }
 
-            vendorExtensions.putAll(makeRefiined(imports, prop.getDataType(), refined));
+            vendorExtensions.putAll(makeRefined(imports, prop.getDataType(), refined));
         }
 
         return vendorExtensions;
@@ -549,7 +563,12 @@ public class ScalaHttp4sServerCodegen extends DefaultCodegen implements CodegenC
 
     @Override
     public String escapeReservedWord(String name) {
-        return "_" + name;
+        if (this.reservedWordsMappings().containsKey(name)) {
+            return this.reservedWordsMappings().get(name);
+        }
+        // Reserved words will be further escaped at the mustache compiler level.
+        // Scala escaping done here (via `, without compiler escaping) would otherwise be HTML encoded.
+        return "`" + name + "`";
     }
 
     @Override
@@ -799,12 +818,12 @@ public class ScalaHttp4sServerCodegen extends DefaultCodegen implements CodegenC
 
         if (_vendorExtensions.size() == 1) { // only `x-type`
             if ("String".equals(cp.getDataType())) {
-                return cp.baseName;
+                return escapeReservedWordUnapply(cp.baseName);
             } else {
-                return cp.dataType + "Varr(" + cp.baseName + ")";
+                return cp.dataType + "Varr(" + escapeReservedWordUnapply(cp.baseName) + ")";
             }
         } else {
-            return cp.baseName + "Varr(" + cp.baseName + ")";
+            return cp.baseName + "Varr(" + escapeReservedWordUnapply(cp.baseName) + ")";
         }
     }
 
@@ -836,11 +855,34 @@ public class ScalaHttp4sServerCodegen extends DefaultCodegen implements CodegenC
         }
 
         vendorExtensions.putAll(refineProp(cp, imports));
-        return cp.baseName + "QueryParam(" + cp.baseName + ")";
+        return cp.baseName + "QueryParam(" + escapeReservedWordUnapply(cp.baseName) + ")";
     }
 
     @Override
     public GeneratorLanguage generatorLanguage() {
         return GeneratorLanguage.SCALA;
+    }
+
+    @Override
+    protected ImmutableMap.Builder<String, Mustache.Lambda> addMustacheLambdas() {
+        return super.addMustacheLambdas()
+                .put("escapeReservedWordUnapply", new EscapeKeywordLambda(this::escapeReservedWordUnapply));
+    }
+
+    private String escapeReservedWordUnapply(String value) {
+        // The unapply method doesn’t allow you to work with reserved variables via backticks;
+        // in such cases you should use the variable via a placeholder instead.
+        return isReservedWord(value) ? "_" + value : value;
+    }
+
+    private static class EscapeBacktickLambda extends AbstractScalaCodegen.CustomLambda {
+        @Override
+        public String formatFragment(String fragment) {
+            if (fragment.startsWith("`") && fragment.endsWith("`")) {
+                String unescaped = fragment.substring(1, fragment.length() - 1);
+                return "`" + Escapers.HTML.escape(unescaped) + "`";
+            }
+            return Escapers.HTML.escape(fragment);
+        }
     }
 }

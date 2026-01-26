@@ -17,7 +17,6 @@
 
 package org.openapitools.codegen.examples;
 
-import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.XML;
 import org.apache.commons.lang3.StringUtils;
@@ -173,7 +172,7 @@ public class XmlExampleGenerator {
 
     /**
      * Get the example string value for the given schema.
-     *
+     * <p>
      * If an example value was not provided in the specification, a default will be generated.
      *
      * @param schema Schema to get example string for

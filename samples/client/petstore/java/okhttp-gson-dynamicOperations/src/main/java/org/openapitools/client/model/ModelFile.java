@@ -37,7 +37,6 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
 
-import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -49,30 +48,31 @@ import org.openapitools.client.JSON;
 /**
  * Must be named &#x60;File&#x60; for test.
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.6.0-SNAPSHOT")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.20.0-SNAPSHOT")
 public class ModelFile {
   public static final String SERIALIZED_NAME_SOURCE_U_R_I = "sourceURI";
   @SerializedName(SERIALIZED_NAME_SOURCE_U_R_I)
+  @javax.annotation.Nullable
   private String sourceURI;
 
   public ModelFile() {
   }
 
-  public ModelFile sourceURI(String sourceURI) {
+  public ModelFile sourceURI(@javax.annotation.Nullable String sourceURI) {
     this.sourceURI = sourceURI;
     return this;
   }
 
-   /**
+  /**
    * Test capitalization
    * @return sourceURI
-  **/
+   */
   @javax.annotation.Nullable
   public String getSourceURI() {
     return sourceURI;
   }
 
-  public void setSourceURI(String sourceURI) {
+  public void setSourceURI(@javax.annotation.Nullable String sourceURI) {
     this.sourceURI = sourceURI;
   }
 
@@ -121,23 +121,22 @@ public class ModelFile {
 
   static {
     // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>();
-    openapiFields.add("sourceURI");
+    openapiFields = new HashSet<String>(Arrays.asList("sourceURI"));
 
     // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>();
+    openapiRequiredFields = new HashSet<String>(0);
   }
 
- /**
-  * Validates the JSON Element and throws an exception if issues found
-  *
-  * @param jsonElement JSON Element
-  * @throws IOException if the JSON Element is invalid with respect to ModelFile
-  */
+  /**
+   * Validates the JSON Element and throws an exception if issues found
+   *
+   * @param jsonElement JSON Element
+   * @throws IOException if the JSON Element is invalid with respect to ModelFile
+   */
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
         if (!ModelFile.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in ModelFile is not found in the empty JSON string", ModelFile.openapiRequiredFields.toString()));
+          throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in ModelFile is not found in the empty JSON string", ModelFile.openapiRequiredFields.toString()));
         }
       }
 
@@ -145,12 +144,12 @@ public class ModelFile {
       // check to see if the JSON string contains additional fields
       for (Map.Entry<String, JsonElement> entry : entries) {
         if (!ModelFile.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `ModelFile` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+          throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `ModelFile` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
       if ((jsonObj.get("sourceURI") != null && !jsonObj.get("sourceURI").isJsonNull()) && !jsonObj.get("sourceURI").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `sourceURI` to be a primitive type in the JSON string but got `%s`", jsonObj.get("sourceURI").toString()));
+        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `sourceURI` to be a primitive type in the JSON string but got `%s`", jsonObj.get("sourceURI").toString()));
       }
   }
 
@@ -183,22 +182,22 @@ public class ModelFile {
     }
   }
 
- /**
-  * Create an instance of ModelFile given an JSON string
-  *
-  * @param jsonString JSON string
-  * @return An instance of ModelFile
-  * @throws IOException if the JSON string is invalid with respect to ModelFile
-  */
+  /**
+   * Create an instance of ModelFile given an JSON string
+   *
+   * @param jsonString JSON string
+   * @return An instance of ModelFile
+   * @throws IOException if the JSON string is invalid with respect to ModelFile
+   */
   public static ModelFile fromJson(String jsonString) throws IOException {
     return JSON.getGson().fromJson(jsonString, ModelFile.class);
   }
 
- /**
-  * Convert an instance of ModelFile to an JSON string
-  *
-  * @return JSON string
-  */
+  /**
+   * Convert an instance of ModelFile to an JSON string
+   *
+   * @return JSON string
+   */
   public String toJson() {
     return JSON.getGson().toJson(this);
   }

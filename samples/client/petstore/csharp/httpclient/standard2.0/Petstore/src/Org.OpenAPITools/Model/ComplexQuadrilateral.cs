@@ -46,7 +46,7 @@ namespace Org.OpenAPITools.Model
         /// </summary>
         /// <param name="shapeType">shapeType (required).</param>
         /// <param name="quadrilateralType">quadrilateralType (required).</param>
-        public ComplexQuadrilateral(string shapeType = default(string), string quadrilateralType = default(string))
+        public ComplexQuadrilateral(string shapeType = default, string quadrilateralType = default)
         {
             // to ensure "shapeType" is required (not null)
             if (shapeType == null)
@@ -155,7 +155,7 @@ namespace Org.OpenAPITools.Model
         /// </summary>
         /// <param name="validationContext">Validation context</param>
         /// <returns>Validation Result</returns>
-        IEnumerable<System.ComponentModel.DataAnnotations.ValidationResult> IValidatableObject.Validate(ValidationContext validationContext)
+        IEnumerable<ValidationResult> IValidatableObject.Validate(ValidationContext validationContext)
         {
             yield break;
         }

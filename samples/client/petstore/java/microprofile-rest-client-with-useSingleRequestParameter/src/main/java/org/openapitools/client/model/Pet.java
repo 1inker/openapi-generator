@@ -1,4 +1,4 @@
-/**
+/*
  * OpenAPI Petstore
  * This is a sample server Petstore server. For this sample, you can use the api key `special-key` to test the authorization filters.
  *
@@ -12,6 +12,10 @@
 
 package org.openapitools.client.model;
 
+import java.util.Objects;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,10 +31,14 @@ import jakarta.json.bind.serializer.SerializationContext;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonParser;
 import jakarta.json.bind.annotation.JsonbProperty;
+import jakarta.json.bind.annotation.JsonbSubtype;
+import jakarta.json.bind.annotation.JsonbTransient;
+import jakarta.json.bind.annotation.JsonbTypeInfo;
+import jakarta.json.bind.annotation.JsonbCreator;
 
 /**
   * A pet for sale in the pet store
- **/
+  */
 
 public class Pet  {
   
@@ -92,22 +100,23 @@ public class Pet  {
   }
 
  /**
-   * pet status in the store
-  **/
+  * pet status in the store
+  */
   @JsonbProperty("status")
   private StatusEnum status;
 
- /**
+
+  /**
    * Get id
    * @return id
-  **/
+   **/
   public Long getId() {
     return id;
   }
 
   /**
-    * Set id
-  **/
+   * Set id
+   */
   public void setId(Long id) {
     this.id = id;
   }
@@ -117,17 +126,17 @@ public class Pet  {
     return this;
   }
 
- /**
+  /**
    * Get category
    * @return category
-  **/
+   **/
   public Category getCategory() {
     return category;
   }
 
   /**
-    * Set category
-  **/
+   * Set category
+   */
   public void setCategory(Category category) {
     this.category = category;
   }
@@ -137,17 +146,17 @@ public class Pet  {
     return this;
   }
 
- /**
+  /**
    * Get name
    * @return name
-  **/
+   **/
   public String getName() {
     return name;
   }
 
   /**
-    * Set name
-  **/
+   * Set name
+   */
   public void setName(String name) {
     this.name = name;
   }
@@ -157,17 +166,17 @@ public class Pet  {
     return this;
   }
 
- /**
+  /**
    * Get photoUrls
    * @return photoUrls
-  **/
+   **/
   public List<String> getPhotoUrls() {
     return photoUrls;
   }
 
   /**
-    * Set photoUrls
-  **/
+   * Set photoUrls
+   */
   public void setPhotoUrls(List<String> photoUrls) {
     this.photoUrls = photoUrls;
   }
@@ -185,17 +194,17 @@ public class Pet  {
     return this;
   }
 
- /**
+  /**
    * Get tags
    * @return tags
-  **/
+   **/
   public List<Tag> getTags() {
     return tags;
   }
 
   /**
-    * Set tags
-  **/
+   * Set tags
+   */
   public void setTags(List<Tag> tags) {
     this.tags = tags;
   }
@@ -213,19 +222,19 @@ public class Pet  {
     return this;
   }
 
- /**
+  /**
    * pet status in the store
    * @return status
    * @deprecated
-  **/
+   **/
   @Deprecated
   public StatusEnum getStatus() {
     return status;
   }
 
   /**
-    * Set status
-  **/
+   * Set status
+   */
   public void setStatus(StatusEnum status) {
     this.status = status;
   }
@@ -235,10 +244,31 @@ public class Pet  {
     return this;
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Pet pet = (Pet) o;
+    return Objects.equals(this.id, pet.id) &&
+        Objects.equals(this.category, pet.category) &&
+        Objects.equals(this.name, pet.name) &&
+        Objects.equals(this.photoUrls, pet.photoUrls) &&
+        Objects.equals(this.tags, pet.tags) &&
+        Objects.equals(this.status, pet.status);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, category, name, photoUrls, tags, status);
+  }
 
   /**
-    * Create a string representation of this pojo.
-  **/
+   * Create a string representation of this pojo.
+   */
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
@@ -265,3 +295,4 @@ public class Pet  {
     return o.toString().replace("\n", "\n    ");
   }
 }
+
