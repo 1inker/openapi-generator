@@ -54,7 +54,7 @@ namespace Org.OpenAPITools.Model
         /// Gets or Sets Bar
         /// </summary>
         [JsonPropertyName("bar")]
-        public string? Bar { get { return this.BarOption; } set { this.BarOption = new(value); } }
+        public string? Bar { get { return this.BarOption.Value; } set { this.BarOption = new(value); } }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -83,8 +83,18 @@ namespace Org.OpenAPITools.Model
     /// <summary>
     /// A Json converter for type <see cref="Foo" />
     /// </summary>
-    public class FooJsonConverter : JsonConverter<Foo>
+    public partial class FooJsonConverter : JsonConverter<Foo>
     {
+        partial void OnCreated();
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FooJsonConverter" /> class.
+        /// </summary>
+        public FooJsonConverter()
+        {
+            OnCreated();
+        }
+
         /// <summary>
         /// Deserializes json to <see cref="Foo" />
         /// </summary>

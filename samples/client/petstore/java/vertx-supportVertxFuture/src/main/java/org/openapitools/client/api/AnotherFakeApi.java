@@ -16,7 +16,7 @@ public interface AnotherFakeApi {
 
     default Future<Client> call123testSpecialTags(@javax.annotation.Nonnull Client client){
         Promise<Client> promise = Promise.promise();
-        call123testSpecialTags(client, promise);
+        call123testSpecialTags(client, promise::handle);
         return promise.future();
     }
 
@@ -24,7 +24,7 @@ public interface AnotherFakeApi {
 
     default Future<Client> call123testSpecialTags(@javax.annotation.Nonnull Client client, ApiClient.AuthInfo authInfo){
         Promise<Client> promise = Promise.promise();
-        call123testSpecialTags(client, authInfo, promise);
+        call123testSpecialTags(client, authInfo, promise::handle);
         return promise.future();
     }
 

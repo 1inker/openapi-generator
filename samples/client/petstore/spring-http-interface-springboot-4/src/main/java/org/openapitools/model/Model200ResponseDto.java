@@ -2,12 +2,17 @@ package org.openapitools.model;
 
 import java.net.URI;
 import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.Nulls;
 import org.springframework.lang.Nullable;
 import java.time.OffsetDateTime;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.*;
+import org.hibernate.validator.constraints.*;
 
 
 import java.util.*;
@@ -18,11 +23,13 @@ import jakarta.annotation.Generated;
  */
 
 @JsonTypeName("200_response")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.24.0-SNAPSHOT")
 public class Model200ResponseDto {
 
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private @Nullable Integer name;
 
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private @Nullable String propertyClass;
 
   public Model200ResponseDto name(@Nullable Integer name) {
@@ -40,6 +47,8 @@ public class Model200ResponseDto {
     return name;
   }
 
+  @JsonSetter(nulls = Nulls.SKIP)
+  @JsonProperty("name")
   public void setName(@Nullable Integer name) {
     this.name = name;
   }
@@ -59,6 +68,8 @@ public class Model200ResponseDto {
     return propertyClass;
   }
 
+  @JsonSetter(nulls = Nulls.SKIP)
+  @JsonProperty("class")
   public void setPropertyClass(@Nullable String propertyClass) {
     this.propertyClass = propertyClass;
   }
@@ -96,10 +107,7 @@ public class Model200ResponseDto {
    * (except the first line).
    */
   private String toIndentedString(@Nullable Object o) {
-    if (o == null) {
-      return "null";
-    }
-    return o.toString().replace("\n", "\n    ");
+    return o == null ? "null" : o.toString().replace("\n", "\n    ");
   }
 }
 

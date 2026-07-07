@@ -16,7 +16,7 @@ public interface DefaultApi {
 
     default Future<FooGetDefaultResponse> fooGet(){
         Promise<FooGetDefaultResponse> promise = Promise.promise();
-        fooGet(promise);
+        fooGet(promise::handle);
         return promise.future();
     }
 
@@ -24,7 +24,7 @@ public interface DefaultApi {
 
     default Future<FooGetDefaultResponse> fooGet(ApiClient.AuthInfo authInfo){
         Promise<FooGetDefaultResponse> promise = Promise.promise();
-        fooGet(authInfo, promise);
+        fooGet(authInfo, promise::handle);
         return promise.future();
     }
 

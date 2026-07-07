@@ -20,8 +20,10 @@ use openapi_v3::{
     OneOfGetResponse,
     OverrideServerGetResponse,
     ParamgetGetResponse,
+    QueryExampleGetResponse,
     ReadonlyAuthSchemeGetResponse,
     RegisterCallbackPostResponse,
+    RequiredBinaryStreamPutResponse,
     RequiredOctetStreamPutResponse,
     ResponsesWithHeadersGetResponse,
     Rfc7807GetResponse,
@@ -151,10 +153,19 @@ enum Operation {
         #[clap(value_parser = parse_json::<models::MyIdList>)]
         some_list: Option<models::MyIdList>,
     },
+    /// Test required query params with and without examples
+    QueryExampleGet {
+        required_no_example: String,
+        required_with_example: i32,
+    },
     ReadonlyAuthSchemeGet {
     },
     RegisterCallbackPost {
         url: String,
+    },
+    RequiredBinaryStreamPut {
+        #[clap(value_parser = parse_json::<swagger::ByteArray>)]
+        body: swagger::ByteArray,
     },
     RequiredOctetStreamPut {
         #[clap(value_parser = parse_json::<swagger::ByteArray>)]
@@ -554,6 +565,24 @@ async fn main() -> Result<()> {
                     &serde_json::to_string_pretty(&body)?,
             }
         }
+        Operation::QueryExampleGet {
+            required_no_example,
+            required_with_example,
+        } => {
+            info!("Performing a QueryExampleGet request");
+
+            let result = client.query_example_get(
+                required_no_example,
+                required_with_example,
+            ).await?;
+            debug!("Result: {:?}", result);
+
+            match result {
+                QueryExampleGetResponse::OK
+                => "OK\n".to_string()
+                    ,
+            }
+        }
         Operation::ReadonlyAuthSchemeGet {
         } => {
             info!("Performing a ReadonlyAuthSchemeGet request");
@@ -580,6 +609,22 @@ async fn main() -> Result<()> {
 
             match result {
                 RegisterCallbackPostResponse::OK
+                => "OK\n".to_string()
+                    ,
+            }
+        }
+        Operation::RequiredBinaryStreamPut {
+            body,
+        } => {
+            info!("Performing a RequiredBinaryStreamPut request");
+
+            let result = client.required_binary_stream_put(
+                body,
+            ).await?;
+            debug!("Result: {:?}", result);
+
+            match result {
+                RequiredBinaryStreamPutResponse::OK
                 => "OK\n".to_string()
                     ,
             }

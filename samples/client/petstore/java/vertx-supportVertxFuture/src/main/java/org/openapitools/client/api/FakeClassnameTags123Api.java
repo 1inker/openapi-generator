@@ -16,7 +16,7 @@ public interface FakeClassnameTags123Api {
 
     default Future<Client> testClassname(@javax.annotation.Nonnull Client client){
         Promise<Client> promise = Promise.promise();
-        testClassname(client, promise);
+        testClassname(client, promise::handle);
         return promise.future();
     }
 
@@ -24,7 +24,7 @@ public interface FakeClassnameTags123Api {
 
     default Future<Client> testClassname(@javax.annotation.Nonnull Client client, ApiClient.AuthInfo authInfo){
         Promise<Client> promise = Promise.promise();
-        testClassname(client, authInfo, promise);
+        testClassname(client, authInfo, promise::handle);
         return promise.future();
     }
 

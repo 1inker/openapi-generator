@@ -2,9 +2,12 @@ package org.openapitools.model;
 
 import java.net.URI;
 import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.annotation.Nulls;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -23,19 +26,20 @@ import jakarta.annotation.Generated;
  * A pet for sale in the pet store
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.24.0-SNAPSHOT")
 public class Pet {
 
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private Long id;
 
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private Category category;
 
   private String name;
 
-  @Valid
   private List<String> photoUrls = new ArrayList<>();
 
-  @Valid
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private List<@Valid Tag> tags = new ArrayList<>();
 
   /**
@@ -75,6 +79,7 @@ public class Pet {
     }
   }
 
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   @Deprecated
   private StatusEnum status;
 
@@ -105,6 +110,8 @@ public class Pet {
     return id;
   }
 
+  @JsonSetter(nulls = Nulls.SKIP)
+  @JsonProperty("id")
   public void setId(Long id) {
     this.id = id;
   }
@@ -124,6 +131,8 @@ public class Pet {
     return category;
   }
 
+  @JsonSetter(nulls = Nulls.SKIP)
+  @JsonProperty("category")
   public void setCategory(Category category) {
     this.category = category;
   }
@@ -143,6 +152,7 @@ public class Pet {
     return name;
   }
 
+  @JsonProperty("name")
   public void setName(String name) {
     this.name = name;
   }
@@ -170,6 +180,7 @@ public class Pet {
     return photoUrls;
   }
 
+  @JsonProperty("photoUrls")
   public void setPhotoUrls(List<String> photoUrls) {
     this.photoUrls = photoUrls;
   }
@@ -197,6 +208,8 @@ public class Pet {
     return tags;
   }
 
+  @JsonSetter(nulls = Nulls.SKIP)
+  @JsonProperty("tags")
   public void setTags(List<@Valid Tag> tags) {
     this.tags = tags;
   }
@@ -212,8 +225,8 @@ public class Pet {
    * @deprecated
    */
   
-  @JsonProperty("status")
   @Deprecated
+  @JsonProperty("status")
   public StatusEnum getStatus() {
     return status;
   }
@@ -221,7 +234,9 @@ public class Pet {
   /**
    * @deprecated
    */
+  @JsonSetter(nulls = Nulls.SKIP)
   @Deprecated
+  @JsonProperty("status")
   public void setStatus(StatusEnum status) {
     this.status = status;
   }
@@ -267,10 +282,7 @@ public class Pet {
    * (except the first line).
    */
   private String toIndentedString(Object o) {
-    if (o == null) {
-      return "null";
-    }
-    return o.toString().replace("\n", "\n    ");
+    return o == null ? "null" : o.toString().replace("\n", "\n    ");
   }
 }
 

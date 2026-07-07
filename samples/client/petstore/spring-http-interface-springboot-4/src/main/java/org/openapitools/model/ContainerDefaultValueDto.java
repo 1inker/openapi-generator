@@ -10,7 +10,9 @@ import java.util.Arrays;
 import java.util.List;
 import org.springframework.lang.Nullable;
 import java.time.OffsetDateTime;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.*;
+import org.hibernate.validator.constraints.*;
 
 
 import java.util.*;
@@ -21,19 +23,15 @@ import jakarta.annotation.Generated;
  */
 
 @JsonTypeName("ContainerDefaultValue")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.24.0-SNAPSHOT")
 public class ContainerDefaultValueDto {
 
-  
   private @Nullable List<String> nullableArray;
 
-  
   private List<String> nullableRequiredArray;
 
-  
   private List<String> requiredArray = new ArrayList<>();
 
-  
   private @Nullable List<String> nullableArrayWithDefault = new ArrayList<>(Arrays.asList("foo", "bar"));
 
   public ContainerDefaultValueDto() {
@@ -63,6 +61,7 @@ public class ContainerDefaultValueDto {
     return nullableArray;
   }
 
+  @JsonProperty("nullable_array")
   public void setNullableArray(@Nullable List<String> nullableArray) {
     this.nullableArray = nullableArray;
   }
@@ -84,12 +83,13 @@ public class ContainerDefaultValueDto {
    * Get nullableRequiredArray
    * @return nullableRequiredArray
    */
-  @NotNull
+  @NotNull 
   @JsonProperty("nullable_required_array")
   public List<String> getNullableRequiredArray() {
     return nullableRequiredArray;
   }
 
+  @JsonProperty("nullable_required_array")
   public void setNullableRequiredArray(List<String> nullableRequiredArray) {
     this.nullableRequiredArray = nullableRequiredArray;
   }
@@ -111,12 +111,13 @@ public class ContainerDefaultValueDto {
    * Get requiredArray
    * @return requiredArray
    */
-  @NotNull
+  @NotNull 
   @JsonProperty("required_array")
   public List<String> getRequiredArray() {
     return requiredArray;
   }
 
+  @JsonProperty("required_array")
   public void setRequiredArray(List<String> requiredArray) {
     this.requiredArray = requiredArray;
   }
@@ -144,6 +145,7 @@ public class ContainerDefaultValueDto {
     return nullableArrayWithDefault;
   }
 
+  @JsonProperty("nullable_array_with_default")
   public void setNullableArrayWithDefault(@Nullable List<String> nullableArrayWithDefault) {
     this.nullableArrayWithDefault = nullableArrayWithDefault;
   }
@@ -185,10 +187,7 @@ public class ContainerDefaultValueDto {
    * (except the first line).
    */
   private String toIndentedString(@Nullable Object o) {
-    if (o == null) {
-      return "null";
-    }
-    return o.toString().replace("\n", "\n    ");
+    return o == null ? "null" : o.toString().replace("\n", "\n    ");
   }
 }
 

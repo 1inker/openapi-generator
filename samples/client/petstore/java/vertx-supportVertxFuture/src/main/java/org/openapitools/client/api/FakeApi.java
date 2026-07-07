@@ -30,7 +30,7 @@ public interface FakeApi {
 
     default Future<FakeBigDecimalMap200Response> fakeBigDecimalMap(){
         Promise<FakeBigDecimalMap200Response> promise = Promise.promise();
-        fakeBigDecimalMap(promise);
+        fakeBigDecimalMap(promise::handle);
         return promise.future();
     }
 
@@ -38,7 +38,7 @@ public interface FakeApi {
 
     default Future<FakeBigDecimalMap200Response> fakeBigDecimalMap(ApiClient.AuthInfo authInfo){
         Promise<FakeBigDecimalMap200Response> promise = Promise.promise();
-        fakeBigDecimalMap(authInfo, promise);
+        fakeBigDecimalMap(authInfo, promise::handle);
         return promise.future();
     }
 
@@ -46,7 +46,7 @@ public interface FakeApi {
 
     default Future<HealthCheckResult> fakeHealthGet(){
         Promise<HealthCheckResult> promise = Promise.promise();
-        fakeHealthGet(promise);
+        fakeHealthGet(promise::handle);
         return promise.future();
     }
 
@@ -54,7 +54,7 @@ public interface FakeApi {
 
     default Future<HealthCheckResult> fakeHealthGet(ApiClient.AuthInfo authInfo){
         Promise<HealthCheckResult> promise = Promise.promise();
-        fakeHealthGet(authInfo, promise);
+        fakeHealthGet(authInfo, promise::handle);
         return promise.future();
     }
 
@@ -62,7 +62,7 @@ public interface FakeApi {
 
     default Future<Void> fakeHttpSignatureTest(@javax.annotation.Nonnull Pet pet, @javax.annotation.Nullable String query1, @javax.annotation.Nullable String header1){
         Promise<Void> promise = Promise.promise();
-        fakeHttpSignatureTest(pet, query1, header1, promise);
+        fakeHttpSignatureTest(pet, query1, header1, promise::handle);
         return promise.future();
     }
 
@@ -70,7 +70,7 @@ public interface FakeApi {
 
     default Future<Void> fakeHttpSignatureTest(@javax.annotation.Nonnull Pet pet, @javax.annotation.Nullable String query1, @javax.annotation.Nullable String header1, ApiClient.AuthInfo authInfo){
         Promise<Void> promise = Promise.promise();
-        fakeHttpSignatureTest(pet, query1, header1, authInfo, promise);
+        fakeHttpSignatureTest(pet, query1, header1, authInfo, promise::handle);
         return promise.future();
     }
 
@@ -78,7 +78,7 @@ public interface FakeApi {
 
     default Future<Boolean> fakeOuterBooleanSerialize(@javax.annotation.Nullable Boolean body){
         Promise<Boolean> promise = Promise.promise();
-        fakeOuterBooleanSerialize(body, promise);
+        fakeOuterBooleanSerialize(body, promise::handle);
         return promise.future();
     }
 
@@ -86,7 +86,7 @@ public interface FakeApi {
 
     default Future<Boolean> fakeOuterBooleanSerialize(@javax.annotation.Nullable Boolean body, ApiClient.AuthInfo authInfo){
         Promise<Boolean> promise = Promise.promise();
-        fakeOuterBooleanSerialize(body, authInfo, promise);
+        fakeOuterBooleanSerialize(body, authInfo, promise::handle);
         return promise.future();
     }
 
@@ -94,7 +94,7 @@ public interface FakeApi {
 
     default Future<OuterComposite> fakeOuterCompositeSerialize(@javax.annotation.Nullable OuterComposite outerComposite){
         Promise<OuterComposite> promise = Promise.promise();
-        fakeOuterCompositeSerialize(outerComposite, promise);
+        fakeOuterCompositeSerialize(outerComposite, promise::handle);
         return promise.future();
     }
 
@@ -102,7 +102,7 @@ public interface FakeApi {
 
     default Future<OuterComposite> fakeOuterCompositeSerialize(@javax.annotation.Nullable OuterComposite outerComposite, ApiClient.AuthInfo authInfo){
         Promise<OuterComposite> promise = Promise.promise();
-        fakeOuterCompositeSerialize(outerComposite, authInfo, promise);
+        fakeOuterCompositeSerialize(outerComposite, authInfo, promise::handle);
         return promise.future();
     }
 
@@ -110,7 +110,7 @@ public interface FakeApi {
 
     default Future<BigDecimal> fakeOuterNumberSerialize(@javax.annotation.Nullable BigDecimal body){
         Promise<BigDecimal> promise = Promise.promise();
-        fakeOuterNumberSerialize(body, promise);
+        fakeOuterNumberSerialize(body, promise::handle);
         return promise.future();
     }
 
@@ -118,7 +118,7 @@ public interface FakeApi {
 
     default Future<BigDecimal> fakeOuterNumberSerialize(@javax.annotation.Nullable BigDecimal body, ApiClient.AuthInfo authInfo){
         Promise<BigDecimal> promise = Promise.promise();
-        fakeOuterNumberSerialize(body, authInfo, promise);
+        fakeOuterNumberSerialize(body, authInfo, promise::handle);
         return promise.future();
     }
 
@@ -126,7 +126,7 @@ public interface FakeApi {
 
     default Future<String> fakeOuterStringSerialize(@javax.annotation.Nullable String body){
         Promise<String> promise = Promise.promise();
-        fakeOuterStringSerialize(body, promise);
+        fakeOuterStringSerialize(body, promise::handle);
         return promise.future();
     }
 
@@ -134,7 +134,7 @@ public interface FakeApi {
 
     default Future<String> fakeOuterStringSerialize(@javax.annotation.Nullable String body, ApiClient.AuthInfo authInfo){
         Promise<String> promise = Promise.promise();
-        fakeOuterStringSerialize(body, authInfo, promise);
+        fakeOuterStringSerialize(body, authInfo, promise::handle);
         return promise.future();
     }
 
@@ -142,7 +142,7 @@ public interface FakeApi {
 
     default Future<OuterObjectWithEnumProperty> fakePropertyEnumIntegerSerialize(@javax.annotation.Nonnull OuterObjectWithEnumProperty outerObjectWithEnumProperty){
         Promise<OuterObjectWithEnumProperty> promise = Promise.promise();
-        fakePropertyEnumIntegerSerialize(outerObjectWithEnumProperty, promise);
+        fakePropertyEnumIntegerSerialize(outerObjectWithEnumProperty, promise::handle);
         return promise.future();
     }
 
@@ -150,7 +150,7 @@ public interface FakeApi {
 
     default Future<OuterObjectWithEnumProperty> fakePropertyEnumIntegerSerialize(@javax.annotation.Nonnull OuterObjectWithEnumProperty outerObjectWithEnumProperty, ApiClient.AuthInfo authInfo){
         Promise<OuterObjectWithEnumProperty> promise = Promise.promise();
-        fakePropertyEnumIntegerSerialize(outerObjectWithEnumProperty, authInfo, promise);
+        fakePropertyEnumIntegerSerialize(outerObjectWithEnumProperty, authInfo, promise::handle);
         return promise.future();
     }
 
@@ -158,7 +158,7 @@ public interface FakeApi {
 
     default Future<Void> testAdditionalPropertiesReference(@javax.annotation.Nonnull Map<String, Object> requestBody){
         Promise<Void> promise = Promise.promise();
-        testAdditionalPropertiesReference(requestBody, promise);
+        testAdditionalPropertiesReference(requestBody, promise::handle);
         return promise.future();
     }
 
@@ -166,7 +166,7 @@ public interface FakeApi {
 
     default Future<Void> testAdditionalPropertiesReference(@javax.annotation.Nonnull Map<String, Object> requestBody, ApiClient.AuthInfo authInfo){
         Promise<Void> promise = Promise.promise();
-        testAdditionalPropertiesReference(requestBody, authInfo, promise);
+        testAdditionalPropertiesReference(requestBody, authInfo, promise::handle);
         return promise.future();
     }
 
@@ -174,7 +174,7 @@ public interface FakeApi {
 
     default Future<Void> testBodyWithBinary(@javax.annotation.Nullable AsyncFile body){
         Promise<Void> promise = Promise.promise();
-        testBodyWithBinary(body, promise);
+        testBodyWithBinary(body, promise::handle);
         return promise.future();
     }
 
@@ -182,7 +182,7 @@ public interface FakeApi {
 
     default Future<Void> testBodyWithBinary(@javax.annotation.Nullable AsyncFile body, ApiClient.AuthInfo authInfo){
         Promise<Void> promise = Promise.promise();
-        testBodyWithBinary(body, authInfo, promise);
+        testBodyWithBinary(body, authInfo, promise::handle);
         return promise.future();
     }
 
@@ -190,7 +190,7 @@ public interface FakeApi {
 
     default Future<Void> testBodyWithFileSchema(@javax.annotation.Nonnull FileSchemaTestClass fileSchemaTestClass){
         Promise<Void> promise = Promise.promise();
-        testBodyWithFileSchema(fileSchemaTestClass, promise);
+        testBodyWithFileSchema(fileSchemaTestClass, promise::handle);
         return promise.future();
     }
 
@@ -198,7 +198,7 @@ public interface FakeApi {
 
     default Future<Void> testBodyWithFileSchema(@javax.annotation.Nonnull FileSchemaTestClass fileSchemaTestClass, ApiClient.AuthInfo authInfo){
         Promise<Void> promise = Promise.promise();
-        testBodyWithFileSchema(fileSchemaTestClass, authInfo, promise);
+        testBodyWithFileSchema(fileSchemaTestClass, authInfo, promise::handle);
         return promise.future();
     }
 
@@ -206,7 +206,7 @@ public interface FakeApi {
 
     default Future<Void> testBodyWithQueryParams(@javax.annotation.Nonnull String query, @javax.annotation.Nonnull User user){
         Promise<Void> promise = Promise.promise();
-        testBodyWithQueryParams(query, user, promise);
+        testBodyWithQueryParams(query, user, promise::handle);
         return promise.future();
     }
 
@@ -214,7 +214,7 @@ public interface FakeApi {
 
     default Future<Void> testBodyWithQueryParams(@javax.annotation.Nonnull String query, @javax.annotation.Nonnull User user, ApiClient.AuthInfo authInfo){
         Promise<Void> promise = Promise.promise();
-        testBodyWithQueryParams(query, user, authInfo, promise);
+        testBodyWithQueryParams(query, user, authInfo, promise::handle);
         return promise.future();
     }
 
@@ -222,7 +222,7 @@ public interface FakeApi {
 
     default Future<Client> testClientModel(@javax.annotation.Nonnull Client client){
         Promise<Client> promise = Promise.promise();
-        testClientModel(client, promise);
+        testClientModel(client, promise::handle);
         return promise.future();
     }
 
@@ -230,7 +230,7 @@ public interface FakeApi {
 
     default Future<Client> testClientModel(@javax.annotation.Nonnull Client client, ApiClient.AuthInfo authInfo){
         Promise<Client> promise = Promise.promise();
-        testClientModel(client, authInfo, promise);
+        testClientModel(client, authInfo, promise::handle);
         return promise.future();
     }
 
@@ -238,7 +238,7 @@ public interface FakeApi {
 
     default Future<Void> testEndpointParameters(@javax.annotation.Nonnull BigDecimal number, @javax.annotation.Nonnull Double _double, @javax.annotation.Nonnull String patternWithoutDelimiter, @javax.annotation.Nonnull byte[] _byte, @javax.annotation.Nullable Integer integer, @javax.annotation.Nullable Integer int32, @javax.annotation.Nullable Long int64, @javax.annotation.Nullable Float _float, @javax.annotation.Nullable String string, @javax.annotation.Nullable AsyncFile binary, @javax.annotation.Nullable LocalDate date, @javax.annotation.Nullable OffsetDateTime dateTime, @javax.annotation.Nullable String password, @javax.annotation.Nullable String paramCallback){
         Promise<Void> promise = Promise.promise();
-        testEndpointParameters(number, _double, patternWithoutDelimiter, _byte, integer, int32, int64, _float, string, binary, date, dateTime, password, paramCallback, promise);
+        testEndpointParameters(number, _double, patternWithoutDelimiter, _byte, integer, int32, int64, _float, string, binary, date, dateTime, password, paramCallback, promise::handle);
         return promise.future();
     }
 
@@ -246,7 +246,7 @@ public interface FakeApi {
 
     default Future<Void> testEndpointParameters(@javax.annotation.Nonnull BigDecimal number, @javax.annotation.Nonnull Double _double, @javax.annotation.Nonnull String patternWithoutDelimiter, @javax.annotation.Nonnull byte[] _byte, @javax.annotation.Nullable Integer integer, @javax.annotation.Nullable Integer int32, @javax.annotation.Nullable Long int64, @javax.annotation.Nullable Float _float, @javax.annotation.Nullable String string, @javax.annotation.Nullable AsyncFile binary, @javax.annotation.Nullable LocalDate date, @javax.annotation.Nullable OffsetDateTime dateTime, @javax.annotation.Nullable String password, @javax.annotation.Nullable String paramCallback, ApiClient.AuthInfo authInfo){
         Promise<Void> promise = Promise.promise();
-        testEndpointParameters(number, _double, patternWithoutDelimiter, _byte, integer, int32, int64, _float, string, binary, date, dateTime, password, paramCallback, authInfo, promise);
+        testEndpointParameters(number, _double, patternWithoutDelimiter, _byte, integer, int32, int64, _float, string, binary, date, dateTime, password, paramCallback, authInfo, promise::handle);
         return promise.future();
     }
 
@@ -254,7 +254,7 @@ public interface FakeApi {
 
     default Future<Void> testEnumParameters(@javax.annotation.Nullable List<String> enumHeaderStringArray, @javax.annotation.Nullable String enumHeaderString, @javax.annotation.Nullable List<String> enumQueryStringArray, @javax.annotation.Nullable String enumQueryString, @javax.annotation.Nullable Integer enumQueryInteger, @javax.annotation.Nullable Double enumQueryDouble, @javax.annotation.Nullable List<EnumClass> enumQueryModelArray, @javax.annotation.Nullable List<String> enumFormStringArray, @javax.annotation.Nullable String enumFormString){
         Promise<Void> promise = Promise.promise();
-        testEnumParameters(enumHeaderStringArray, enumHeaderString, enumQueryStringArray, enumQueryString, enumQueryInteger, enumQueryDouble, enumQueryModelArray, enumFormStringArray, enumFormString, promise);
+        testEnumParameters(enumHeaderStringArray, enumHeaderString, enumQueryStringArray, enumQueryString, enumQueryInteger, enumQueryDouble, enumQueryModelArray, enumFormStringArray, enumFormString, promise::handle);
         return promise.future();
     }
 
@@ -262,7 +262,7 @@ public interface FakeApi {
 
     default Future<Void> testEnumParameters(@javax.annotation.Nullable List<String> enumHeaderStringArray, @javax.annotation.Nullable String enumHeaderString, @javax.annotation.Nullable List<String> enumQueryStringArray, @javax.annotation.Nullable String enumQueryString, @javax.annotation.Nullable Integer enumQueryInteger, @javax.annotation.Nullable Double enumQueryDouble, @javax.annotation.Nullable List<EnumClass> enumQueryModelArray, @javax.annotation.Nullable List<String> enumFormStringArray, @javax.annotation.Nullable String enumFormString, ApiClient.AuthInfo authInfo){
         Promise<Void> promise = Promise.promise();
-        testEnumParameters(enumHeaderStringArray, enumHeaderString, enumQueryStringArray, enumQueryString, enumQueryInteger, enumQueryDouble, enumQueryModelArray, enumFormStringArray, enumFormString, authInfo, promise);
+        testEnumParameters(enumHeaderStringArray, enumHeaderString, enumQueryStringArray, enumQueryString, enumQueryInteger, enumQueryDouble, enumQueryModelArray, enumFormStringArray, enumFormString, authInfo, promise::handle);
         return promise.future();
     }
 
@@ -270,7 +270,7 @@ public interface FakeApi {
 
     default Future<Void> testGroupParameters(@javax.annotation.Nonnull Integer requiredStringGroup, @javax.annotation.Nonnull Boolean requiredBooleanGroup, @javax.annotation.Nonnull Long requiredInt64Group, @javax.annotation.Nullable Integer stringGroup, @javax.annotation.Nullable Boolean booleanGroup, @javax.annotation.Nullable Long int64Group){
         Promise<Void> promise = Promise.promise();
-        testGroupParameters(requiredStringGroup, requiredBooleanGroup, requiredInt64Group, stringGroup, booleanGroup, int64Group, promise);
+        testGroupParameters(requiredStringGroup, requiredBooleanGroup, requiredInt64Group, stringGroup, booleanGroup, int64Group, promise::handle);
         return promise.future();
     }
 
@@ -278,7 +278,7 @@ public interface FakeApi {
 
     default Future<Void> testGroupParameters(@javax.annotation.Nonnull Integer requiredStringGroup, @javax.annotation.Nonnull Boolean requiredBooleanGroup, @javax.annotation.Nonnull Long requiredInt64Group, @javax.annotation.Nullable Integer stringGroup, @javax.annotation.Nullable Boolean booleanGroup, @javax.annotation.Nullable Long int64Group, ApiClient.AuthInfo authInfo){
         Promise<Void> promise = Promise.promise();
-        testGroupParameters(requiredStringGroup, requiredBooleanGroup, requiredInt64Group, stringGroup, booleanGroup, int64Group, authInfo, promise);
+        testGroupParameters(requiredStringGroup, requiredBooleanGroup, requiredInt64Group, stringGroup, booleanGroup, int64Group, authInfo, promise::handle);
         return promise.future();
     }
 
@@ -286,7 +286,7 @@ public interface FakeApi {
 
     default Future<Void> testInlineAdditionalProperties(@javax.annotation.Nonnull Map<String, String> requestBody){
         Promise<Void> promise = Promise.promise();
-        testInlineAdditionalProperties(requestBody, promise);
+        testInlineAdditionalProperties(requestBody, promise::handle);
         return promise.future();
     }
 
@@ -294,7 +294,7 @@ public interface FakeApi {
 
     default Future<Void> testInlineAdditionalProperties(@javax.annotation.Nonnull Map<String, String> requestBody, ApiClient.AuthInfo authInfo){
         Promise<Void> promise = Promise.promise();
-        testInlineAdditionalProperties(requestBody, authInfo, promise);
+        testInlineAdditionalProperties(requestBody, authInfo, promise::handle);
         return promise.future();
     }
 
@@ -302,7 +302,7 @@ public interface FakeApi {
 
     default Future<Void> testInlineFreeformAdditionalProperties(@javax.annotation.Nonnull TestInlineFreeformAdditionalPropertiesRequest testInlineFreeformAdditionalPropertiesRequest){
         Promise<Void> promise = Promise.promise();
-        testInlineFreeformAdditionalProperties(testInlineFreeformAdditionalPropertiesRequest, promise);
+        testInlineFreeformAdditionalProperties(testInlineFreeformAdditionalPropertiesRequest, promise::handle);
         return promise.future();
     }
 
@@ -310,7 +310,7 @@ public interface FakeApi {
 
     default Future<Void> testInlineFreeformAdditionalProperties(@javax.annotation.Nonnull TestInlineFreeformAdditionalPropertiesRequest testInlineFreeformAdditionalPropertiesRequest, ApiClient.AuthInfo authInfo){
         Promise<Void> promise = Promise.promise();
-        testInlineFreeformAdditionalProperties(testInlineFreeformAdditionalPropertiesRequest, authInfo, promise);
+        testInlineFreeformAdditionalProperties(testInlineFreeformAdditionalPropertiesRequest, authInfo, promise::handle);
         return promise.future();
     }
 
@@ -318,7 +318,7 @@ public interface FakeApi {
 
     default Future<Void> testJsonFormData(@javax.annotation.Nonnull String param, @javax.annotation.Nonnull String param2){
         Promise<Void> promise = Promise.promise();
-        testJsonFormData(param, param2, promise);
+        testJsonFormData(param, param2, promise::handle);
         return promise.future();
     }
 
@@ -326,7 +326,7 @@ public interface FakeApi {
 
     default Future<Void> testJsonFormData(@javax.annotation.Nonnull String param, @javax.annotation.Nonnull String param2, ApiClient.AuthInfo authInfo){
         Promise<Void> promise = Promise.promise();
-        testJsonFormData(param, param2, authInfo, promise);
+        testJsonFormData(param, param2, authInfo, promise::handle);
         return promise.future();
     }
 
@@ -334,7 +334,7 @@ public interface FakeApi {
 
     default Future<Void> testNullable(@javax.annotation.Nonnull ChildWithNullable childWithNullable){
         Promise<Void> promise = Promise.promise();
-        testNullable(childWithNullable, promise);
+        testNullable(childWithNullable, promise::handle);
         return promise.future();
     }
 
@@ -342,7 +342,7 @@ public interface FakeApi {
 
     default Future<Void> testNullable(@javax.annotation.Nonnull ChildWithNullable childWithNullable, ApiClient.AuthInfo authInfo){
         Promise<Void> promise = Promise.promise();
-        testNullable(childWithNullable, authInfo, promise);
+        testNullable(childWithNullable, authInfo, promise::handle);
         return promise.future();
     }
 
@@ -350,7 +350,7 @@ public interface FakeApi {
 
     default Future<Void> testQueryParameterCollectionFormat(@javax.annotation.Nonnull List<String> pipe, @javax.annotation.Nonnull List<String> ioutil, @javax.annotation.Nonnull List<String> http, @javax.annotation.Nonnull List<String> url, @javax.annotation.Nonnull List<String> context, @javax.annotation.Nonnull String allowEmpty, @javax.annotation.Nullable Map<String, String> language){
         Promise<Void> promise = Promise.promise();
-        testQueryParameterCollectionFormat(pipe, ioutil, http, url, context, allowEmpty, language, promise);
+        testQueryParameterCollectionFormat(pipe, ioutil, http, url, context, allowEmpty, language, promise::handle);
         return promise.future();
     }
 
@@ -358,7 +358,7 @@ public interface FakeApi {
 
     default Future<Void> testQueryParameterCollectionFormat(@javax.annotation.Nonnull List<String> pipe, @javax.annotation.Nonnull List<String> ioutil, @javax.annotation.Nonnull List<String> http, @javax.annotation.Nonnull List<String> url, @javax.annotation.Nonnull List<String> context, @javax.annotation.Nonnull String allowEmpty, @javax.annotation.Nullable Map<String, String> language, ApiClient.AuthInfo authInfo){
         Promise<Void> promise = Promise.promise();
-        testQueryParameterCollectionFormat(pipe, ioutil, http, url, context, allowEmpty, language, authInfo, promise);
+        testQueryParameterCollectionFormat(pipe, ioutil, http, url, context, allowEmpty, language, authInfo, promise::handle);
         return promise.future();
     }
 
@@ -366,7 +366,7 @@ public interface FakeApi {
 
     default Future<Void> testStringMapReference(@javax.annotation.Nonnull Map<String, String> requestBody){
         Promise<Void> promise = Promise.promise();
-        testStringMapReference(requestBody, promise);
+        testStringMapReference(requestBody, promise::handle);
         return promise.future();
     }
 
@@ -374,7 +374,7 @@ public interface FakeApi {
 
     default Future<Void> testStringMapReference(@javax.annotation.Nonnull Map<String, String> requestBody, ApiClient.AuthInfo authInfo){
         Promise<Void> promise = Promise.promise();
-        testStringMapReference(requestBody, authInfo, promise);
+        testStringMapReference(requestBody, authInfo, promise::handle);
         return promise.future();
     }
 

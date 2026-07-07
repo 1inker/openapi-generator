@@ -2,6 +2,7 @@ package org.openapitools.model;
 
 import java.net.URI;
 import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import org.springframework.lang.Nullable;
@@ -27,11 +28,13 @@ import jakarta.annotation.Generated;
 @JacksonXmlRootElement(localName = "Tag")
 @XmlRootElement(name = "Tag")
 @XmlAccessorType(XmlAccessType.FIELD)
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.24.0-SNAPSHOT")
 public class Tag {
 
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private @Nullable Long id;
 
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private @Nullable String name;
 
   public Tag() {
@@ -64,6 +67,8 @@ public class Tag {
     return id;
   }
 
+  @JsonProperty("id")
+  @JacksonXmlProperty(localName = "id")
   public void setId(@Nullable Long id) {
     this.id = id;
   }
@@ -86,6 +91,8 @@ public class Tag {
     return name;
   }
 
+  @JsonProperty("name")
+  @JacksonXmlProperty(localName = "name")
   public void setName(@Nullable String name) {
     this.name = name;
   }
@@ -123,10 +130,7 @@ public class Tag {
    * (except the first line).
    */
   private String toIndentedString(@Nullable Object o) {
-    if (o == null) {
-      return "null";
-    }
-    return o.toString().replace("\n", "\n    ");
+    return o == null ? "null" : o.toString().replace("\n", "\n    ");
   }
   
   public static class Builder {

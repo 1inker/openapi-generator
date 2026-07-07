@@ -19,7 +19,7 @@ public interface PetApi {
 
     default Future<Void> addPet(@javax.annotation.Nonnull Pet pet){
         Promise<Void> promise = Promise.promise();
-        addPet(pet, promise);
+        addPet(pet, promise::handle);
         return promise.future();
     }
 
@@ -27,7 +27,7 @@ public interface PetApi {
 
     default Future<Void> addPet(@javax.annotation.Nonnull Pet pet, ApiClient.AuthInfo authInfo){
         Promise<Void> promise = Promise.promise();
-        addPet(pet, authInfo, promise);
+        addPet(pet, authInfo, promise::handle);
         return promise.future();
     }
 
@@ -35,7 +35,7 @@ public interface PetApi {
 
     default Future<Void> deletePet(@javax.annotation.Nonnull Long petId, @javax.annotation.Nullable String apiKey){
         Promise<Void> promise = Promise.promise();
-        deletePet(petId, apiKey, promise);
+        deletePet(petId, apiKey, promise::handle);
         return promise.future();
     }
 
@@ -43,7 +43,7 @@ public interface PetApi {
 
     default Future<Void> deletePet(@javax.annotation.Nonnull Long petId, @javax.annotation.Nullable String apiKey, ApiClient.AuthInfo authInfo){
         Promise<Void> promise = Promise.promise();
-        deletePet(petId, apiKey, authInfo, promise);
+        deletePet(petId, apiKey, authInfo, promise::handle);
         return promise.future();
     }
 
@@ -51,7 +51,7 @@ public interface PetApi {
 
     default Future<List<Pet>> findPetsByStatus(@javax.annotation.Nonnull List<String> status){
         Promise<List<Pet>> promise = Promise.promise();
-        findPetsByStatus(status, promise);
+        findPetsByStatus(status, promise::handle);
         return promise.future();
     }
 
@@ -59,7 +59,7 @@ public interface PetApi {
 
     default Future<List<Pet>> findPetsByStatus(@javax.annotation.Nonnull List<String> status, ApiClient.AuthInfo authInfo){
         Promise<List<Pet>> promise = Promise.promise();
-        findPetsByStatus(status, authInfo, promise);
+        findPetsByStatus(status, authInfo, promise::handle);
         return promise.future();
     }
 
@@ -69,7 +69,7 @@ public interface PetApi {
     @Deprecated
     default Future<Set<Pet>> findPetsByTags(@javax.annotation.Nonnull Set<String> tags){
         Promise<Set<Pet>> promise = Promise.promise();
-        findPetsByTags(tags, promise);
+        findPetsByTags(tags, promise::handle);
         return promise.future();
     }
 
@@ -79,7 +79,7 @@ public interface PetApi {
     @Deprecated
     default Future<Set<Pet>> findPetsByTags(@javax.annotation.Nonnull Set<String> tags, ApiClient.AuthInfo authInfo){
         Promise<Set<Pet>> promise = Promise.promise();
-        findPetsByTags(tags, authInfo, promise);
+        findPetsByTags(tags, authInfo, promise::handle);
         return promise.future();
     }
 
@@ -87,7 +87,7 @@ public interface PetApi {
 
     default Future<Pet> getPetById(@javax.annotation.Nonnull Long petId){
         Promise<Pet> promise = Promise.promise();
-        getPetById(petId, promise);
+        getPetById(petId, promise::handle);
         return promise.future();
     }
 
@@ -95,7 +95,7 @@ public interface PetApi {
 
     default Future<Pet> getPetById(@javax.annotation.Nonnull Long petId, ApiClient.AuthInfo authInfo){
         Promise<Pet> promise = Promise.promise();
-        getPetById(petId, authInfo, promise);
+        getPetById(petId, authInfo, promise::handle);
         return promise.future();
     }
 
@@ -103,7 +103,7 @@ public interface PetApi {
 
     default Future<Void> updatePet(@javax.annotation.Nonnull Pet pet){
         Promise<Void> promise = Promise.promise();
-        updatePet(pet, promise);
+        updatePet(pet, promise::handle);
         return promise.future();
     }
 
@@ -111,7 +111,7 @@ public interface PetApi {
 
     default Future<Void> updatePet(@javax.annotation.Nonnull Pet pet, ApiClient.AuthInfo authInfo){
         Promise<Void> promise = Promise.promise();
-        updatePet(pet, authInfo, promise);
+        updatePet(pet, authInfo, promise::handle);
         return promise.future();
     }
 
@@ -119,7 +119,7 @@ public interface PetApi {
 
     default Future<Void> updatePetWithForm(@javax.annotation.Nonnull Long petId, @javax.annotation.Nullable String name, @javax.annotation.Nullable String status){
         Promise<Void> promise = Promise.promise();
-        updatePetWithForm(petId, name, status, promise);
+        updatePetWithForm(petId, name, status, promise::handle);
         return promise.future();
     }
 
@@ -127,7 +127,7 @@ public interface PetApi {
 
     default Future<Void> updatePetWithForm(@javax.annotation.Nonnull Long petId, @javax.annotation.Nullable String name, @javax.annotation.Nullable String status, ApiClient.AuthInfo authInfo){
         Promise<Void> promise = Promise.promise();
-        updatePetWithForm(petId, name, status, authInfo, promise);
+        updatePetWithForm(petId, name, status, authInfo, promise::handle);
         return promise.future();
     }
 
@@ -135,7 +135,7 @@ public interface PetApi {
 
     default Future<ModelApiResponse> uploadFile(@javax.annotation.Nonnull Long petId, @javax.annotation.Nullable String additionalMetadata, @javax.annotation.Nullable AsyncFile _file){
         Promise<ModelApiResponse> promise = Promise.promise();
-        uploadFile(petId, additionalMetadata, _file, promise);
+        uploadFile(petId, additionalMetadata, _file, promise::handle);
         return promise.future();
     }
 
@@ -143,7 +143,7 @@ public interface PetApi {
 
     default Future<ModelApiResponse> uploadFile(@javax.annotation.Nonnull Long petId, @javax.annotation.Nullable String additionalMetadata, @javax.annotation.Nullable AsyncFile _file, ApiClient.AuthInfo authInfo){
         Promise<ModelApiResponse> promise = Promise.promise();
-        uploadFile(petId, additionalMetadata, _file, authInfo, promise);
+        uploadFile(petId, additionalMetadata, _file, authInfo, promise::handle);
         return promise.future();
     }
 
@@ -151,7 +151,7 @@ public interface PetApi {
 
     default Future<ModelApiResponse> uploadFileWithRequiredFile(@javax.annotation.Nonnull Long petId, @javax.annotation.Nonnull AsyncFile requiredFile, @javax.annotation.Nullable String additionalMetadata){
         Promise<ModelApiResponse> promise = Promise.promise();
-        uploadFileWithRequiredFile(petId, requiredFile, additionalMetadata, promise);
+        uploadFileWithRequiredFile(petId, requiredFile, additionalMetadata, promise::handle);
         return promise.future();
     }
 
@@ -159,7 +159,7 @@ public interface PetApi {
 
     default Future<ModelApiResponse> uploadFileWithRequiredFile(@javax.annotation.Nonnull Long petId, @javax.annotation.Nonnull AsyncFile requiredFile, @javax.annotation.Nullable String additionalMetadata, ApiClient.AuthInfo authInfo){
         Promise<ModelApiResponse> promise = Promise.promise();
-        uploadFileWithRequiredFile(petId, requiredFile, additionalMetadata, authInfo, promise);
+        uploadFileWithRequiredFile(petId, requiredFile, additionalMetadata, authInfo, promise::handle);
         return promise.future();
     }
 

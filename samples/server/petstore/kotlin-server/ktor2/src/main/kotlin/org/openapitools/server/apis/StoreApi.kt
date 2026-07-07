@@ -30,8 +30,6 @@ import org.openapitools.server.models.Order
 
 fun Route.StoreApi() {
     val gson = Gson()
-    val empty = mutableMapOf<String, Any?>()
-
     delete<Paths.deleteOrder> {
         call.respond(HttpStatusCode.NotImplemented)
         
@@ -51,16 +49,16 @@ fun Route.StoreApi() {
     get<Paths.getOrderById> {
         val exampleContentType = "application/json"
         val exampleContentString = """{
+          "id" : 0,
           "petId" : 6,
           "quantity" : 1,
-          "id" : 0,
           "shipDate" : "2000-01-23T04:56:07.000+00:00",
-          "complete" : false,
-          "status" : "placed"
+          "status" : "placed",
+          "complete" : false
         }"""
         
         when (exampleContentType) {
-            "application/json" -> call.respond(gson.fromJson(exampleContentString, empty::class.java))
+            "application/json" -> call.respond(gson.fromJson(exampleContentString, Any::class.java))
             "application/xml" -> call.respondText(exampleContentString, ContentType.Text.Xml)
             else -> call.respondText(exampleContentString)
         }
@@ -70,16 +68,16 @@ fun Route.StoreApi() {
     post<Paths.placeOrder> {
         val exampleContentType = "application/json"
         val exampleContentString = """{
+          "id" : 0,
           "petId" : 6,
           "quantity" : 1,
-          "id" : 0,
           "shipDate" : "2000-01-23T04:56:07.000+00:00",
-          "complete" : false,
-          "status" : "placed"
+          "status" : "placed",
+          "complete" : false
         }"""
         
         when (exampleContentType) {
-            "application/json" -> call.respond(gson.fromJson(exampleContentString, empty::class.java))
+            "application/json" -> call.respond(gson.fromJson(exampleContentString, Any::class.java))
             "application/xml" -> call.respondText(exampleContentString, ContentType.Text.Xml)
             else -> call.respondText(exampleContentString)
         }

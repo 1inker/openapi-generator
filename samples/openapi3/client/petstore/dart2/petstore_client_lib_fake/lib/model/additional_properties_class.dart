@@ -59,10 +59,6 @@ class AdditionalPropertiesClass {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "AdditionalPropertiesClass[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "AdditionalPropertiesClass[$key]" has a null value in JSON.');
-        });
         return true;
       }());
 
@@ -71,7 +67,7 @@ class AdditionalPropertiesClass {
         mapOfMapProperty: mapCastOfType<String, dynamic>(json, r'map_of_map_property') ?? const {},
         mapOfArrayInteger: json[r'map_of_array_integer'] == null
           ? const {}
-            : (json[r'map_of_array_integer'] as Map<String, dynamic>).map((k, v) => MapEntry(k, v == null ? const <int>[] : (v as List).cast<int>())),
+            : (json[r'map_of_array_integer'] as Map<String, dynamic>).map((k, v) => MapEntry(k, v == null ? const <int>[] : (v as List).map((value) => value as int).toList(growable: false))),
       );
     }
     return null;

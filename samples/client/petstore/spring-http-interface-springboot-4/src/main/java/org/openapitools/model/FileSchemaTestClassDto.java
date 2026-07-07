@@ -2,16 +2,21 @@ package org.openapitools.model;
 
 import java.net.URI;
 import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.Nulls;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.openapitools.model.FileDto;
 import org.springframework.lang.Nullable;
 import java.time.OffsetDateTime;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.*;
+import org.hibernate.validator.constraints.*;
 
 
 import java.util.*;
@@ -22,13 +27,14 @@ import jakarta.annotation.Generated;
  */
 
 @JsonTypeName("FileSchemaTestClass")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.24.0-SNAPSHOT")
 public class FileSchemaTestClassDto {
 
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private @Nullable FileDto file;
 
-  
-  private List<FileDto> files = new ArrayList<>();
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private List<@Valid FileDto> files = new ArrayList<>();
 
   public FileSchemaTestClassDto file(@Nullable FileDto file) {
     this.file = file;
@@ -39,17 +45,19 @@ public class FileSchemaTestClassDto {
    * Get file
    * @return file
    */
-  
+  @Valid 
   @JsonProperty("file")
   public @Nullable FileDto getFile() {
     return file;
   }
 
+  @JsonSetter(nulls = Nulls.SKIP)
+  @JsonProperty("file")
   public void setFile(@Nullable FileDto file) {
     this.file = file;
   }
 
-  public FileSchemaTestClassDto files(List<FileDto> files) {
+  public FileSchemaTestClassDto files(List<@Valid FileDto> files) {
     this.files = files;
     return this;
   }
@@ -66,13 +74,15 @@ public class FileSchemaTestClassDto {
    * Get files
    * @return files
    */
-  
+  @Valid 
   @JsonProperty("files")
-  public List<FileDto> getFiles() {
+  public List<@Valid FileDto> getFiles() {
     return files;
   }
 
-  public void setFiles(List<FileDto> files) {
+  @JsonSetter(nulls = Nulls.SKIP)
+  @JsonProperty("files")
+  public void setFiles(List<@Valid FileDto> files) {
     this.files = files;
   }
 
@@ -109,10 +119,7 @@ public class FileSchemaTestClassDto {
    * (except the first line).
    */
   private String toIndentedString(@Nullable Object o) {
-    if (o == null) {
-      return "null";
-    }
-    return o.toString().replace("\n", "\n    ");
+    return o == null ? "null" : o.toString().replace("\n", "\n    ");
   }
 }
 

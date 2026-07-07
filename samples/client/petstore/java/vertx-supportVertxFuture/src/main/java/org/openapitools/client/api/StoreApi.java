@@ -16,7 +16,7 @@ public interface StoreApi {
 
     default Future<Void> deleteOrder(@javax.annotation.Nonnull String orderId){
         Promise<Void> promise = Promise.promise();
-        deleteOrder(orderId, promise);
+        deleteOrder(orderId, promise::handle);
         return promise.future();
     }
 
@@ -24,7 +24,7 @@ public interface StoreApi {
 
     default Future<Void> deleteOrder(@javax.annotation.Nonnull String orderId, ApiClient.AuthInfo authInfo){
         Promise<Void> promise = Promise.promise();
-        deleteOrder(orderId, authInfo, promise);
+        deleteOrder(orderId, authInfo, promise::handle);
         return promise.future();
     }
 
@@ -32,7 +32,7 @@ public interface StoreApi {
 
     default Future<Map<String, Integer>> getInventory(){
         Promise<Map<String, Integer>> promise = Promise.promise();
-        getInventory(promise);
+        getInventory(promise::handle);
         return promise.future();
     }
 
@@ -40,7 +40,7 @@ public interface StoreApi {
 
     default Future<Map<String, Integer>> getInventory(ApiClient.AuthInfo authInfo){
         Promise<Map<String, Integer>> promise = Promise.promise();
-        getInventory(authInfo, promise);
+        getInventory(authInfo, promise::handle);
         return promise.future();
     }
 
@@ -48,7 +48,7 @@ public interface StoreApi {
 
     default Future<Order> getOrderById(@javax.annotation.Nonnull Long orderId){
         Promise<Order> promise = Promise.promise();
-        getOrderById(orderId, promise);
+        getOrderById(orderId, promise::handle);
         return promise.future();
     }
 
@@ -56,7 +56,7 @@ public interface StoreApi {
 
     default Future<Order> getOrderById(@javax.annotation.Nonnull Long orderId, ApiClient.AuthInfo authInfo){
         Promise<Order> promise = Promise.promise();
-        getOrderById(orderId, authInfo, promise);
+        getOrderById(orderId, authInfo, promise::handle);
         return promise.future();
     }
 
@@ -64,7 +64,7 @@ public interface StoreApi {
 
     default Future<Order> placeOrder(@javax.annotation.Nonnull Order order){
         Promise<Order> promise = Promise.promise();
-        placeOrder(order, promise);
+        placeOrder(order, promise::handle);
         return promise.future();
     }
 
@@ -72,7 +72,7 @@ public interface StoreApi {
 
     default Future<Order> placeOrder(@javax.annotation.Nonnull Order order, ApiClient.AuthInfo authInfo){
         Promise<Order> promise = Promise.promise();
-        placeOrder(order, authInfo, promise);
+        placeOrder(order, authInfo, promise::handle);
         return promise.future();
     }
 

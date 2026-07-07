@@ -17,7 +17,7 @@ public interface UserApi {
 
     default Future<Void> createUser(@javax.annotation.Nonnull User user){
         Promise<Void> promise = Promise.promise();
-        createUser(user, promise);
+        createUser(user, promise::handle);
         return promise.future();
     }
 
@@ -25,7 +25,7 @@ public interface UserApi {
 
     default Future<Void> createUser(@javax.annotation.Nonnull User user, ApiClient.AuthInfo authInfo){
         Promise<Void> promise = Promise.promise();
-        createUser(user, authInfo, promise);
+        createUser(user, authInfo, promise::handle);
         return promise.future();
     }
 
@@ -33,7 +33,7 @@ public interface UserApi {
 
     default Future<Void> createUsersWithArrayInput(@javax.annotation.Nonnull List<User> user){
         Promise<Void> promise = Promise.promise();
-        createUsersWithArrayInput(user, promise);
+        createUsersWithArrayInput(user, promise::handle);
         return promise.future();
     }
 
@@ -41,7 +41,7 @@ public interface UserApi {
 
     default Future<Void> createUsersWithArrayInput(@javax.annotation.Nonnull List<User> user, ApiClient.AuthInfo authInfo){
         Promise<Void> promise = Promise.promise();
-        createUsersWithArrayInput(user, authInfo, promise);
+        createUsersWithArrayInput(user, authInfo, promise::handle);
         return promise.future();
     }
 
@@ -49,7 +49,7 @@ public interface UserApi {
 
     default Future<Void> createUsersWithListInput(@javax.annotation.Nonnull List<User> user){
         Promise<Void> promise = Promise.promise();
-        createUsersWithListInput(user, promise);
+        createUsersWithListInput(user, promise::handle);
         return promise.future();
     }
 
@@ -57,7 +57,7 @@ public interface UserApi {
 
     default Future<Void> createUsersWithListInput(@javax.annotation.Nonnull List<User> user, ApiClient.AuthInfo authInfo){
         Promise<Void> promise = Promise.promise();
-        createUsersWithListInput(user, authInfo, promise);
+        createUsersWithListInput(user, authInfo, promise::handle);
         return promise.future();
     }
 
@@ -65,7 +65,7 @@ public interface UserApi {
 
     default Future<Void> deleteUser(@javax.annotation.Nonnull String username){
         Promise<Void> promise = Promise.promise();
-        deleteUser(username, promise);
+        deleteUser(username, promise::handle);
         return promise.future();
     }
 
@@ -73,7 +73,7 @@ public interface UserApi {
 
     default Future<Void> deleteUser(@javax.annotation.Nonnull String username, ApiClient.AuthInfo authInfo){
         Promise<Void> promise = Promise.promise();
-        deleteUser(username, authInfo, promise);
+        deleteUser(username, authInfo, promise::handle);
         return promise.future();
     }
 
@@ -81,7 +81,7 @@ public interface UserApi {
 
     default Future<User> getUserByName(@javax.annotation.Nonnull String username){
         Promise<User> promise = Promise.promise();
-        getUserByName(username, promise);
+        getUserByName(username, promise::handle);
         return promise.future();
     }
 
@@ -89,7 +89,7 @@ public interface UserApi {
 
     default Future<User> getUserByName(@javax.annotation.Nonnull String username, ApiClient.AuthInfo authInfo){
         Promise<User> promise = Promise.promise();
-        getUserByName(username, authInfo, promise);
+        getUserByName(username, authInfo, promise::handle);
         return promise.future();
     }
 
@@ -97,7 +97,7 @@ public interface UserApi {
 
     default Future<String> loginUser(@javax.annotation.Nonnull String username, @javax.annotation.Nonnull String password){
         Promise<String> promise = Promise.promise();
-        loginUser(username, password, promise);
+        loginUser(username, password, promise::handle);
         return promise.future();
     }
 
@@ -105,7 +105,7 @@ public interface UserApi {
 
     default Future<String> loginUser(@javax.annotation.Nonnull String username, @javax.annotation.Nonnull String password, ApiClient.AuthInfo authInfo){
         Promise<String> promise = Promise.promise();
-        loginUser(username, password, authInfo, promise);
+        loginUser(username, password, authInfo, promise::handle);
         return promise.future();
     }
 
@@ -113,7 +113,7 @@ public interface UserApi {
 
     default Future<Void> logoutUser(){
         Promise<Void> promise = Promise.promise();
-        logoutUser(promise);
+        logoutUser(promise::handle);
         return promise.future();
     }
 
@@ -121,7 +121,7 @@ public interface UserApi {
 
     default Future<Void> logoutUser(ApiClient.AuthInfo authInfo){
         Promise<Void> promise = Promise.promise();
-        logoutUser(authInfo, promise);
+        logoutUser(authInfo, promise::handle);
         return promise.future();
     }
 
@@ -129,7 +129,7 @@ public interface UserApi {
 
     default Future<Void> updateUser(@javax.annotation.Nonnull String username, @javax.annotation.Nonnull User user){
         Promise<Void> promise = Promise.promise();
-        updateUser(username, user, promise);
+        updateUser(username, user, promise::handle);
         return promise.future();
     }
 
@@ -137,7 +137,7 @@ public interface UserApi {
 
     default Future<Void> updateUser(@javax.annotation.Nonnull String username, @javax.annotation.Nonnull User user, ApiClient.AuthInfo authInfo){
         Promise<Void> promise = Promise.promise();
-        updateUser(username, user, authInfo, promise);
+        updateUser(username, user, authInfo, promise::handle);
         return promise.future();
     }
 
