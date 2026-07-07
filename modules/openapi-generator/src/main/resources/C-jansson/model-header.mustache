@@ -188,6 +188,15 @@ struct {{classname}}_ent
    {{complexType}}_LSU {{name}}_map; /* map */
    {{/isMap}}
    {{/isContainer}}
+   {{#discriminator}}
+   union /* {{#oneOf}}{{#-first}}model_oneof{{/-first}}{{/oneOf}}{{^oneOf}}{{#anyOf}}{{#-first}}model_anyof{{/-first}}{{/anyOf}}{{^anyOf}}{{/anyOf}}{{/oneOf}} */
+   {
+      {{#mappedModels}}
+      {{{modelName}}}_ENT *{{#lambda.lowercase}}{{mappingName}}{{/lambda.lowercase}};
+      {{/mappedModels}}
+      // try to unmarshal JSON data into {{#lambda.type-to-name}}{{{.}}}{{/lambda.type-to-name}}
+   } {{{propertyName}}};
+   {{/discriminator}}
    {{/vars}}
 };
 typedef struct {{classname}}_ent {{apiPackage}}_{{classname}}_ENT;

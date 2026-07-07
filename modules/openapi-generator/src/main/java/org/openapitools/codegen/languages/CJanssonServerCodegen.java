@@ -355,7 +355,7 @@ public class CJanssonServerCodegen extends DefaultCodegen implements CodegenConf
             additionalProperties.put("cJSONPrint", "cJSON_PrintUnformatted");
         } else {
             additionalProperties.put("cJSONPrint", "cJSON_Print");
-        }
+    }
 
         // make api and model doc path available in mustache template
         additionalProperties.put("apiDocPath", apiDocPath);
@@ -387,22 +387,40 @@ public class CJanssonServerCodegen extends DefaultCodegen implements CodegenConf
         // Object files in model folder
         supportingFiles.add(new SupportingFile("object-body.mustache", "model", "object.c"));
         supportingFiles.add(new SupportingFile("object-header.mustache", "model", "object.h"));
-    }
+        }
 
+    /**
+     * Configures the type of generator.
+     *
+     * @return the CodegenType for this generator
+     * @see org.openapitools.codegen.CodegenType
+     */
     @Override
     public CodegenType getTag() {
         return CodegenType.SERVER;
     }
 
+    /**
+     * Configures a friendly name for the generator.  This will be used by the generator
+     * to select the library with the -g flag.
+     *
+     * @return the friendly name for the generator
+     */
     @Override
     public String getName() {
         return "c-jansson";
     }
 
+    /**
+     * Returns human-friendly help for the generator. Provide the consumer with help
+     * tips, parameters here
+     *
+     * @return A string value for the help message
+     */
     @Override
     public String getHelp() {
-        return "Generates a C (libcurl) client library (beta).";
-    }
+        return "Generates a C (jansson + libevent) client library (beta).";
+        }
 
 
     @Override
@@ -418,6 +436,10 @@ public class CJanssonServerCodegen extends DefaultCodegen implements CodegenConf
         return outputFolder + File.separator + "api";
     }
 
+    /**
+     * Location to write model files.  You can use the modelPackage() as defined when the class is
+     * instantiated
+     */
     @Override
     public String modelFileFolder() {
         return outputFolder + File.separator + "model";
@@ -426,17 +448,17 @@ public class CJanssonServerCodegen extends DefaultCodegen implements CodegenConf
     @Override
     public String apiTestFileFolder() {
         return outputFolder + File.separator + "api";
-    }
+        }
 
     @Override
     public String modelTestFileFolder() {
         return outputFolder + File.separator + "model";
-    }
+        }
 
     @Override
     public String apiDocFileFolder() {
         return (outputFolder + "/" + apiDocPath).replace('/', File.separatorChar);
-    }
+        }
 
     @Override
     public String modelDocFileFolder() {
@@ -453,7 +475,7 @@ public class CJanssonServerCodegen extends DefaultCodegen implements CodegenConf
             Schema inner = (Schema) schema.getAdditionalProperties();
             return getSchemaType(schema) + "<String, " + getTypeDeclaration(inner) + ">";
         }
-        */
+     */
 
         return super.getTypeDeclaration(schema);
     }
@@ -468,7 +490,7 @@ public class CJanssonServerCodegen extends DefaultCodegen implements CodegenConf
             if (p.getDefault() != null) {
                 return "'" + escapeText(String.valueOf(p.getDefault())) + "'";
             }
-        }
+    }
 
         return null;
     }
@@ -572,11 +594,17 @@ public class CJanssonServerCodegen extends DefaultCodegen implements CodegenConf
 
         if (ModelUtils.isStringSchema(schema)) {
             example = "\"" + escapeText(example) + "\"";
-        }
+    }
 
         return example;
     }
 
+    /**
+     * Optional - OpenAPI type conversion.  This is used to map OpenAPI types in a `Schema` into
+     * either language specific types via `typeMapping` or into complex models if there is not a mapping.
+     *
+     * @return a string value of the type or complex model for this property
+     */
     @Override
     public String getSchemaType(Schema schema) {
         String openAPIType = super.getSchemaType(schema);
@@ -694,23 +722,23 @@ public class CJanssonServerCodegen extends DefaultCodegen implements CodegenConf
     @Override
     public String toApiDocFilename(String name) {
         return toApiName(name);
-    }
+            }
 
     @Override
     public String toApiTestFilename(String name) {
         return toApiFilename(name).replaceAll("_", "-");
-    }
+        }
 
     @Override
     public String toModelTestFilename(String name) {
         return toModelFilename(name);
-    }
+                }
 
     @Override
     public String toApiName(String name) {
         if (name.length() == 0) {
             return "DefaultApi";
-        }
+            }
         // e.g. phone_number_api => PhoneNumberApi
         return camelize(name) + "API";
     }
@@ -721,14 +749,14 @@ public class CJanssonServerCodegen extends DefaultCodegen implements CodegenConf
             return value;
         } else {
             return escapeText(value);
-        }
-    }
+                }
+            }
 
     @Override
     public String toEnumVarName(String name, String datatype) {
         if (name.length() == 0) {
             return "EMPTY";
-        }
+                    }
 
         // number
         if ("Integer".equals(datatype) || "Float".equals(datatype)) {
@@ -737,7 +765,7 @@ public class CJanssonServerCodegen extends DefaultCodegen implements CodegenConf
             varName = varName.replaceAll("\\+", "PLUS_");
             varName = varName.replaceAll("\\.", "_DOT_");
             return varName;
-        }
+                }
 
         // string
         String enumName = camelize(name).toUpperCase(Locale.ROOT).replaceAll("-", "_").replaceAll("\\+", "_").replaceAll("\\.", "_");
@@ -748,8 +776,8 @@ public class CJanssonServerCodegen extends DefaultCodegen implements CodegenConf
             return escapeReservedWord(enumName);
         } else {
             return enumName;
-        }
-    }
+            }
+                }
 
     @Override
     public String toEnumName(CodegenProperty property) {
@@ -761,8 +789,8 @@ public class CJanssonServerCodegen extends DefaultCodegen implements CodegenConf
             return escapeReservedWord(enumName);
         } else {
             return enumName;
+            }
         }
-    }
 
     @Override
     public ModelsMap postProcessModels(ModelsMap objs) {
@@ -774,10 +802,10 @@ public class CJanssonServerCodegen extends DefaultCodegen implements CodegenConf
             if (model.getComposedSchemas() != null) {
                 if (model.getComposedSchemas().getAnyOf() != null) {
                     inheritedProperties.addAll(model.getComposedSchemas().getAnyOf());
-                }
+            }
                 if (model.getComposedSchemas().getOneOf() != null) {
                     inheritedProperties.addAll(model.getComposedSchemas().getOneOf());
-                }
+        }
             }
 
             List<CodegenProperty> codegenProperties = new ArrayList<>();
@@ -802,7 +830,7 @@ public class CJanssonServerCodegen extends DefaultCodegen implements CodegenConf
             if (model.anyOf != null && !model.anyOf.isEmpty() && model.anyOf.contains("nil")) {
                 model.isNullable = true;
                 model.anyOf.remove("nil");
-            }
+        }
         }
 
         return postProcessModelsEnum(objs);
@@ -815,24 +843,24 @@ public class CJanssonServerCodegen extends DefaultCodegen implements CodegenConf
             operationId = camelize("empty_method_name_" + emptyMethodNameCounter++);
             LOGGER.warn("Empty method name (operationId) found. Renamed to {}", operationId);
             return operationId;
-        }
+    }
 
         // method name cannot use reserved keyword, e.g. return
         if (isReservedWord(operationId)) {
             String newOperationId = camelize(sanitizeName("call_" + operationId), LOWERCASE_FIRST_LETTER);
             LOGGER.warn("{} (reserved word) cannot be used as method name. Renamed to {}", operationId, newOperationId);
             return newOperationId;
-        }
+    }
 
         // operationId starts with a number
         if (operationId.matches("^\\d.*")) {
             String newOperationId = camelize(sanitizeName("call_" + operationId), LOWERCASE_FIRST_LETTER);
             LOGGER.warn("{} (starting with a number) cannot be used as method name. Renamed to {}", operationId, newOperationId);
             return newOperationId;
-        }
+            }
 
         return camelize(sanitizeName(operationId), LOWERCASE_FIRST_LETTER);
-    }
+        }
 
     @Override
     public String toApiImport(String name) {
@@ -960,7 +988,7 @@ public class CJanssonServerCodegen extends DefaultCodegen implements CodegenConf
         String cPostProcessFile = System.getenv("C_POST_PROCESS_FILE");
         if (StringUtils.isEmpty(cPostProcessFile)) {
             return; // skip if C_POST_PROCESS_FILE env variable is not defined
-        }
+    }
 
         // only process the following type (or we can simply rely on the file extension to check if it's a .c or .h file)
         Set<String> supportedFileType = new HashSet<>(
@@ -1009,17 +1037,14 @@ public class CJanssonServerCodegen extends DefaultCodegen implements CodegenConf
 
     @Override
     public void postProcess() {
-        System.out.println("################################################################################");
-        System.out.println("# Thanks for using OpenAPI Generator.                                          #");
-        System.out.println("# Please consider donation to help us maintain this project \uD83D\uDE4F                 #");
-        System.out.println("# https://opencollective.com/openapi_generator/donate                          #");
-        System.out.println("#                                                                              #");
-        System.out.println("# This generator is contributed by Hemant Zope (https://github.com/zhemant)    #");
-        System.out.println("# and Niklas Werner (https://github.com/PowerOfCreation).                      #");
-        System.out.println("# Please support their work directly \uD83D\uDE4F                                        #");
-        System.out.println("# > Hemant Zope - https://www.patreon.com/zhemant                              #");
-        System.out.println("# > Niklas Werner - https://paypal.me/wernerdevelopment                        #");
-        System.out.println("################################################################################");
+        System.out.println("###################################################################################################");
+        System.out.println("# Thanks for using OpenAPI Generator.                                                             #");
+        System.out.println("# Please consider donation to help us maintain this project \uD83D\uDE4F                                    #");
+        System.out.println("# https://opencollective.com/openapi_generator/donate                                             #");
+        System.out.println("#                                                                                                 #");
+        System.out.println("# This generator is contributed by Dmitry Fedchenko (https://github.com/1inker/openapi-generator) #");
+        System.out.println("# Please support his work directly \uD83D\uDE4F                                                             #");
+        System.out.println("###################################################################################################");
     }
 
     @Override
